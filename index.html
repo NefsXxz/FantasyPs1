@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Virtual Host | Linktree</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        
+        .profile h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .profile p {
+            color: var(--gray);
+            font-size: 16px;
+        }
+        
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .link-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .link-text {
+            flex: 1;
+        }
+        
+        .link-text h3 {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .link-text p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+        
+        .badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            padding-left: 10px;
+            color: var(--dark);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .host-info {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .host-block {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            font-family: monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .host-info p {
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+        
+        .copy-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .copied {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Music Player Styles */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            background: white;
+            border-radius: 50px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .music-control {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        
+        .music-control:hover {
+            background: var(--primary-dark);
+        }
+        
+        .music-info {
+            font-size: 12px;
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.3s;
+        }
+        
+        .music-player:hover .music-info {
+            max-width: 200px;
+            padding-right: 10px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <img src="https://i.ibb.co.com/cSb2q4vQ/IMG-20250423-WA0025.jpg" class="profile-img">
+            <h1>Fantasy Private Server</h1>
+            <p>Growtopia Private Server</p>
+        </div>
+        
+        <div class="links">
+            <h2 class="section-title">🚀 Fantasy Host</h2>
+            
+            <div class="link-card" onclick="showHostModal('PowerTunnel Host', 'https://gtpshost.com/FantasyPsNew.txt')">
+                <div class="link-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="link-text">
+                    <h3>PowerTunnel Host</h3>
+                    <p>Click For Host!</p>
+                </div>
+                <span class="badge">LINK</span>
+            </div>
+            
+            <div class="link-card" onclick="showHostModal('Host GO', 'https://gtpshost.com/FantasyPsNew.txt')">
+                <div class="link-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="link-text">
+                    <h3>Host GO</h3>
+                    <p>Click For Host!</p>
+                </div>
+                <span class="badge">LINK</span>
+            </div>
+            
+            <a href="https://www.mediafire.com/file/co542sto04ym5n3/FantasyPsNew.txt/file" class="link-card">
+                <div class="link-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="link-text">
+                    <h3>Virtual Host</h3>
+                    <p>Click if you use Virtual Host!</p>
+                </div>
+                <span class="badge">LINK</span>
+            </a>
+            
+            <div class="link-card" onclick="showWindowsModal()">
+                <div class="link-icon">
+                    <i class="fab fa-microsoft"></i>
+                </div>
+                <div class="link-text">
+                    <h3>Windows Host</h3>
+                    <p>Click For Windows host!</p>
+                </div>
+                <span class="badge">LINK</span>
+            </div>
+        </div>
+        
+        <div class="links">
+            <h2 class="section-title">📱 Join Grup Kami</h2>
+            
+            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" class="link-card">
+                <div class="link-icon" style="background-color: #25D366; color: white;">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <div class="link-text">
+                    <h3>WhatsApp Group</h3>
+                    <p>Grup diskusi & support WhatsApp</p>
+                </div>
+            </a>
+            
+            <a href="https://discord.gg/Zcc2F6MnbS" class="link-card">
+                <div class="link-icon" style="background-color: #5865F2; color: white;">
+                    <i class="fab fa-discord"></i>
+                </div>
+                <div class="link-text">
+                    <h3>Discord Server</h3>
+                    <p>Komunitas Discord Fantasy Ps!</p>
+                </div>
+            </a>
+        </div>
+        
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+        
+        <footer>
+            <p>© 2025 Fantasy Ps. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <!-- Modal Host Link -->
+    <div class="modal" id="hostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalHostTitle">Host Link</h2>
+                <button class="close-modal" onclick="closeHostModal()">&times;</button>
+            </div>
+            
+            <div class="host-info">
+                <p id="hostLinkText">https://example.com/host</p>
+                <button class="copy-btn" onclick="copyHostLink()">Salin</button>
+                <span class="copied" id="copiedNotification">Tersalin!</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Windows Host -->
+    <div class="modal" id="windowsHostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Windows Host Links</h2>
+                <button class="close-modal" onclick="closeWindowsModal()">&times;</button>
+            </div>
+            
+            <div class="host-block" id="windowsHostBlock">
+152.42.172.251 growtopia1.com
+152.42.172.251 growtopia2.com
+152.42.172.251 www.growtopia1.com
+152.42.172.251 www.growtopia2.com
+152.42.172.251 RvLnd.here
+            </div>
+            
+            <button class="copy-btn" onclick="copyWindowsHostBlock()">Salin Semua</button>
+        </div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <button class="music-control" id="musicToggle">
+            <i class="fas fa-play" id="musicIcon"></i>
+        </button>
+        <div class="music-info">
+            Background Music
+        </div>
+        <audio id="bgMusic" loop>
+            <!-- Replace with your actual audio file -->
+            <source src="https://cdn.discordapp.com/attachments/1217392524621119490/1406203652321972274/Growtopia_OST_-_Theme_-_Solarfog_GT.mp3?ex=68a19cb4&is=68a04b34&hm=810e2f80789a13e2e73bbf71d219003b27dfdfa7b9037c68498c9ca564d6f666&" type="audio/mpeg">
+        </audio>
+    </div>
+    
+    <script>
+        // Modal functions
+        function showHostModal(title, link) {
+            document.getElementById('modalHostTitle').textContent = title;
+            document.getElementById('modalHostTitle').textContent = title;
+            document.getElementById('hostLinkText').textContent = link;
+            document.getElementById('hostModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function showWindowsModal() {
+            document.getElementById('windowsHostModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeHostModal() {
+            document.getElementById('hostModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function closeWindowsModal() {
+            document.getElementById('windowsHostModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close when clicking outside modal
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('hostModal')) {
+                closeHostModal();
+            }
+            if (event.target == document.getElementById('windowsHostModal')) {
+                closeWindowsModal();
+            }
+        }
+        
+        // Copy host link function
+        function copyHostLink() {
+            const textToCopy = document.getElementById('hostLinkText').textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copiedNotification = document.getElementById('copiedNotification');
+                copiedNotification.style.opacity = '1';
+                setTimeout(() => {
+                    copiedNotification.style.opacity = '0';
+                }, 2000);
+            });
+        }
+        
+        // Copy Windows host block
+        function copyWindowsHostBlock() {
+            const textToCopy = document.getElementById('windowsHostBlock').textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Semua host Windows telah disalin!');
+            }).catch(err => {
+                console.error('Gagal menyalin: ', err);
+                alert('Gagal menyalin, coba lagi');
+            });
+        }
+
+        // Music Player Functionality
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', function() {
+            if (!isPlaying) {
+                bgMusic.play()
+                    .then(() => {
+                        isPlaying = true;
+                        musicIcon.classList.remove('fa-play');
+                        musicIcon.classList.add('fa-pause');
+                    })
+                    .catch(error => {
+                        console.error("Audio playback failed:", error);
+                        alert('Silakan klik lagi untuk memutar musik (beberapa browser memerlukan interaksi pengguna)');
+                    });
+            } else {
+                bgMusic.pause();
+                isPlaying = false;
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-play');
+            }
+        });
+
+        // Optional: Auto-play when user interacts with page
+        document.body.addEventListener('click', function firstInteraction() {
+            bgMusic.play().catch(e => console.log("Auto-play prevented"));
+            document.body.removeEventListener('click', firstInteraction);
+        });
+    </script>
+</body>
+</html>
