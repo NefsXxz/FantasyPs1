@@ -318,6 +318,35 @@
             max-width: 200px;
             padding-right: 10px;
         }
+        
+        /* Guide Styles */
+        .guide-container {
+            margin-top: 15px;
+        }
+        
+        .guide-step {
+            margin-bottom: 15px;
+            padding-left: 5px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .guide-step h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .guide-step p {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .guide-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid #e2e8f0;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -333,46 +362,46 @@
         <div class="links">
             <h2 class="section-title">🚀 Vagary Host</h2>
             
-            <div class="link-card" onclick="showHostModal('PowerTunnel Host', 'https://gtpshost.com/VagaryPs.txt')">
+            <div class="link-card" onclick="showGuideModal('powertunnel')">
                 <div class="link-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
                 <div class="link-text">
                     <h3>PowerTunnel Host</h3>
-                    <p>Click For Host!</p>
+                    <p>Click For Host and Guide!</p>
                 </div>
                 <span class="badge">LINK</span>
             </div>
             
-            <div class="link-card" onclick="showHostModal('Host GO', 'https://gtpshost.com/VagaryPs.txt')">
+            <div class="link-card" onclick="showGuideModal('hostsgo')">
                 <div class="link-icon">
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="link-text">
                     <h3>Host GO</h3>
-                    <p>Click For Host!</p>
+                    <p>Click For Host and Guide!</p>
                 </div>
                 <span class="badge">LINK</span>
             </div>
             
-            <a href="https://www.mediafire.com/file/co542sto04ym5n3/Vagary.txt/file" class="link-card">
+            <div class="link-card" onclick="showGuideModal('virtualhost')">
                 <div class="link-icon">
                     <i class="fas fa-server"></i>
                 </div>
                 <div class="link-text">
                     <h3>Virtual Host</h3>
-                    <p>Click if you use Virtual Host!</p>
+                    <p>Click For Host and Guide!</p>
                 </div>
                 <span class="badge">LINK</span>
-            </a>
+            </div>
             
-            <div class="link-card" onclick="showWindowsModal()">
+            <div class="link-card" onclick="showGuideModal('windows')">
                 <div class="link-icon">
                     <i class="fab fa-microsoft"></i>
                 </div>
                 <div class="link-text">
                     <h3>Windows Host</h3>
-                    <p>Click For Windows host!</p>
+                    <p>Click For Host and Guide!</p>
                 </div>
                 <span class="badge">LINK</span>
             </div>
@@ -449,6 +478,26 @@
             <button class="copy-btn" onclick="copyWindowsHostBlock()">Salin Semua</button>
         </div>
     </div>
+    
+    <!-- Modal Guide -->
+    <div class="modal" id="guideModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="guideModalTitle">Panduan Penggunaan</h2>
+                <button class="close-modal" onclick="closeGuideModal()">&times;</button>
+            </div>
+            
+            <div class="host-info" id="guideHostLinkSection">
+                <p id="guideHostLinkText"></p>
+                <button class="copy-btn" onclick="copyGuideHostLink()">Salin Host URL</button>
+                <span class="copied" id="guideCopiedNotification">Tersalin!</span>
+            </div>
+            
+            <div class="guide-container" id="guideContent">
+                <!-- Panduan akan dimuat di sini secara dinamis -->
+            </div>
+        </div>
+    </div>
 
     <!-- Music Player -->
     <div class="music-player">
@@ -460,14 +509,130 @@
         </div>
         <audio id="bgMusic" loop>
             <!-- Replace with your actual audio file -->
-            <source src="https://cdn.discordapp.com/attachments/1364895640345247811/1407280201334915092/DJ_STECU_STECU_X_PICA_PICA_SLOW_VIRAL_TIKTOK_FULL_SONG_MAMAN_FVNDY_2025_-_Maman_Fvndy_Rmx.mp3?ex=68a58752&is=68a435d2&hm=9be6b4f9a199b8bc9b0688fc59179d18dc236da52b0a4abe4846cb427aabf451&" type="audio/mpeg">
+            <source src="https://cdn.discordapp.com/attachments/1217392524621119490/1408374654493523979/Kingdom_Dance_From_Tangled_Score_-_Alan_Menken.mp3?ex=68a9829b&is=68a8311b&hm=40a7d48a532956f5f80059f03f962c223098136cbab39c57ec0994e1dd505cd3&" type="audio/mpeg">
         </audio>
     </div>
     
     <script>
+        // Panduan penggunaan
+        const guides = {
+            powertunnel: {
+                title: "Panduan PowerTunnel",
+                hostLink: "https://gtpshost.com/VagaryPs.txt",
+                steps: [
+                    {
+                        title: "Langkah 1: Download Aplikasi",
+                        content: "Download aplikasi PowerTunnel dari sumber terpercaya"
+                    },
+                    {
+                        title: "Langkah 2: Salin Host URL",
+                        content: "Klik tombol 'Salin Host URL' di atas untuk menyalin host URL"
+                    },
+                    {
+                        title: "Langkah 3: Pengaturan Host",
+                        content: "Buka PowerTunnel, ketuk menu (☰), lalu pilih 'Host Settings'"
+                    },
+                    {
+                        title: "Langkah 4: Tempel URL",
+                        content: "Tempel URL yang disalin, lalu atur host update period menjadi 'on start'"
+                    },
+                    {
+                        title: "Langkah 5: Nikmati Server",
+                        content: "Buka Growtopia dan nikmati server pribadimu!"
+                    }
+                ]
+            },
+            hostsgo: {
+                title: "Panduan Hosts Go",
+                hostLink: "https://gtpshost.com/VagaryPs.txt",
+                steps: [
+                    {
+                        title: "Langkah 1: Download Aplikasi",
+                        content: "Unduh dan pasang Hosts Go di perangkat Anda"
+                    },
+                    {
+                        title: "Langkah 2: Buka Hosts Editor",
+                        content: "Buka aplikasi Host GO dan pilih 'Hosts Editor'"
+                    },
+                    {
+                        title: "Langkah 3: Download Hosts File",
+                        content: "Tap ⋮ (titik tiga) di pojok kanan atas, lalu pilih 'Download Hosts File'"
+                    },
+                    {
+                        title: "Langkah 4: Tempel URL",
+                        content: "Klik tombol 'Salin Host URL' di atas lalu tempelkan ke Hosts Go"
+                    },
+                    {
+                        title: "Langkah 5: Terapkan Host",
+                        content: "Pilih 'Download and Apply'"
+                    },
+                    {
+                        title: "Langkah 6: Mulai",
+                        content: "Kembali dan ketuk 'START'"
+                    },
+                    {
+                        title: "Langkah 7: Nikmati",
+                        content: "Buka Growtopia dan nikmati!"
+                    }
+                ]
+            },
+            virtualhost: {
+                title: "Panduan Virtual Host",
+                hostLink: "https://www.mediafire.com/file/co542sto04ym5n3/Vagary.txt/file",
+                steps: [
+                    {
+                        title: "Langkah 1: Download File Host",
+                        content: "Download file host di link yang sudah disediakan (gunakan tombol salin di atas)"
+                    },
+                    {
+                        title: "Langkah 2: Buka Aplikasi",
+                        content: "Buka aplikasi Virtual Host"
+                    },
+                    {
+                        title: "Langkah 3: Pilih File",
+                        content: "Pencet tombol 're-select file' dan cari file txt yang sudah didownload"
+                    },
+                    {
+                        title: "Langkah 4: Aktifkan Host",
+                        content: "Pencet tombol di atas 're-select' untuk mengaktifkan host"
+                    },
+                    {
+                        title: "Langkah 5: Mainkan Game",
+                        content: "Masuk ke Growtopia untuk bermain!"
+                    }
+                ]
+            },
+            windows: {
+                title: "Panduan Windows Host",
+                hostLink: "",
+                steps: [
+                    {
+                        title: "Langkah 1: Buka File Hosts",
+                        content: "Tekan ⊞ Win + R untuk membuka jendela Run, lalu ketik C:\\Windows\\System32\\drivers\\etc dan tekan Enter"
+                    },
+                    {
+                        title: "Langkah 2: Edit File Hosts",
+                        content: "Cari dan klik kanan file 'hosts', lalu buka dengan Notepad (jalankan sebagai Administrator jika perlu)"
+                    },
+                    {
+                        title: "Langkah 3: Tambahkan Host",
+                        content: "Tambahkan IP & DOMAIN berikut ke bagian bawah file hosts:",
+                        code: `152.42.172.251 growtopia1.com
+152.42.172.251 growtopia2.com
+152.42.172.251 www.growtopia1.com
+152.42.172.251 www.growtopia2.com
+152.42.172.251 RvLnd.here`
+                    },
+                    {
+                        title: "Langkah 4: Simpan Perubahan",
+                        content: "Simpan file lalu buka Growtopia untuk terhubung!"
+                    }
+                ]
+            }
+        };
+
         // Modal functions
         function showHostModal(title, link) {
-            document.getElementById('modalHostTitle').textContent = title;
             document.getElementById('modalHostTitle').textContent = title;
             document.getElementById('hostLinkText').textContent = link;
             document.getElementById('hostModal').style.display = 'flex';
@@ -476,6 +641,46 @@
         
         function showWindowsModal() {
             document.getElementById('windowsHostModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function showGuideModal(guideType) {
+            const guide = guides[guideType];
+            if (!guide) return;
+            
+            document.getElementById('guideModalTitle').textContent = guide.title;
+            
+            // Atur host link jika ada
+            const hostLinkSection = document.getElementById('guideHostLinkSection');
+            const hostLinkText = document.getElementById('guideHostLinkText');
+            
+            if (guide.hostLink) {
+                hostLinkSection.style.display = 'block';
+                hostLinkText.textContent = guide.hostLink;
+            } else {
+                hostLinkSection.style.display = 'none';
+            }
+            
+            // Isi konten panduan
+            const guideContent = document.getElementById('guideContent');
+            guideContent.innerHTML = '';
+            
+            guide.steps.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = 'guide-step';
+                
+                let stepHTML = `<h4>${step.title}</h4>`;
+                stepHTML += `<p>${step.content}</p>`;
+                
+                if (step.code) {
+                    stepHTML += `<pre class="host-block">${step.code}</pre>`;
+                }
+                
+                stepElement.innerHTML = stepHTML;
+                guideContent.appendChild(stepElement);
+            });
+            
+            document.getElementById('guideModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
         
@@ -489,6 +694,11 @@
             document.body.style.overflow = 'auto';
         }
         
+        function closeGuideModal() {
+            document.getElementById('guideModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
         // Close when clicking outside modal
         window.onclick = function(event) {
             if (event.target == document.getElementById('hostModal')) {
@@ -497,6 +707,9 @@
             if (event.target == document.getElementById('windowsHostModal')) {
                 closeWindowsModal();
             }
+            if (event.target == document.getElementById('guideModal')) {
+                closeGuideModal();
+            }
         }
         
         // Copy host link function
@@ -504,6 +717,18 @@
             const textToCopy = document.getElementById('hostLinkText').textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const copiedNotification = document.getElementById('copiedNotification');
+                copiedNotification.style.opacity = '1';
+                setTimeout(() => {
+                    copiedNotification.style.opacity = '0';
+                }, 2000);
+            });
+        }
+        
+        // Copy guide host link
+        function copyGuideHostLink() {
+            const textToCopy = document.getElementById('guideHostLinkText').textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copiedNotification = document.getElementById('guideCopiedNotification');
                 copiedNotification.style.opacity = '1';
                 setTimeout(() => {
                     copiedNotification.style.opacity = '0';
@@ -555,9 +780,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
-
