@@ -121,6 +121,10 @@
             font-weight: 600;
         }
         
+        .badge-download {
+            background-color: #10b981;
+        }
+        
         .section-title {
             font-size: 18px;
             font-weight: 600;
@@ -347,6 +351,26 @@
             margin-top: 8px;
             border: 1px solid #e2e8f0;
         }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #059669;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -357,6 +381,32 @@
             <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" class="profile-img">
             <h1>Eldoria Private Server</h1>
             <p>Growtopia Private Server</p>
+        </div>
+        
+        <div class="links">
+            <h2 class="section-title">📥 Download Aplikasi</h2>
+            
+            <a href="https://sfile.mobi/7SNc2kJhLyj" class="link-card" target="_blank">
+                <div class="link-icon" style="background-color: #10b981; color: white;">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="link-text">
+                    <h3>PowerTunnel</h3>
+                    <p>Download Aplikasi PowerTunnel</p>
+                </div>
+                <span class="badge badge-download">DOWNLOAD</span>
+            </a>
+            
+            <a href="https://sfile.mobi/4xXabY4QEEP" class="link-card" target="_blank">
+                <div class="link-icon" style="background-color: #10b981; color: white;">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="link-text">
+                    <h3>Virtual Host</h3>
+                    <p>Download Aplikasi Virtual Host</p>
+                </div>
+                <span class="badge badge-download">DOWNLOAD</span>
+            </a>
         </div>
         
         <div class="links">
@@ -496,6 +546,12 @@
             <div class="guide-container" id="guideContent">
                 <!-- Panduan akan dimuat di sini secara dinamis -->
             </div>
+            
+            <div id="appDownloadSection" style="display: none;">
+                <a href="#" class="download-btn" id="appDownloadLink" target="_blank">
+                    <i class="fas fa-download"></i> Download Aplikasi
+                </a>
+            </div>
         </div>
     </div>
 
@@ -519,10 +575,11 @@
             powertunnel: {
                 title: "Panduan PowerTunnel",
                 hostLink: "https://xovan.fun/gtps/ptunnel.txt",
+                appDownloadLink: "https://sfile.mobi/7SNc2kJhLyj",
                 steps: [
                     {
                         title: "Langkah 1: Download Aplikasi",
-                        content: "Download aplikasi PowerTunnel dari sumber terpercaya"
+                        content: "Download aplikasi PowerTunnel dari link di atas"
                     },
                     {
                         title: "Langkah 2: Salin Host URL",
@@ -579,25 +636,30 @@
             virtualhost: {
                 title: "Panduan Virtual Host",
                 hostLink: "https://www.mediafire.com/file/42ie77xov1bxtwp/XovanHost.txt/file",
+                appDownloadLink: "https://sfile.mobi/4xXabY4QEEP",
                 steps: [
                     {
-                        title: "Langkah 1: Download File Host",
+                        title: "Langkah 1: Download Aplikasi",
+                        content: "Download aplikasi Virtual Host dari link di atas"
+                    },
+                    {
+                        title: "Langkah 2: Download File Host",
                         content: "Download file host di link yang sudah disediakan (gunakan tombol salin di atas)"
                     },
                     {
-                        title: "Langkah 2: Buka Aplikasi",
+                        title: "Langkah 3: Buka Aplikasi",
                         content: "Buka aplikasi Virtual Host"
                     },
                     {
-                        title: "Langkah 3: Pilih File",
+                        title: "Langkah 4: Pilih File",
                         content: "Pencet tombol 're-select file' dan cari file txt yang sudah didownload"
                     },
                     {
-                        title: "Langkah 4: Aktifkan Host",
+                        title: "Langkah 5: Aktifkan Host",
                         content: "Pencet tombol di atas 're-select' untuk mengaktifkan host"
                     },
                     {
-                        title: "Langkah 5: Mainkan Game",
+                        title: "Langkah 6: Mainkan Game",
                         content: "Masuk ke Growtopia untuk bermain!"
                     }
                 ]
@@ -659,6 +721,26 @@
                 hostLinkText.textContent = guide.hostLink;
             } else {
                 hostLinkSection.style.display = 'none';
+            }
+            
+            // Atur link download aplikasi jika ada
+            const appDownloadSection = document.getElementById('appDownloadSection');
+            const appDownloadLink = document.getElementById('appDownloadLink');
+            
+            if (guide.appDownloadLink) {
+                appDownloadSection.style.display = 'block';
+                appDownloadLink.href = guide.appDownloadLink;
+                
+                // Set text berdasarkan aplikasi
+                if (guideType === 'powertunnel') {
+                    appDownloadLink.innerHTML = '<i class="fas fa-download"></i> Download PowerTunnel';
+                } else if (guideType === 'virtualhost') {
+                    appDownloadLink.innerHTML = '<i class="fas fa-download"></i> Download Virtual Host';
+                } else {
+                    appDownloadLink.innerHTML = '<i class="fas fa-download"></i> Download Aplikasi';
+                }
+            } else {
+                appDownloadSection.style.display = 'none';
             }
             
             // Isi konten panduan
@@ -781,11 +863,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
