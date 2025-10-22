@@ -375,6 +375,46 @@
         .download-btn:hover {
             background-color: #059669;
         }
+        
+        /* Video Tutorial Styles */
+        .video-tutorial {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .video-tutorial h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 16px;
+        }
+        
+        .video-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        
+        .video-note {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .tutorial-credit {
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -439,12 +479,12 @@
         <div class="links">
             <h2 class="section-title">📱 Download GrowXovan</h2>
             
-            <a href="https://pixeldrain.com/u/J6zbptLS" class="link-card" target="_blank">
+            <a href="https://www.mediafire.com/file/67fa8qbz9jff4tt/GrowXovan.apk/file" class="link-card" target="_blank">
                 <div class="link-icon" style="background-color: #f59e0b; color: white;">
                     <i class="fas fa-gamepad"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Download APK</h3>
+                    <h3>GrowXovan APK</h3>
                     <p>Aplikasi Growtopia langsung main tanpa host!</p>
                 </div>
                 <span class="badge badge-direct">DIRECT</span>
@@ -564,6 +604,18 @@
                 <span class="copied" id="guideCopiedNotification">Tersalin!</span>
             </div>
             
+            <div id="videoTutorialSection" style="display: none;">
+                <div class="tutorial-credit">Tutorial by Valz</div>
+                <div class="video-tutorial">
+                    <div class="video-container">
+                        <video id="tutorialVideo" controls>
+                            <source src="" type="video/mp4">
+                            Browser Anda tidak mendukung pemutar video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+            
             <div class="guide-container" id="guideContent">
                 <!-- Panduan akan dimuat di sini secara dinamis -->
             </div>
@@ -586,7 +638,7 @@
         </div>
         <audio id="bgMusic" loop>
             <!-- Replace with your actual audio file -->
-            <source src="https://cdn.discordapp.com/attachments/1364895640345247811/1429261422814035988/SnapTik.Net_7544896398378995000.mp3.m4a?ex=68f57eed&is=68f42d6d&hm=7ca6c8fe3e5a3b504451caa487592e38548edd9307a21b6cd5fe1ae82afd7616&" type="audio/mpeg">
+            <source src="https://cdn.discordapp.com/attachments/1217392524621119490/1408374654493523979/Kingdom_Dance_From_Tangled_Score_-_Alan_Menken.mp3?ex=68a9829b&is=68a8311b&hm=40a7d48a532956f5f80059f03f962c223098136cbab39c57ec0994e1dd505cd3&" type="audio/mpeg">
         </audio>
     </div>
     
@@ -658,32 +710,8 @@
                 title: "Panduan Virtual Host",
                 hostLink: "https://www.mediafire.com/file/42ie77xov1bxtwp/XovanHost.txt/file",
                 appDownloadLink: "https://sfile.mobi/4xXabY4QEEP",
-                steps: [
-                    {
-                        title: "Langkah 1: Download Aplikasi",
-                        content: "Download aplikasi Virtual Host dari link di atas"
-                    },
-                    {
-                        title: "Langkah 2: Download File Host",
-                        content: "Download file host di link yang sudah disediakan (gunakan tombol salin di atas)"
-                    },
-                    {
-                        title: "Langkah 3: Buka Aplikasi",
-                        content: "Buka aplikasi Virtual Host"
-                    },
-                    {
-                        title: "Langkah 4: Pilih File",
-                        content: "Pencet tombol 're-select file' dan cari file txt yang sudah didownload"
-                    },
-                    {
-                        title: "Langkah 5: Aktifkan Host",
-                        content: "Pencet tombol di atas 're-select' untuk mengaktifkan host"
-                    },
-                    {
-                        title: "Langkah 6: Mainkan Game",
-                        content: "Masuk ke Growtopia untuk bermain!"
-                    }
-                ]
+                videoTutorial: "https://files.catbox.moe/bdanii.mp4",
+                steps: [] // Dikosongkan karena menggunakan video
             },
             windows: {
                 title: "Panduan Windows Host",
@@ -744,6 +772,17 @@
                 hostLinkSection.style.display = 'none';
             }
             
+            // Atur video tutorial jika ada
+            const videoTutorialSection = document.getElementById('videoTutorialSection');
+            const tutorialVideo = document.getElementById('tutorialVideo');
+            
+            if (guide.videoTutorial) {
+                videoTutorialSection.style.display = 'block';
+                tutorialVideo.src = guide.videoTutorial;
+            } else {
+                videoTutorialSection.style.display = 'none';
+            }
+            
             // Atur link download aplikasi jika ada
             const appDownloadSection = document.getElementById('appDownloadSection');
             const appDownloadLink = document.getElementById('appDownloadLink');
@@ -768,20 +807,23 @@
             const guideContent = document.getElementById('guideContent');
             guideContent.innerHTML = '';
             
-            guide.steps.forEach((step, index) => {
-                const stepElement = document.createElement('div');
-                stepElement.className = 'guide-step';
-                
-                let stepHTML = `<h4>${step.title}</h4>`;
-                stepHTML += `<p>${step.content}</p>`;
-                
-                if (step.code) {
-                    stepHTML += `<pre class="host-block">${step.code}</pre>`;
-                }
-                
-                stepElement.innerHTML = stepHTML;
-                guideContent.appendChild(stepElement);
-            });
+            // Tampilkan steps hanya jika tidak ada video tutorial
+            if (!guide.videoTutorial && guide.steps && guide.steps.length > 0) {
+                guide.steps.forEach((step, index) => {
+                    const stepElement = document.createElement('div');
+                    stepElement.className = 'guide-step';
+                    
+                    let stepHTML = `<h4>${step.title}</h4>`;
+                    stepHTML += `<p>${step.content}</p>`;
+                    
+                    if (step.code) {
+                        stepHTML += `<pre class="host-block">${step.code}</pre>`;
+                    }
+                    
+                    stepElement.innerHTML = stepHTML;
+                    guideContent.appendChild(stepElement);
+                });
+            }
             
             document.getElementById('guideModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -884,4 +926,3 @@
     </script>
 </body>
 </html>
-
