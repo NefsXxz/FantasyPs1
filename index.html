@@ -463,6 +463,18 @@
                 <span class="badge">LINK</span>
             </div>
             
+            <!-- iOS Host Card -->
+            <div class="link-card" onclick="showGuideModal('ios')">
+                <div class="link-icon">
+                    <i class="fab fa-apple"></i>
+                </div>
+                <div class="link-text">
+                    <h3>iOS Host</h3>
+                    <p>Click For Host and Guide!</p>
+                </div>
+                <span class="badge">LINK</span>
+            </div>
+            
             <div class="link-card" onclick="showGuideModal('windows')">
                 <div class="link-icon">
                     <i class="fab fa-microsoft"></i>
@@ -713,6 +725,40 @@
                 videoTutorial: "https://files.catbox.moe/bdanii.mp4",
                 steps: [] // Dikosongkan karena menggunakan video
             },
+            ios: {
+                title: "Panduan iOS Host",
+                hostLink: "https://gtpshost.com/ios/EldoriaPS-GH",
+                steps: [
+                    {
+                        title: "Langkah 1: Download Aplikasi Surge 5",
+                        content: "Download aplikasi 'Surge 5' dari App Store"
+                    },
+                    {
+                        title: "Langkah 2: Buka Aplikasi",
+                        content: "Buka aplikasi Surge 5 dan tekan 'OK'"
+                    },
+                    {
+                        title: "Langkah 3: Pilih Default.conf",
+                        content: "Klik pada 'Default.conf'"
+                    },
+                    {
+                        title: "Langkah 4: Import Profile",
+                        content: "Klik 'IMPORT' > 'Download Profile from URL'"
+                    },
+                    {
+                        title: "Langkah 5: Tempel URL Host",
+                        content: "Tempel URL yang telah disalin ketika menekan tombol iOS host di atas, lalu klik 'OK' dan 'Done'"
+                    },
+                    {
+                        title: "Langkah 6: Setup VPN",
+                        content: "Tekan 'SETUP', setujui kebijakan, lalu klik 'OK' dan 'Allow' untuk konfigurasi VPN"
+                    },
+                    {
+                        title: "Langkah 7: Selesai!",
+                        content: "Sekarang buka Growtopia dan nikmati server Eldoria!"
+                    }
+                ]
+            },
             windows: {
                 title: "Panduan Windows Host",
                 hostLink: "",
@@ -926,5 +972,3 @@
     </script>
 </body>
 </html>
-
-
