@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eldoria Virtual Host | Linktree</title>
     <style>
+        /* Semua CSS yang sama seperti sebelumnya */
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
@@ -25,6 +26,8 @@
             color: var(--dark);
             line-height: 1.6;
             padding: 20px;
+            background-image: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
         }
         
         .container {
@@ -35,6 +38,7 @@
         .profile {
             text-align: center;
             margin-bottom: 30px;
+            position: relative;
         }
         
         .profile-img {
@@ -45,12 +49,18 @@
             border: 4px solid white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.05);
         }
         
         .profile h1 {
             font-size: 24px;
             margin-bottom: 5px;
             color: var(--dark);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         
         .profile p {
@@ -78,6 +88,23 @@
             transition: all 0.3s;
             border: 1px solid #e2e8f0;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .link-card:hover::before {
+            left: 100%;
         }
         
         .link-card:hover {
@@ -96,6 +123,11 @@
             justify-content: center;
             color: var(--primary);
             font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .link-card:hover .link-icon {
+            transform: scale(1.1);
         }
         
         .link-text {
@@ -119,6 +151,11 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .link-card:hover .badge {
+            transform: scale(1.05);
         }
         
         .badge-download {
@@ -135,6 +172,19 @@
             margin: 25px 0 15px;
             padding-left: 10px;
             color: var(--dark);
+            position: relative;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 2px;
         }
         
         .social-links {
@@ -184,18 +234,20 @@
             z-index: 100;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
         
         .modal-content {
             background-color: white;
             border-radius: 12px;
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             max-height: 80vh;
             overflow-y: auto;
             padding: 20px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             animation: modalFadeIn 0.3s;
+            position: relative;
         }
         
         @keyframes modalFadeIn {
@@ -208,6 +260,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
         }
         
         .modal-header h2 {
@@ -221,6 +275,11 @@
             font-size: 24px;
             cursor: pointer;
             color: var(--gray);
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
         }
         
         .host-info {
@@ -230,6 +289,11 @@
             margin-bottom: 15px;
             border: 1px solid #e2e8f0;
             position: relative;
+            transition: all 0.3s;
+        }
+        
+        .host-info:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
         }
         
         .host-block {
@@ -242,6 +306,11 @@
             font-size: 14px;
             white-space: pre-wrap;
             word-break: break-all;
+            transition: all 0.3s;
+        }
+        
+        .host-block:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
         }
         
         .host-info p {
@@ -294,6 +363,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .music-player:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
         }
         
         .music-control {
@@ -308,10 +383,12 @@
             cursor: pointer;
             border: none;
             outline: none;
+            transition: all 0.3s;
         }
         
         .music-control:hover {
             background: var(--primary-dark);
+            transform: scale(1.05);
         }
         
         .music-info {
@@ -334,8 +411,14 @@
         
         .guide-step {
             margin-bottom: 15px;
-            padding-left: 5px;
+            padding-left: 15px;
             border-left: 3px solid var(--primary);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .guide-step:hover {
+            border-left-color: var(--primary-dark);
         }
         
         .guide-step h4 {
@@ -376,29 +459,102 @@
             background-color: #059669;
         }
         
+        /* Language Toggle */
+        .language-toggle {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 99;
+            background: white;
+            border-radius: 50px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .language-toggle:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .language-flag {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .language-text {
+            font-size: 14px;
+            font-weight: 600;
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.3s;
+        }
+        
+        .language-toggle:hover .language-text {
+            max-width: 100px;
+            padding-right: 5px;
+        }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
         /* Video Tutorial Styles */
         .video-tutorial {
-            margin: 15px 0;
+            margin-bottom: 20px;
             text-align: center;
         }
         
         .video-tutorial h3 {
             margin-bottom: 10px;
-            color: var(--dark);
+            color: var(--primary);
             font-size: 16px;
         }
         
         .video-container {
+            position: relative;
             width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin-bottom: 15px;
             border-radius: 8px;
             overflow: hidden;
-            margin-bottom: 15px;
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         
-        .video-container video {
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            display: block;
+            height: 100%;
+            border: none;
         }
         
         .video-note {
@@ -408,12 +564,13 @@
             font-style: italic;
         }
         
-        .tutorial-credit {
-            text-align: center;
-            font-size: 14px;
-            color: var(--gray);
-            margin-bottom: 15px;
-            font-style: italic;
+        .text-guide-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+            color: var(--dark);
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -423,22 +580,22 @@
     <div class="container">
         <div class="profile">
             <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" class="profile-img">
-            <h1>Eldoria Private Server</h1>
-            <p>Growtopia Private Server</p>
+            <h1 id="profile-title">Eldoria Private Server</h1>
+            <p id="profile-subtitle">Growtopia Private Server</p>
         </div>
         
         <div class="links">
-            <h2 class="section-title">🚀 Eldoria Host</h2>
+            <h2 class="section-title" id="section-host">🚀 Eldoria Host</h2>
             
             <div class="link-card" onclick="showGuideModal('powertunnel')">
                 <div class="link-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
                 <div class="link-text">
-                    <h3>PowerTunnel Host</h3>
-                    <p>Click For Host and Guide!</p>
+                    <h3 id="powertunnel-title">PowerTunnel Host</h3>
+                    <p id="powertunnel-desc">Click For Host and Guide!</p>
                 </div>
-                <span class="badge">LINK</span>
+                <span class="badge" id="powertunnel-badge">LINK</span>
             </div>
             
             <div class="link-card" onclick="showGuideModal('hostsgo')">
@@ -446,10 +603,10 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Host GO</h3>
-                    <p>Click For Host and Guide!</p>
+                    <h3 id="hostsgo-title">Host GO</h3>
+                    <p id="hostsgo-desc">Click For Host and Guide!</p>
                 </div>
-                <span class="badge">LINK</span>
+                <span class="badge" id="hostsgo-badge">LINK</span>
             </div>
             
             <div class="link-card" onclick="showGuideModal('virtualhost')">
@@ -457,10 +614,10 @@
                     <i class="fas fa-server"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Virtual Host</h3>
-                    <p>Click For Host and Guide!</p>
+                    <h3 id="virtualhost-title">Virtual Host</h3>
+                    <p id="virtualhost-desc">Click For Host and Guide!</p>
                 </div>
-                <span class="badge">LINK</span>
+                <span class="badge" id="virtualhost-badge">LINK</span>
             </div>
             
             <!-- iOS Host Card -->
@@ -469,10 +626,10 @@
                     <i class="fab fa-apple"></i>
                 </div>
                 <div class="link-text">
-                    <h3>iOS Host</h3>
-                    <p>Click For Host and Guide!</p>
+                    <h3 id="ios-title">iOS Host</h3>
+                    <p id="ios-desc">Click For Host and Guide!</p>
                 </div>
-                <span class="badge">LINK</span>
+                <span class="badge" id="ios-badge">LINK</span>
             </div>
             
             <div class="link-card" onclick="showGuideModal('windows')">
@@ -480,42 +637,42 @@
                     <i class="fab fa-microsoft"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Windows Host</h3>
-                    <p>Click For Host and Guide!</p>
+                    <h3 id="windows-title">Windows Host</h3>
+                    <p id="windows-desc">Click For Host and Guide!</p>
                 </div>
-                <span class="badge">LINK</span>
+                <span class="badge" id="windows-badge">LINK</span>
             </div>
         </div>
         
         <!-- Section Download Eldoria Apk -->
         <div class="links">
-            <h2 class="section-title">📱 Download Eldoria Apk</h2>
+            <h2 class="section-title" id="section-download">📱 Download Eldoria Apk</h2>
             
-            <a href="https://pixeldrain.com/u/J6zbptLS" class="link-card" target="_blank">
+            <a href="https://qu.ax/HTxRx.jpg" class="link-card" target="_blank">
                 <div class="link-icon" style="background-color: #f59e0b; color: white;">
                     <i class="fas fa-gamepad"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Eldoria APK</h3>
-                    <p>Aplikasi Growtopia langsung main tanpa host!</p>
+                    <h3 id="apk-title">Eldoria APK</h3>
+                    <p id="apk-desc">Aplikasi Growtopia langsung main tanpa host!</p>
                 </div>
-                <span class="badge badge-direct">DIRECT</span>
+                <span class="badge badge-direct" id="apk-badge">DIRECT</span>
             </a>
         </div>
         
         <!-- Section Aplikasi Untuk Bermain -->
         <div class="links">
-            <h2 class="section-title">🎮 Aplikasi Untuk Bermain</h2>
+            <h2 class="section-title" id="section-apps">🎮 Aplikasi Untuk Bermain</h2>
             
             <a href="https://sfile.mobi/7SNc2kJhLyj" class="link-card" target="_blank">
                 <div class="link-icon" style="background-color: #10b981; color: white;">
                     <i class="fas fa-bolt"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Powertunnel</h3>
-                    <p>Download Aplikasi Powertunnel</p>
+                    <h3 id="app-pt-title">Powertunnel</h3>
+                    <p id="app-pt-desc">Download Aplikasi Powertunnel</p>
                 </div>
-                <span class="badge badge-download">DOWNLOAD</span>
+                <span class="badge badge-download" id="app-pt-badge">DOWNLOAD</span>
             </a>
             
             <a href="https://sfile.mobi/4xXabY4QEEP" class="link-card" target="_blank">
@@ -523,23 +680,23 @@
                     <i class="fas fa-server"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Virtual Host</h3>
-                    <p>Download Aplikasi Virtual Host</p>
+                    <h3 id="app-vh-title">Virtual Host</h3>
+                    <p id="app-vh-desc">Download Aplikasi Virtual Host</p>
                 </div>
-                <span class="badge badge-download">DOWNLOAD</span>
+                <span class="badge badge-download" id="app-vh-badge">DOWNLOAD</span>
             </a>
         </div>
         
         <div class="links">
-            <h2 class="section-title">📱 Join Grup Kami</h2>
+            <h2 class="section-title" id="section-join">📱 Join Grup Kami</h2>
             
             <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" class="link-card">
                 <div class="link-icon" style="background-color: #25D366; color: white;">
                     <i class="fab fa-whatsapp"></i>
                 </div>
                 <div class="link-text">
-                    <h3>WhatsApp Group</h3>
-                    <p>Grup diskusi & support WhatsApp</p>
+                    <h3 id="wa-title">WhatsApp Group</h3>
+                    <p id="wa-desc">Grup diskusi & support WhatsApp</p>
                 </div>
             </a>
             
@@ -548,8 +705,8 @@
                     <i class="fab fa-discord"></i>
                 </div>
                 <div class="link-text">
-                    <h3>Discord Server</h3>
-                    <p>Komunitas Discord Eldoria Ps!</p>
+                    <h3 id="discord-title">Discord Server</h3>
+                    <p id="discord-desc">Komunitas Discord Eldoria Ps!</p>
                 </div>
             </a>
         </div>
@@ -562,7 +719,7 @@
         </div>
         
         <footer>
-            <p>© 2025 Eldoria Ps. All rights reserved.</p>
+            <p id="footer-text">© 2025 Eldoria Ps. All rights reserved.</p>
         </footer>
     </div>
     
@@ -576,7 +733,7 @@
             
             <div class="host-info">
                 <p id="hostLinkText">https://example.com/host</p>
-                <button class="copy-btn" onclick="copyHostLink()">Salin</button>
+                <button class="copy-btn" id="copy-host-btn" onclick="copyHostLink()">Salin</button>
                 <span class="copied" id="copiedNotification">Tersalin!</span>
             </div>
         </div>
@@ -586,7 +743,7 @@
     <div class="modal" id="windowsHostModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Windows Host Links</h2>
+                <h2 id="windows-modal-title">Windows Host Links</h2>
                 <button class="close-modal" onclick="closeWindowsModal()">&times;</button>
             </div>
             
@@ -597,7 +754,7 @@
 5.175.246.31 www.growtopia2.com
             </div>
             
-            <button class="copy-btn" onclick="copyWindowsHostBlock()">Salin Semua</button>
+            <button class="copy-btn" id="copy-windows-btn" onclick="copyWindowsHostBlock()">Salin Semua</button>
         </div>
     </div>
     
@@ -609,31 +766,34 @@
                 <button class="close-modal" onclick="closeGuideModal()">&times;</button>
             </div>
             
-            <div class="host-info" id="guideHostLinkSection">
-                <p id="guideHostLinkText"></p>
-                <button class="copy-btn" onclick="copyGuideHostLink()">Salin Host URL</button>
-                <span class="copied" id="guideCopiedNotification">Tersalin!</span>
-            </div>
-            
+            <!-- Video Tutorial Section -->
             <div id="videoTutorialSection" style="display: none;">
-                <div class="tutorial-credit">Tutorial by Valz</div>
                 <div class="video-tutorial">
-                    <div class="video-container">
-                        <video id="tutorialVideo" controls>
-                            <source src="" type="video/mp4">
-                            Browser Anda tidak mendukung pemutar video.
-                        </video>
+                    <h3 id="videoTitle">Video Tutorial</h3>
+                    <div class="video-container" id="videoContainer">
+                        <!-- Video akan dimuat di sini secara dinamis -->
                     </div>
+                    <p class="video-note" id="videoNote">Tonton video di atas untuk panduan visual, atau lihat panduan teks di bawah jika koneksi internet lambat</p>
                 </div>
             </div>
             
-            <div class="guide-container" id="guideContent">
-                <!-- Panduan akan dimuat di sini secara dinamis -->
+            <div class="host-info" id="guideHostLinkSection">
+                <p id="guideHostLinkText"></p>
+                <button class="copy-btn" id="copy-guide-btn" onclick="copyGuideHostLink()">Salin Host URL</button>
+                <span class="copied" id="guideCopiedNotification">Tersalin!</span>
+            </div>
+            
+            <!-- Text Guide Section -->
+            <div id="textGuideSection">
+                <h3 class="text-guide-title" id="textGuideTitle">Panduan Teks</h3>
+                <div class="guide-container" id="guideContent">
+                    <!-- Panduan akan dimuat di sini secara dinamis -->
+                </div>
             </div>
             
             <div id="appDownloadSection" style="display: none;">
                 <a href="#" class="download-btn" id="appDownloadLink" target="_blank">
-                    <i class="fas fa-download"></i> Download Aplikasi
+                    <i class="fas fa-download"></i> <span id="download-app-text">Download Aplikasi</span>
                 </a>
             </div>
         </div>
@@ -644,7 +804,7 @@
         <button class="music-control" id="musicToggle">
             <i class="fas fa-play" id="musicIcon"></i>
         </button>
-        <div class="music-info">
+        <div class="music-info" id="music-info">
             Background Music
         </div>
         <audio id="bgMusic" loop>
@@ -653,138 +813,537 @@
         </audio>
     </div>
     
+    <!-- Language Toggle -->
+    <div class="language-toggle" id="languageToggle">
+        <div class="language-flag" id="languageFlag">🇮🇩</div>
+        <div class="language-text" id="languageText">ID</div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationText">Berhasil disalin!</span>
+    </div>
+    
     <script>
-        // Panduan penggunaan
+        // Language configuration
+        const translations = {
+            id: {
+                // Profile
+                'profile-title': 'Eldoria Private Server',
+                'profile-subtitle': 'Growtopia Private Server',
+                
+                // Sections
+                'section-host': '🚀 Eldoria Host',
+                'section-download': '📱 Download Eldoria Apk',
+                'section-apps': '🎮 Aplikasi Untuk Bermain',
+                'section-join': '📱 Join Grup Kami',
+                
+                // Host Cards
+                'powertunnel-title': 'PowerTunnel Host',
+                'powertunnel-desc': 'Klik Untuk Host dan Panduan!',
+                'powertunnel-badge': 'LINK',
+                
+                'hostsgo-title': 'Host GO',
+                'hostsgo-desc': 'Klik Untuk Host dan Panduan!',
+                'hostsgo-badge': 'LINK',
+                
+                'virtualhost-title': 'Virtual Host',
+                'virtualhost-desc': 'Klik Untuk Host dan Panduan!',
+                'virtualhost-badge': 'LINK',
+                
+                'ios-title': 'iOS Host',
+                'ios-desc': 'Klik Untuk Host dan Panduan!',
+                'ios-badge': 'LINK',
+                
+                'windows-title': 'Windows Host',
+                'windows-desc': 'Klik Untuk Host dan Panduan!',
+                'windows-badge': 'LINK',
+                
+                // Download Section
+                'apk-title': 'Eldoria APK',
+                'apk-desc': 'Aplikasi Growtopia langsung main tanpa host!',
+                'apk-badge': 'DIRECT',
+                
+                // Apps Section
+                'app-pt-title': 'Powertunnel',
+                'app-pt-desc': 'Download Aplikasi Powertunnel',
+                'app-pt-badge': 'DOWNLOAD',
+                
+                'app-vh-title': 'Virtual Host',
+                'app-vh-desc': 'Download Aplikasi Virtual Host',
+                'app-vh-badge': 'DOWNLOAD',
+                
+                // Join Section
+                'wa-title': 'WhatsApp Group',
+                'wa-desc': 'Grup diskusi & support WhatsApp',
+                
+                'discord-title': 'Discord Server',
+                'discord-desc': 'Komunitas Discord Eldoria Ps!',
+                
+                // Footer
+                'footer-text': '© 2025 Eldoria Ps. All rights reserved.',
+                
+                // Modal Texts
+                'modalHostTitle': 'Host Link',
+                'copy-host-btn': 'Salin',
+                'copiedNotification': 'Tersalin!',
+                
+                'windows-modal-title': 'Windows Host Links',
+                'copy-windows-btn': 'Salin Semua',
+                
+                'guideModalTitle': 'Panduan Penggunaan',
+                'copy-guide-btn': 'Salin Host URL',
+                'guideCopiedNotification': 'Tersalin!',
+                'download-app-text': 'Download Aplikasi',
+                
+                // Music Player
+                'music-info': 'Background Music',
+                
+                // Video Tutorial
+                'videoTitle': 'Video Tutorial',
+                'videoNote': 'Tonton video di atas untuk panduan visual, atau lihat panduan teks di bawah jika koneksi internet lambat',
+                'textGuideTitle': 'Panduan Teks',
+                
+                // Notifications
+                'notification-copied': 'Berhasil disalin!',
+                'notification-copy-failed': 'Gagal menyalin, coba lagi',
+                'notification-audio-failed': 'Silakan klik lagi untuk memutar musik',
+                'notification-language-changed': 'Bahasa diubah ke Indonesia'
+            },
+            en: {
+                // Profile
+                'profile-title': 'Eldoria Private Server',
+                'profile-subtitle': 'Growtopia Private Server',
+                
+                // Sections
+                'section-host': '🚀 Eldoria Host',
+                'section-download': '📱 Download Eldoria Apk',
+                'section-apps': '🎮 Apps to Play',
+                'section-join': '📱 Join Our Groups',
+                
+                // Host Cards
+                'powertunnel-title': 'PowerTunnel Host',
+                'powertunnel-desc': 'Click For Host and Guide!',
+                'powertunnel-badge': 'LINK',
+                
+                'hostsgo-title': 'Host GO',
+                'hostsgo-desc': 'Click For Host and Guide!',
+                'hostsgo-badge': 'LINK',
+                
+                'virtualhost-title': 'Virtual Host',
+                'virtualhost-desc': 'Click For Host and Guide!',
+                'virtualhost-badge': 'LINK',
+                
+                'ios-title': 'iOS Host',
+                'ios-desc': 'Click For Host and Guide!',
+                'ios-badge': 'LINK',
+                
+                'windows-title': 'Windows Host',
+                'windows-desc': 'Click For Host and Guide!',
+                'windows-badge': 'LINK',
+                
+                // Download Section
+                'apk-title': 'Eldoria APK',
+                'apk-desc': 'Growtopia app to play directly without host!',
+                'apk-badge': 'DIRECT',
+                
+                // Apps Section
+                'app-pt-title': 'Powertunnel',
+                'app-pt-desc': 'Download Powertunnel App',
+                'app-pt-badge': 'DOWNLOAD',
+                
+                'app-vh-title': 'Virtual Host',
+                'app-vh-desc': 'Download Virtual Host App',
+                'app-vh-badge': 'DOWNLOAD',
+                
+                // Join Section
+                'wa-title': 'WhatsApp Group',
+                'wa-desc': 'Discussion & support WhatsApp group',
+                
+                'discord-title': 'Discord Server',
+                'discord-desc': 'Eldoria Ps Discord Community!',
+                
+                // Footer
+                'footer-text': '© 2025 Eldoria Ps. All rights reserved.',
+                
+                // Modal Texts
+                'modalHostTitle': 'Host Link',
+                'copy-host-btn': 'Copy',
+                'copiedNotification': 'Copied!',
+                
+                'windows-modal-title': 'Windows Host Links',
+                'copy-windows-btn': 'Copy All',
+                
+                'guideModalTitle': 'Usage Guide',
+                'copy-guide-btn': 'Copy Host URL',
+                'guideCopiedNotification': 'Copied!',
+                'download-app-text': 'Download App',
+                
+                // Music Player
+                'music-info': 'Background Music',
+                
+                // Video Tutorial - Remove video titles for English
+                'videoTitle': 'Video Tutorial',
+                'videoNote': 'Watch the video above for visual guide, or see text guide below if internet connection is slow',
+                'textGuideTitle': 'Text Guide',
+                
+                // Notifications
+                'notification-copied': 'Successfully copied!',
+                'notification-copy-failed': 'Failed to copy, try again',
+                'notification-audio-failed': 'Please click again to play music',
+                'notification-language-changed': 'Language changed to English'
+            }
+        };
+
+        // Panduan penggunaan dalam dua bahasa dengan link yang diperbarui
         const guides = {
             powertunnel: {
-                title: "Panduan PowerTunnel",
+                title: {
+                    id: "Panduan PowerTunnel",
+                    en: "PowerTunnel Guide"
+                },
                 hostLink: "https://xovan.fun/gtps/ptunnel.txt",
                 appDownloadLink: "https://sfile.mobi/7SNc2kJhLyj",
-                steps: [
-                    {
-                        title: "Langkah 1: Download Aplikasi",
-                        content: "Download aplikasi PowerTunnel dari link di atas"
-                    },
-                    {
-                        title: "Langkah 2: Salin Host URL",
-                        content: "Klik tombol 'Salin Host URL' di atas untuk menyalin host URL"
-                    },
-                    {
-                        title: "Langkah 3: Pengaturan Host",
-                        content: "Buka PowerTunnel, ketuk menu (☰), lalu pilih 'Host Settings'"
-                    },
-                    {
-                        title: "Langkah 4: Tempel URL",
-                        content: "Tempel URL yang disalin, lalu atur host update period menjadi 'on start'"
-                    },
-                    {
-                        title: "Langkah 5: Nikmati Server",
-                        content: "Buka Growtopia dan nikmati server pribadimu!"
-                    }
-                ]
+                videoUrl: "https://qu.ax/TAKnO.mp4",
+                steps: {
+                    id: [
+                        {
+                            title: "Langkah 1: Download Aplikasi",
+                            content: "Download aplikasi PowerTunnel dari link di atas"
+                        },
+                        {
+                            title: "Langkah 2: Salin Host URL",
+                            content: "Klik tombol 'Salin Host URL' di atas untuk menyalin host URL"
+                        },
+                        {
+                            title: "Langkah 3: Pengaturan Host",
+                            content: "Buka PowerTunnel, ketuk menu (☰), lalu pilih 'Host Settings'"
+                        },
+                        {
+                            title: "Langkah 4: Tempel URL",
+                            content: "Tempel URL yang disalin, lalu atur host update period menjadi 'on start'"
+                        },
+                        {
+                            title: "Langkah 5: Nikmati Server",
+                            content: "Buka Growtopia dan nikmati server pribadimu!"
+                        }
+                    ],
+                    en: [
+                        {
+                            title: "Step 1: Download App",
+                            content: "Download PowerTunnel app from the link above"
+                        },
+                        {
+                            title: "Step 2: Copy Host URL",
+                            content: "Click the 'Copy Host URL' button above to copy the host URL"
+                        },
+                        {
+                            title: "Step 3: Host Settings",
+                            content: "Open PowerTunnel, tap the menu (☰), then select 'Host Settings'"
+                        },
+                        {
+                            title: "Step 4: Paste URL",
+                            content: "Paste the copied URL, then set the host update period to 'on start'"
+                        },
+                        {
+                            title: "Step 5: Enjoy the Server",
+                            content: "Open Growtopia and enjoy your private server!"
+                        }
+                    ]
+                }
             },
             hostsgo: {
-                title: "Panduan Hosts Go",
+                title: {
+                    id: "Panduan Hosts Go",
+                    en: "Hosts Go Guide"
+                },
                 hostLink: "https://xovan.fun/gtps/ptunnel.txt",
-                steps: [
-                    {
-                        title: "Langkah 1: Download Aplikasi",
-                        content: "Unduh dan pasang Hosts Go di perangkat Anda"
-                    },
-                    {
-                        title: "Langkah 2: Buka Hosts Editor",
-                        content: "Buka aplikasi Host GO dan pilih 'Hosts Editor'"
-                    },
-                    {
-                        title: "Langkah 3: Download Hosts File",
-                        content: "Tap ⋮ (titik tiga) di pojok kanan atas, lalu pilih 'Download Hosts File'"
-                    },
-                    {
-                        title: "Langkah 4: Tempel URL",
-                        content: "Klik tombol 'Salin Host URL' di atas lalu tempelkan ke Hosts Go"
-                    },
-                    {
-                        title: "Langkah 5: Terapkan Host",
-                        content: "Pilih 'Download and Apply'"
-                    },
-                    {
-                        title: "Langkah 6: Mulai",
-                        content: "Kembali dan ketuk 'START'"
-                    },
-                    {
-                        title: "Langkah 7: Nikmati",
-                        content: "Buka Growtopia dan nikmati!"
-                    }
-                ]
+                steps: {
+                    id: [
+                        {
+                            title: "Langkah 1: Download Aplikasi",
+                            content: "Unduh dan pasang Hosts Go di perangkat Anda"
+                        },
+                        {
+                            title: "Langkah 2: Buka Hosts Editor",
+                            content: "Buka aplikasi Host GO dan pilih 'Hosts Editor'"
+                        },
+                        {
+                            title: "Langkah 3: Download Hosts File",
+                            content: "Tap ⋮ (titik tiga) di pojok kanan atas, lalu pilih 'Download Hosts File'"
+                        },
+                        {
+                            title: "Langkah 4: Tempel URL",
+                            content: "Klik tombol 'Salin Host URL' di atas lalu tempelkan ke Hosts Go"
+                        },
+                        {
+                            title: "Langkah 5: Terapkan Host",
+                            content: "Pilih 'Download and Apply'"
+                        },
+                        {
+                            title: "Langkah 6: Mulai",
+                            content: "Kembali dan ketuk 'START'"
+                        },
+                        {
+                            title: "Langkah 7: Nikmati",
+                            content: "Buka Growtopia dan nikmati!"
+                        }
+                    ],
+                    en: [
+                        {
+                            title: "Step 1: Download App",
+                            content: "Download and install Hosts Go on your device"
+                        },
+                        {
+                            title: "Step 2: Open Hosts Editor",
+                            content: "Open the Host GO app and select 'Hosts Editor'"
+                        },
+                        {
+                            title: "Step 3: Download Hosts File",
+                            content: "Tap ⋮ (three dots) in the top right corner, then select 'Download Hosts File'"
+                        },
+                        {
+                            title: "Step 4: Paste URL",
+                            content: "Click the 'Copy Host URL' button above then paste it to Hosts Go"
+                        },
+                        {
+                            title: "Step 5: Apply Host",
+                            content: "Select 'Download and Apply'"
+                        },
+                        {
+                            title: "Step 6: Start",
+                            content: "Go back and tap 'START'"
+                        },
+                        {
+                            title: "Step 7: Enjoy",
+                            content: "Open Growtopia and enjoy!"
+                        }
+                    ]
+                }
             },
             virtualhost: {
-                title: "Panduan Virtual Host",
+                title: {
+                    id: "Panduan Virtual Host",
+                    en: "Virtual Host Guide"
+                },
                 hostLink: "https://www.mediafire.com/file/42ie77xov1bxtwp/XovanHost.txt/file",
                 appDownloadLink: "https://sfile.mobi/4xXabY4QEEP",
-                videoTutorial: "https://files.catbox.moe/bdanii.mp4",
-                steps: [] // Dikosongkan karena menggunakan video
+                videoUrl: "https://files.catbox.moe/bdanii.mp4",
+                steps: {
+                    id: [
+                        {
+                            title: "Langkah 1: Download File Host",
+                            content: "Download file host di link yang sudah disediakan (gunakan tombol salin di atas)"
+                        },
+                        {
+                            title: "Langkah 2: Buka Aplikasi",
+                            content: "Buka aplikasi Virtual Host"
+                        },
+                        {
+                            title: "Langkah 3: Pilih File",
+                            content: "Pencet tombol 're-select file' dan cari file txt yang sudah didownload"
+                        },
+                        {
+                            title: "Langkah 4: Aktifkan Host",
+                            content: "Pencet tombol di atas 're-select' untuk mengaktifkan host"
+                        },
+                        {
+                            title: "Langkah 5: Mainkan Game",
+                            content: "Masuk ke Growtopia untuk bermain!"
+                        }
+                    ],
+                    en: [
+                        {
+                            title: "Step 1: Download Host File",
+                            content: "Download the host file from the provided link (use the copy button above)"
+                        },
+                        {
+                            title: "Step 2: Open App",
+                            content: "Open the Virtual Host app"
+                        },
+                        {
+                            title: "Step 3: Select File",
+                            content: "Press the 're-select file' button and find the downloaded txt file"
+                        },
+                        {
+                            title: "Step 4: Activate Host",
+                            content: "Press the button above 're-select' to activate the host"
+                        },
+                        {
+                            title: "Step 5: Play Game",
+                            content: "Enter Growtopia to play!"
+                        }
+                    ]
+                }
             },
             ios: {
-                title: "Panduan iOS Host",
+                title: {
+                    id: "Panduan iOS Host",
+                    en: "iOS Host Guide"
+                },
                 hostLink: "https://xovan.fun/gtps/iOS",
-                steps: [
-                    {
-                        title: "Langkah 1: Download Aplikasi Surge 5",
-                        content: "Download aplikasi 'Surge 5' dari App Store"
-                    },
-                    {
-                        title: "Langkah 2: Buka Aplikasi",
-                        content: "Buka aplikasi Surge 5 dan tekan 'OK'"
-                    },
-                    {
-                        title: "Langkah 3: Pilih Default.conf",
-                        content: "Klik pada 'Default.conf'"
-                    },
-                    {
-                        title: "Langkah 4: Import Profile",
-                        content: "Klik 'IMPORT' > 'Download Profile from URL'"
-                    },
-                    {
-                        title: "Langkah 5: Tempel URL Host",
-                        content: "Tempel URL yang telah disalin ketika menekan tombol iOS host di atas, lalu klik 'OK' dan 'Done'"
-                    },
-                    {
-                        title: "Langkah 6: Setup VPN",
-                        content: "Tekan 'SETUP', setujui kebijakan, lalu klik 'OK' dan 'Allow' untuk konfigurasi VPN"
-                    },
-                    {
-                        title: "Langkah 7: Selesai!",
-                        content: "Sekarang buka Growtopia dan nikmati server Eldoria!"
-                    }
-                ]
+                steps: {
+                    id: [
+                        {
+                            title: "Langkah 1: Download Aplikasi Surge 5",
+                            content: "Download aplikasi 'Surge 5' dari App Store"
+                        },
+                        {
+                            title: "Langkah 2: Buka Aplikasi",
+                            content: "Buka aplikasi Surge 5 dan tekan 'OK'"
+                        },
+                        {
+                            title: "Langkah 3: Pilih Default.conf",
+                            content: "Klik pada 'Default.conf'"
+                        },
+                        {
+                            title: "Langkah 4: Import Profile",
+                            content: "Klik 'IMPORT' > 'Download Profile from URL'"
+                        },
+                        {
+                            title: "Langkah 5: Tempel URL Host",
+                            content: "Tempel URL yang telah disalin ketika menekan tombol iOS host di atas, lalu klik 'OK' dan 'Done'"
+                        },
+                        {
+                            title: "Langkah 6: Setup VPN",
+                            content: "Tekan 'SETUP', setujui kebijakan, lalu klik 'OK' dan 'Allow' untuk konfigurasi VPN"
+                        },
+                        {
+                            title: "Langkah 7: Selesai!",
+                            content: "Sekarang buka Growtopia dan nikmati server Eldoria!"
+                        }
+                    ],
+                    en: [
+                        {
+                            title: "Step 1: Download Surge 5 App",
+                            content: "Download 'Surge 5' app from App Store"
+                        },
+                        {
+                            title: "Step 2: Open App",
+                            content: "Open Surge 5 app and press 'OK'"
+                        },
+                        {
+                            title: "Step 3: Select Default.conf",
+                            content: "Click on 'Default.conf'"
+                        },
+                        {
+                            title: "Step 4: Import Profile",
+                            content: "Click 'IMPORT' > 'Download Profile from URL'"
+                        },
+                        {
+                            title: "Step 5: Paste Host URL",
+                            content: "Paste the URL you copied when pressing the iOS host button above, then click 'OK' and 'Done'"
+                        },
+                        {
+                            title: "Step 6: Setup VPN",
+                            content: "Press 'SETUP', agree to the policy, then click 'OK' and 'Allow' for VPN configuration"
+                        },
+                        {
+                            title: "Step 7: Done!",
+                            content: "Now open Growtopia and enjoy Eldoria server!"
+                        }
+                    ]
+                }
             },
             windows: {
-                title: "Panduan Windows Host",
+                title: {
+                    id: "Panduan Windows Host",
+                    en: "Windows Host Guide"
+                },
                 hostLink: "",
-                steps: [
-                    {
-                        title: "Langkah 1: Buka File Hosts",
-                        content: "Tekan ⊞ Win + R untuk membuka jendela Run, lalu ketik C:\\Windows\\System32\\drivers\\etc dan tekan Enter"
-                    },
-                    {
-                        title: "Langkah 2: Edit File Hosts",
-                        content: "Cari dan klik kanan file 'hosts', lalu buka dengan Notepad (jalankan sebagai Administrator jika perlu)"
-                    },
-                    {
-                        title: "Langkah 3: Tambahkan Host",
-                        content: "Tambahkan IP & DOMAIN berikut ke bagian bawah file hosts:",
-                        code: `5.175.246.31 growtopia1.com
+                steps: {
+                    id: [
+                        {
+                            title: "Langkah 1: Buka File Hosts",
+                            content: "Tekan ⊞ Win + R untuk membuka jendela Run, lalu ketik C:\\Windows\\System32\\drivers\\etc dan tekan Enter"
+                        },
+                        {
+                            title: "Langkah 2: Edit File Hosts",
+                            content: "Cari dan klik kanan file 'hosts', lalu buka dengan Notepad (jalankan sebagai Administrator jika perlu)"
+                        },
+                        {
+                            title: "Langkah 3: Tambahkan Host",
+                            content: "Tambahkan IP & DOMAIN berikut ke bagian bawah file hosts:",
+                            code: `5.175.246.31 growtopia1.com
 5.175.246.31 growtopia2.com
 5.175.246.31 www.growtopia1.com
 5.175.246.31 www.growtopia2.com`
-                    },
-                    {
-                        title: "Langkah 4: Simpan Perubahan",
-                        content: "Simpan file lalu buka Growtopia untuk terhubung!"
-                    }
-                ]
+                        },
+                        {
+                            title: "Langkah 4: Simpan Perubahan",
+                            content: "Simpan file lalu buka Growtopia untuk terhubung!"
+                        }
+                    ],
+                    en: [
+                        {
+                            title: "Step 1: Open Hosts File",
+                            content: "Press ⊞ Win + R to open Run window, then type C:\\Windows\\System32\\drivers\\etc and press Enter"
+                        },
+                        {
+                            title: "Step 2: Edit Hosts File",
+                            content: "Find and right-click the 'hosts' file, then open with Notepad (run as Administrator if needed)"
+                        },
+                        {
+                            title: "Step 3: Add Host",
+                            content: "Add the following IP & DOMAIN to the bottom of the hosts file:",
+                            code: `5.175.246.31 growtopia1.com
+5.175.246.31 growtopia2.com
+5.175.246.31 www.growtopia1.com
+5.175.246.31 www.growtopia2.com`
+                        },
+                        {
+                            title: "Step 4: Save Changes",
+                            content: "Save the file then open Growtopia to connect!"
+                        }
+                    ]
+                }
             }
         };
+
+        // Current language state
+        let currentLanguage = 'id';
+
+        // Function to change language
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update all text elements
+            Object.keys(translations[lang]).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update language toggle
+            const languageFlag = document.getElementById('languageFlag');
+            const languageText = document.getElementById('languageText');
+            
+            if (lang === 'id') {
+                languageFlag.textContent = '🇮🇩';
+                languageText.textContent = 'ID';
+            } else {
+                languageFlag.textContent = '🇺🇸';
+                languageText.textContent = 'EN';
+            }
+            
+            // Show notification
+            showNotification(translations[lang]['notification-language-changed']);
+            
+            // If a guide modal is open, refresh it
+            if (document.getElementById('guideModal').style.display === 'flex') {
+                const currentGuide = document.getElementById('guideModalTitle').getAttribute('data-current-guide');
+                if (currentGuide) {
+                    showGuideModal(currentGuide);
+                }
+            }
+        }
+
+        // Language toggle event
+        document.getElementById('languageToggle').addEventListener('click', function() {
+            const newLang = currentLanguage === 'id' ? 'en' : 'id';
+            changeLanguage(newLang);
+        });
 
         // Modal functions
         function showHostModal(title, link) {
@@ -803,7 +1362,10 @@
             const guide = guides[guideType];
             if (!guide) return;
             
-            document.getElementById('guideModalTitle').textContent = guide.title;
+            // Store current guide type for language refresh
+            document.getElementById('guideModalTitle').setAttribute('data-current-guide', guideType);
+            
+            document.getElementById('guideModalTitle').textContent = guide.title[currentLanguage];
             
             // Atur host link jika ada
             const hostLinkSection = document.getElementById('guideHostLinkSection');
@@ -816,15 +1378,15 @@
                 hostLinkSection.style.display = 'none';
             }
             
-            // Atur video tutorial jika ada
-            const videoTutorialSection = document.getElementById('videoTutorialSection');
-            const tutorialVideo = document.getElementById('tutorialVideo');
+            // Atur video tutorial jika ada - HANYA untuk bahasa Indonesia
+            const videoSection = document.getElementById('videoTutorialSection');
+            const videoContainer = document.getElementById('videoContainer');
             
-            if (guide.videoTutorial) {
-                videoTutorialSection.style.display = 'block';
-                tutorialVideo.src = guide.videoTutorial;
+            if (guide.videoUrl && currentLanguage === 'id') {
+                videoSection.style.display = 'block';
+                videoContainer.innerHTML = `<iframe src="${guide.videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
-                videoTutorialSection.style.display = 'none';
+                videoSection.style.display = 'none';
             }
             
             // Atur link download aplikasi jika ada
@@ -837,11 +1399,11 @@
                 
                 // Set text berdasarkan aplikasi
                 if (guideType === 'powertunnel') {
-                    appDownloadLink.innerHTML = '<i class="fas fa-download"></i> Download PowerTunnel';
+                    appDownloadLink.innerHTML = `<i class="fas fa-download"></i> <span id="download-app-text">${translations[currentLanguage]['download-app-text']}</span>`;
                 } else if (guideType === 'virtualhost') {
-                    appDownloadLink.innerHTML = '<i class="fas fa-download"></i> Download Virtual Host';
+                    appDownloadLink.innerHTML = `<i class="fas fa-download"></i> <span id="download-app-text">${translations[currentLanguage]['download-app-text']}</span>`;
                 } else {
-                    appDownloadLink.innerHTML = '<i class="fas fa-download"></i> Download Aplikasi';
+                    appDownloadLink.innerHTML = `<i class="fas fa-download"></i> <span id="download-app-text">${translations[currentLanguage]['download-app-text']}</span>`;
                 }
             } else {
                 appDownloadSection.style.display = 'none';
@@ -851,9 +1413,9 @@
             const guideContent = document.getElementById('guideContent');
             guideContent.innerHTML = '';
             
-            // Tampilkan steps hanya jika tidak ada video tutorial
-            if (!guide.videoTutorial && guide.steps && guide.steps.length > 0) {
-                guide.steps.forEach((step, index) => {
+            // Tampilkan steps untuk semua aplikasi
+            if (guide.steps && guide.steps[currentLanguage].length > 0) {
+                guide.steps[currentLanguage].forEach((step, index) => {
                     const stepElement = document.createElement('div');
                     stepElement.className = 'guide-step';
                     
@@ -901,39 +1463,48 @@
             }
         }
         
-        // Copy host link function
+        // Copy host link function - FIXED
         function copyHostLink() {
             const textToCopy = document.getElementById('hostLinkText').textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
-                const copiedNotification = document.getElementById('copiedNotification');
-                copiedNotification.style.opacity = '1';
-                setTimeout(() => {
-                    copiedNotification.style.opacity = '0';
-                }, 2000);
+                showNotification(translations[currentLanguage]['notification-copied']);
+                showCopiedAnimation('copiedNotification');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification(translations[currentLanguage]['notification-copy-failed']);
             });
         }
         
-        // Copy guide host link
+        // Copy guide host link - FIXED
         function copyGuideHostLink() {
             const textToCopy = document.getElementById('guideHostLinkText').textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
-                const copiedNotification = document.getElementById('guideCopiedNotification');
-                copiedNotification.style.opacity = '1';
-                setTimeout(() => {
-                    copiedNotification.style.opacity = '0';
-                }, 2000);
+                showNotification(translations[currentLanguage]['notification-copied']);
+                showCopiedAnimation('guideCopiedNotification');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification(translations[currentLanguage]['notification-copy-failed']);
             });
         }
         
-        // Copy Windows host block
+        // Copy Windows host block - FIXED
         function copyWindowsHostBlock() {
             const textToCopy = document.getElementById('windowsHostBlock').textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
-                alert('Semua host Windows telah disalin!');
+                showNotification(translations[currentLanguage]['notification-copied']);
             }).catch(err => {
-                console.error('Gagal menyalin: ', err);
-                alert('Gagal menyalin, coba lagi');
+                console.error('Failed to copy: ', err);
+                showNotification(translations[currentLanguage]['notification-copy-failed']);
             });
+        }
+        
+        // Show copied animation
+        function showCopiedAnimation(elementId) {
+            const copiedElement = document.getElementById(elementId);
+            copiedElement.style.opacity = '1';
+            setTimeout(() => {
+                copiedElement.style.opacity = '0';
+            }, 2000);
         }
 
         // Music Player Functionality
@@ -952,7 +1523,7 @@
                     })
                     .catch(error => {
                         console.error("Audio playback failed:", error);
-                        alert('Silakan klik lagi untuk memutar musik (beberapa browser memerlukan interaksi pengguna)');
+                        showNotification(translations[currentLanguage]['notification-audio-failed']);
                     });
             } else {
                 bgMusic.pause();
@@ -962,13 +1533,28 @@
             }
         });
 
-        // Optional: Auto-play when user interacts with page
-        document.body.addEventListener('click', function firstInteraction() {
-            bgMusic.play().catch(e => console.log("Auto-play prevented"));
-            document.body.removeEventListener('click', firstInteraction);
+        // Notification System
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize language on load
+        document.addEventListener('DOMContentLoaded', function() {
+            changeLanguage('id');
+            
+            // Add event listeners for copy buttons
+            document.getElementById('copy-host-btn').addEventListener('click', copyHostLink);
+            document.getElementById('copy-guide-btn').addEventListener('click', copyGuideHostLink);
+            document.getElementById('copy-windows-btn').addEventListener('click', copyWindowsHostBlock);
         });
     </script>
 </body>
 </html>
-
-
