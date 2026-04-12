@@ -11,22 +11,25 @@
     <style>
         * { font-family: 'Inter', sans-serif; }
         body { background-color: #0b0f15; }
+        /* Smooth scroll & transitions */
         html { scroll-behavior: smooth; }
         .fade-in-section { opacity: 0; transform: translateY(15px); transition: opacity 0.7s ease, transform 0.7s ease; }
         .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        /* Carousel & glassmorphism */
         .glass-nav { background: rgba(10, 15, 25, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .card-glass { background: rgba(20, 30, 45, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); }
         .hero-logo { filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.3)); }
+        /* Loading screen */
         .loader { position: fixed; inset: 0; background: #0b0f15; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s; }
         .loader.fade-out { opacity: 0; pointer-events: none; }
+        /* Music player */
         .music-widget { transition: all 0.2s; }
+        /* Role accordion */
         .role-card { cursor: pointer; transition: all 0.2s; }
         .command-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
         .command-panel.open { max-height: 500px; }
         .role-card:hover { background: rgba(40, 55, 80, 0.7); }
         #mobileMenu a { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; }
-        /* Language toggle */
-        .lang-toggle { transition: all 0.2s; }
     </style>
 </head>
 <body class="text-gray-200 antialiased">
@@ -40,20 +43,14 @@
     </div>
 </div>
 
-<!-- BACKGROUND IMAGE -->
+<!-- BACKGROUND IMAGE (fixed) -->
 <div class="fixed inset-0 z-[-1]">
     <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-70">
     <div class="absolute inset-0 bg-black/50 backdrop-brightness-75"></div>
 </div>
 
-<!-- MUSIC PLAYER + LANGUAGE TOGGLE -->
+<!-- MUSIC PLAYER (pojok kanan bawah) -->
 <div class="fixed bottom-6 right-6 z-40 flex gap-3">
-    <!-- Language Toggle -->
-    <div id="langToggle" class="lang-toggle card-glass rounded-full px-4 py-2 flex items-center gap-2 shadow-xl cursor-pointer">
-        <span id="langFlag" class="text-xl">🇮🇩</span>
-        <span id="langText" class="text-xs font-medium text-white/80 hidden sm:inline">ID</span>
-    </div>
-    <!-- Music Player -->
     <div class="music-widget card-glass rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
         <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-indigo-600 hover:bg-indigo-500 flex items-center justify-center transition shadow-md">
             <i class="fas fa-play text-white text-sm"></i>
@@ -65,96 +62,99 @@
     </div>
 </div>
 <audio id="bgMusic" loop preload="auto">
+    <!-- Ganti source dengan file musik kamu -->
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- NAVBAR -->
+<!-- NAVBAR STICKY BLUR -->
 <nav class="glass-nav fixed top-0 left-0 w-full z-30 py-2 px-4 md:px-8 flex items-center justify-between">
     <div class="flex items-center gap-2">
         <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border border-indigo-400/40">
         <span class="font-bold text-lg text-white drop-shadow">ELDORIA</span>
     </div>
     <div class="hidden md:flex items-center gap-6 text-sm font-medium">
-        <a href="#home" data-i18n="nav_home" class="hover:text-indigo-300 transition">Home</a>
-        <a href="#download" data-i18n="nav_download" class="hover:text-indigo-300 transition">Download</a>
-        <a href="#tutorial" data-i18n="nav_tutorial" class="hover:text-indigo-300 transition">Tutorial</a>
-        <a href="#role" data-i18n="nav_role" class="hover:text-indigo-300 transition">Role</a>
-        <a href="#community" data-i18n="nav_community" class="hover:text-indigo-300 transition">Community</a>
+        <a href="#home" class="hover:text-indigo-300 transition">Home</a>
+        <a href="#download" class="hover:text-indigo-300 transition">Download</a>
+        <a href="#tutorial" class="hover:text-indigo-300 transition">Tutorial</a>
+        <a href="#role" class="hover:text-indigo-300 transition">Role</a>
+        <a href="#community" class="hover:text-indigo-300 transition">Community</a>
     </div>
     <div class="md:hidden">
         <button id="mobileMenuBtn" class="text-white text-xl"><i class="fas fa-bars"></i></button>
     </div>
 </nav>
-<!-- Mobile menu -->
+<!-- Mobile menu dropdown -->
 <div id="mobileMenu" class="fixed top-16 left-0 w-full glass-nav py-4 px-6 flex flex-col gap-3 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
-    <a href="#home" data-i18n="nav_home" class="py-1">Home</a>
-    <a href="#download" data-i18n="nav_download" class="py-1">Download</a>
-    <a href="#tutorial" data-i18n="nav_tutorial" class="py-1">Tutorial</a>
-    <a href="#role" data-i18n="nav_role" class="py-1">Role</a>
-    <a href="#community" data-i18n="nav_community" class="py-1">Community</a>
+    <a href="#home" class="py-1">Home</a>
+    <a href="#download" class="py-1">Download</a>
+    <a href="#tutorial" class="py-1">Tutorial</a>
+    <a href="#role" class="py-1">Role</a>
+    <a href="#community" class="py-1">Community</a>
 </div>
 
-<!-- MAIN -->
+<!-- MAIN CONTENT -->
 <main class="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-16">
 
-    <!-- HERO -->
+    <!-- HERO SECTION (HOME) -->
     <section id="home" class="fade-in-section text-center mb-16">
         <div class="flex justify-center mb-4">
             <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="hero-logo w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-indigo-500/60 shadow-[0_0_40px_rgba(99,102,241,0.4)]">
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg" data-i18n="hero_title">ELDORIA PRIVATE SERVER</h1>
-        <p class="text-indigo-200 text-lg md:text-xl mt-2" data-i18n="hero_subtitle">Growtopia Private Server • High Peak 22+ Online</p>
-        <p class="text-gray-300 text-sm mt-1" data-i18n="hero_server">Server: [ EldoriaPs ]</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">ELDORIA PRIVATE SERVER</h1>
+        <p class="text-indigo-200 text-lg md:text-xl mt-2">Growtopia Private Server • High Peak 22+ Online</p>
+        <p class="text-gray-300 text-sm mt-1">Server: [ EldoriaPs ]</p>
         <div class="flex flex-wrap justify-center gap-4 mt-8">
-            <a href="#download" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-download mr-2"></i><span data-i18n="btn_download">Download</span></a>
-            <a href="#tutorial" class="bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 text-white font-semibold px-8 py-3 rounded-full transition"><i class="fas fa-book-open mr-2"></i><span data-i18n="btn_tutorial">Tutorial</span></a>
-            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition"><i class="fas fa-copy mr-2"></i><span data-i18n="btn_copy_host">COPY HOST</span></button>
+            <a href="#download" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-download mr-2"></i>Download</a>
+            <a href="#tutorial" class="bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 text-white font-semibold px-8 py-3 rounded-full transition"><i class="fas fa-book-open mr-2"></i>Tutorial</a>
+            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition"><i class="fas fa-copy mr-2"></i>COPY HOST</button>
         </div>
     </section>
 
-    <!-- SERVER INFO -->
+    <!-- SERVER INFO CARD -->
     <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
         <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center"><i class="fas fa-circle text-green-400 text-xl"></i></div>
-            <div><p class="text-xs uppercase tracking-wider text-gray-400" data-i18n="status_label">Status</p><p class="text-2xl font-bold text-green-300" data-i18n="status_online">ONLINE</p></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400">Status</p><p class="text-2xl font-bold text-green-300">ONLINE</p></div>
         </div>
         <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center"><i class="fas fa-users text-indigo-300 text-xl"></i></div>
-            <div><p class="text-xs uppercase tracking-wider text-gray-400" data-i18n="players_label">Player Online</p><p class="text-2xl font-bold" id="playerCount">12</p></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p><p class="text-2xl font-bold" id="playerCount">12</p></div>
         </div>
         <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center"><i class="fas fa-calendar text-amber-300 text-xl"></i></div>
-            <div><p class="text-xs uppercase tracking-wider text-gray-400" data-i18n="version_label">Version</p><p class="text-xl font-semibold">v4.20</p></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400">Version</p><p class="text-xl font-semibold">v4.20</p></div>
         </div>
     </section>
 
-    <!-- SHOWCASE CAROUSEL -->
+    <!-- CAROUSEL SHOWCASE (GANTI GAMBAR SENDIRI DI SINI) -->
     <section class="fade-in-section mb-20">
-        <h2 class="text-3xl font-bold text-white mb-6 flex items-center"><i class="fas fa-images text-indigo-400 mr-3"></i><span data-i18n="showcase_title">Showcase</span></h2>
+        <h2 class="text-3xl font-bold text-white mb-6 flex items-center"><i class="fas fa-images text-indigo-400 mr-3"></i>Showcase</h2>
         <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-white/10">
-            <div id="carouselContainer" class="flex transition-transform duration-500 ease-out"></div>
+            <div id="carouselContainer" class="flex transition-transform duration-500 ease-out">
+                <!-- Slide akan diisi oleh JS -->
+            </div>
             <button id="carouselPrev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-left"></i></button>
             <button id="carouselNext" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-right"></i></button>
             <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2" id="carouselDots"></div>
         </div>
-        <p class="text-xs text-gray-400 mt-2 text-center" data-i18n="showcase_note">📸 Ganti gambar di array images (pakai imgbb)</p>
+        <p class="text-xs text-gray-400 mt-2 text-center">📸 Kamu bisa ganti gambar di bagian array `images` (pakai link imgbb atau lainnya)</p>
     </section>
 
-    <!-- DOWNLOAD -->
+    <!-- DOWNLOAD SECTION -->
     <section id="download" class="fade-in-section mb-20 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-indigo-400 mr-3"></i><span data-i18n="download_title">Download & Host</span></h2>
+        <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-indigo-400 mr-3"></i>Download & Host</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Android -->
             <div class="card-glass rounded-2xl p-6">
                 <div class="text-3xl mb-3 text-green-400"><i class="fab fa-android"></i></div>
                 <h3 class="text-xl font-bold">Android</h3>
                 <div class="mt-4 space-y-3">
-                    <a href="https://pixeldrain.com/u/oPTKGVau" target="_blank" class="block w-full bg-indigo-600/80 hover:bg-indigo-500 text-center py-2 rounded-lg text-sm font-medium transition"><i class="fas fa-gamepad mr-2"></i><span data-i18n="dl_apk">Download Eldoria APK</span></a>
-                    <a href="https://sfile.mobi/7SNc2kJhLyj" target="_blank" class="block w-full bg-white/10 hover:bg-white/20 text-center py-2 rounded-lg text-sm transition"><i class="fas fa-bolt mr-2"></i><span data-i18n="dl_pt">PowerTunnel (Host App)</span></a>
+                    <a href="https://pixeldrain.com/u/oPTKGVau" target="_blank" class="block w-full bg-indigo-600/80 hover:bg-indigo-500 text-center py-2 rounded-lg text-sm font-medium transition"><i class="fas fa-gamepad mr-2"></i>Download Eldoria APK</a>
+                    <a href="https://sfile.mobi/7SNc2kJhLyj" target="_blank" class="block w-full bg-white/10 hover:bg-white/20 text-center py-2 rounded-lg text-sm transition"><i class="fas fa-bolt mr-2"></i>PowerTunnel (Host App)</a>
                     <div class="bg-black/30 rounded-lg p-3 mt-3 border border-white/10">
-                        <p class="text-xs text-gray-300 mb-1" data-i18n="host_url_label">Host URL:</p>
+                        <p class="text-xs text-gray-300 mb-1">Host URL:</p>
                         <code class="text-indigo-200 text-sm break-all">https://gtpshost.com/raw/Eldoriapss</code>
-                        <button data-copy="https://gtpshost.com/raw/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy_host_small">Copy Host</span></button>
+                        <button data-copy="https://gtpshost.com/raw/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Host</button>
                     </div>
                 </div>
             </div>
@@ -164,11 +164,11 @@
                 <h3 class="text-xl font-bold">iOS</h3>
                 <div class="mt-4 space-y-3">
                     <div class="bg-black/30 rounded-lg p-3">
-                        <p class="text-sm" data-i18n="ios_guide">Gunakan Surge 5 / iOS profile:</p>
+                        <p class="text-sm">Gunakan Surge 5 / iOS profile:</p>
                         <code class="text-indigo-200 text-sm break-all">https://gtpshost.com/ios/Eldoriapss</code>
-                        <button data-copy="https://gtpshost.com/ios/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy_ios">Copy iOS Host</span></button>
+                        <button data-copy="https://gtpshost.com/ios/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy iOS Host</button>
                     </div>
-                    <p class="text-xs text-gray-400" data-i18n="ios_note">Buka link di Safari, install profile.</p>
+                    <p class="text-xs text-gray-400">Buka link di Safari, install profile.</p>
                 </div>
             </div>
             <!-- Windows -->
@@ -180,84 +180,71 @@
                         168.144.33.116 www.growtopia1.com<br>
                         168.144.33.116 www.growtopia2.com
                     </div>
-                    <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/70 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy_windows">Copy Windows Host</span></button>
-                    <p class="text-xs text-gray-400 mt-2" data-i18n="windows_note">Edit C:\Windows\System32\drivers\etc\hosts (admin)</p>
+                    <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/70 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Windows Host</button>
+                    <p class="text-xs text-gray-400 mt-2">Edit C:\Windows\System32\drivers\etc\hosts (admin)</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- HOST SYSTEM -->
+    <!-- HOST SYSTEM (COPY ONLY) -->
     <section class="fade-in-section mb-20">
         <div class="card-glass rounded-2xl p-6 border-l-4 border-indigo-500">
-            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-indigo-300"></i><span data-i18n="host_system_title">Host System (PowerTunnel / HostGo)</span></h3>
+            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-indigo-300"></i>Host System (PowerTunnel / HostGo)</h3>
             <div class="mt-4 bg-black/40 rounded-xl p-5 border border-white/10">
-                <p class="text-sm text-gray-300 mb-2" data-i18n="host_system_desc">Host ini digunakan untuk menghubungkan ke server. Copy lalu paste ke PowerTunnel atau HostGo. Jangan dibuka di browser.</p>
+                <p class="text-sm text-gray-300 mb-2">Host ini digunakan untuk menghubungkan ke server. Copy lalu paste ke PowerTunnel atau HostGo. Jangan dibuka di browser.</p>
                 <div class="flex items-stretch gap-2">
                     <code class="flex-1 bg-gray-900/80 p-3 rounded-lg text-indigo-200 text-sm break-all border border-indigo-500/30">https://gtpshost.com/raw/Eldoriapss</code>
-                    <button id="mainCopyHostBtn" class="bg-indigo-600 hover:bg-indigo-500 px-5 rounded-lg transition"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy">COPY</span></button>
+                    <button id="mainCopyHostBtn" class="bg-indigo-600 hover:bg-indigo-500 px-5 rounded-lg transition"><i class="far fa-copy mr-1"></i>COPY</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- TUTORIAL + VIDEO -->
+    <!-- TUTORIAL -->
     <section id="tutorial" class="fade-in-section mb-20 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-indigo-400 mr-3"></i><span data-i18n="tutorial_title">Tutorial Singkat</span></h2>
-        
-        <!-- Video Tutorial -->
-        <div class="card-glass rounded-2xl p-5 mb-8">
-            <h3 class="text-xl font-semibold mb-3"><i class="fab fa-youtube text-red-400 mr-2"></i><span data-i18n="video_tutorial">Video Tutorial PowerTunnel</span></h3>
-            <div class="relative w-full rounded-xl overflow-hidden" style="padding-bottom: 56.25%;">
-                <video controls class="absolute top-0 left-0 w-full h-full object-cover" poster="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg">
-                    <source src="https://qu.ax/TAKnO.mp4" type="video/mp4">
-                    <span data-i18n="video_not_supported">Browser kamu tidak mendukung video.</span>
-                </video>
-            </div>
-            <p class="text-xs text-gray-400 mt-2" data-i18n="video_note">Tonton video di atas untuk panduan visual.</p>
-        </div>
-
+        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-indigo-400 mr-3"></i>Tutorial Singkat</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <div class="card-glass rounded-2xl p-5">
                 <div class="text-2xl mb-2">📱 Android</div>
                 <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
-                    <li data-i18n="tut_android_1">Download APK & PowerTunnel</li>
-                    <li data-i18n="tut_android_2">Install PowerTunnel</li>
-                    <li data-i18n="tut_android_3">Copy host (tombol di atas)</li>
-                    <li data-i18n="tut_android_4">Paste ke PowerTunnel > Host Settings</li>
-                    <li data-i18n="tut_android_5">Jalankan, buka Growtopia</li>
+                    <li>Download APK & PowerTunnel</li>
+                    <li>Install PowerTunnel</li>
+                    <li>Copy host (tombol di atas)</li>
+                    <li>Paste ke PowerTunnel > Host Settings</li>
+                    <li>Jalankan, buka Growtopia</li>
                 </ol>
             </div>
             <div class="card-glass rounded-2xl p-5">
                 <div class="text-2xl mb-2">💻 Windows</div>
                 <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
-                    <li data-i18n="tut_win_1">Buka notepad sebagai admin</li>
-                    <li data-i18n="tut_win_2">Edit file: C:\Windows\System32\drivers\etc\hosts</li>
-                    <li data-i18n="tut_win_3">Tambahkan dua baris IP (copy di atas)</li>
-                    <li data-i18n="tut_win_4">Simpan, jalankan Growtopia</li>
+                    <li>Buka notepad sebagai admin</li>
+                    <li>Edit file: C:\Windows\System32\drivers\etc\hosts</li>
+                    <li>Tambahkan dua baris IP (copy di atas)</li>
+                    <li>Simpan, jalankan Growtopia</li>
                 </ol>
             </div>
             <div class="card-glass rounded-2xl p-5">
                 <div class="text-2xl mb-2">🍎 iOS</div>
                 <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
-                    <li data-i18n="tut_ios_1">Copy iOS host link</li>
-                    <li data-i18n="tut_ios_2">Buka di Safari, install profile</li>
-                    <li data-i18n="tut_ios_3">Buka Growtopia</li>
+                    <li>Copy iOS host link</li>
+                    <li>Buka di Safari, install profile</li>
+                    <li>Buka Growtopia</li>
                 </ol>
             </div>
         </div>
     </section>
 
-    <!-- ROLE & COMMAND -->
+    <!-- ROLE + COMMAND (ACCORDION) -->
     <section id="role" class="fade-in-section mb-20 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i><span data-i18n="role_title">Role & Command</span></h2>
-        <p class="text-gray-300 mb-6" data-i18n="role_desc">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
+        <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i>Role & Command</h2>
+        <p class="text-gray-300 mb-6">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
         <div id="roleContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
     <!-- COMMUNITY -->
     <section id="community" class="fade-in-section mb-12 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-indigo-400 mr-3"></i><span data-i18n="community_title">Community</span></h2>
+        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-indigo-400 mr-3"></i>Community</h2>
         <div class="flex flex-wrap gap-5 justify-center">
             <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
                 <i class="fab fa-whatsapp text-3xl text-green-400"></i> <span class="font-semibold">WhatsApp Group</span>
@@ -271,6 +258,7 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="text-center text-gray-400 text-sm border-t border-white/10 pt-8 mt-8">
         <p>© 2025 Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.</p>
     </footer>
@@ -280,156 +268,133 @@
     (function(){
         "use strict";
 
-        // ---------- TRANSLATIONS ----------
-        const translations = {
-            id: {
-                nav_home: 'Home', nav_download: 'Download', nav_tutorial: 'Tutorial', nav_role: 'Role', nav_community: 'Community',
-                hero_title: 'ELDORIA PRIVATE SERVER', hero_subtitle: 'Growtopia Private Server • High Peak 22+ Online', hero_server: 'Server: [ EldoriaPs ]',
-                btn_download: 'Download', btn_tutorial: 'Tutorial', btn_copy_host: 'COPY HOST',
-                status_label: 'Status', status_online: 'ONLINE', players_label: 'Player Online', version_label: 'Version',
-                showcase_title: 'Showcase', showcase_note: '📸 Ganti gambar di array images (pakai imgbb)',
-                download_title: 'Download & Host',
-                dl_apk: 'Download Eldoria APK', dl_pt: 'PowerTunnel (Host App)', host_url_label: 'Host URL:', btn_copy_host_small: 'Copy Host',
-                ios_guide: 'Gunakan Surge 5 / iOS profile:', btn_copy_ios: 'Copy iOS Host', ios_note: 'Buka link di Safari, install profile.',
-                btn_copy_windows: 'Copy Windows Host', windows_note: 'Edit C:\\Windows\\System32\\drivers\\etc\\hosts (admin)',
-                host_system_title: 'Host System (PowerTunnel / HostGo)', host_system_desc: 'Host ini digunakan untuk menghubungkan ke server. Copy lalu paste ke PowerTunnel atau HostGo. Jangan dibuka di browser.',
-                btn_copy: 'COPY',
-                tutorial_title: 'Tutorial Singkat', video_tutorial: 'Video Tutorial PowerTunnel', video_not_supported: 'Browser kamu tidak mendukung video.', video_note: 'Tonton video di atas untuk panduan visual.',
-                tut_android_1: 'Download APK & PowerTunnel', tut_android_2: 'Install PowerTunnel', tut_android_3: 'Copy host (tombol di atas)', tut_android_4: 'Paste ke PowerTunnel > Host Settings', tut_android_5: 'Jalankan, buka Growtopia',
-                tut_win_1: 'Buka notepad sebagai admin', tut_win_2: 'Edit file: C:\\Windows\\System32\\drivers\\etc\\hosts', tut_win_3: 'Tambahkan dua baris IP (copy di atas)', tut_win_4: 'Simpan, jalankan Growtopia',
-                tut_ios_1: 'Copy iOS host link', tut_ios_2: 'Buka di Safari, install profile', tut_ios_3: 'Buka Growtopia',
-                role_title: 'Role & Command', role_desc: 'Klik role untuk melihat command. Hubungi admin untuk pembelian.',
-                community_title: 'Community',
-                toast_copied: '✅ Host disalin!', toast_failed: '❌ Gagal menyalin',
-                contact: 'Contact', buy: 'Beli', click_command: 'Klik untuk command'
-            },
-            en: {
-                nav_home: 'Home', nav_download: 'Download', nav_tutorial: 'Tutorial', nav_role: 'Roles', nav_community: 'Community',
-                hero_title: 'ELDORIA PRIVATE SERVER', hero_subtitle: 'Growtopia Private Server • High Peak 22+ Online', hero_server: 'Server: [ EldoriaPs ]',
-                btn_download: 'Download', btn_tutorial: 'Tutorial', btn_copy_host: 'COPY HOST',
-                status_label: 'Status', status_online: 'ONLINE', players_label: 'Players Online', version_label: 'Version',
-                showcase_title: 'Showcase', showcase_note: '📸 Replace images in array (use imgbb)',
-                download_title: 'Download & Host',
-                dl_apk: 'Download Eldoria APK', dl_pt: 'PowerTunnel (Host App)', host_url_label: 'Host URL:', btn_copy_host_small: 'Copy Host',
-                ios_guide: 'Use Surge 5 / iOS profile:', btn_copy_ios: 'Copy iOS Host', ios_note: 'Open link in Safari, install profile.',
-                btn_copy_windows: 'Copy Windows Host', windows_note: 'Edit C:\\Windows\\System32\\drivers\\etc\\hosts (admin)',
-                host_system_title: 'Host System (PowerTunnel / HostGo)', host_system_desc: 'This host is used to connect to the server. Copy and paste into PowerTunnel or HostGo. Do not open in browser.',
-                btn_copy: 'COPY',
-                tutorial_title: 'Quick Tutorial', video_tutorial: 'PowerTunnel Video Tutorial', video_not_supported: 'Your browser does not support video.', video_note: 'Watch the video above for visual guide.',
-                tut_android_1: 'Download APK & PowerTunnel', tut_android_2: 'Install PowerTunnel', tut_android_3: 'Copy host (button above)', tut_android_4: 'Paste into PowerTunnel > Host Settings', tut_android_5: 'Run, open Growtopia',
-                tut_win_1: 'Open notepad as admin', tut_win_2: 'Edit: C:\\Windows\\System32\\drivers\\etc\\hosts', tut_win_3: 'Add the two IP lines (copy above)', tut_win_4: 'Save, run Growtopia',
-                tut_ios_1: 'Copy iOS host link', tut_ios_2: 'Open in Safari, install profile', tut_ios_3: 'Open Growtopia',
-                role_title: 'Roles & Commands', role_desc: 'Click role to see commands. Contact admin to purchase.',
-                community_title: 'Community',
-                toast_copied: '✅ Host copied!', toast_failed: '❌ Failed to copy',
-                contact: 'Contact', buy: 'Buy', click_command: 'Click for commands'
-            }
-        };
-
-        let currentLang = 'id';
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
-            // Update flag
-            document.getElementById('langFlag').textContent = lang === 'id' ? '🇮🇩' : '🇺🇸';
-            document.getElementById('langText').textContent = lang === 'id' ? 'ID' : 'EN';
-            // Re-render roles
-            renderRoles();
-            localStorage.setItem('eldoria_lang', lang);
-        }
-
-        document.getElementById('langToggle').addEventListener('click', () => {
-            setLanguage(currentLang === 'id' ? 'en' : 'id');
-        });
-
-        // Load saved language
-        const savedLang = localStorage.getItem('eldoria_lang') || 'id';
-        setLanguage(savedLang);
-
-        // ---------- LOADING ----------
+        // ---------- LOADING SCREEN ----------
         const loader = document.getElementById('loadingScreen');
-        window.addEventListener('load', ()=>{
-            setTimeout(()=> loader.classList.add('fade-out'), 800);
-            setTimeout(()=> loader.style.display = 'none', 1500);
+        window.addEventListener('load', function(){
+            setTimeout(() => loader.classList.add('fade-out'), 800);
+            setTimeout(() => loader.style.display = 'none', 1500);
         });
 
         // ---------- MOBILE MENU ----------
         const menuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
-        menuBtn?.addEventListener('click', ()=> mobileMenu.classList.toggle('-translate-y-full'));
-        document.querySelectorAll('#mobileMenu a').forEach(link => link.addEventListener('click', ()=> mobileMenu.classList.add('-translate-y-full')));
+        if(menuBtn) {
+            menuBtn.addEventListener('click', ()=> {
+                mobileMenu.classList.toggle('-translate-y-full');
+            });
+        }
 
-        // ---------- MUSIC ----------
+        // ---------- MUSIC PLAYER ----------
         const bgMusic = document.getElementById('bgMusic');
         const playBtn = document.getElementById('musicPlayBtn');
         const muteBtn = document.getElementById('musicMuteBtn');
-        let isPlaying = false, isMuted = false;
+        let isPlaying = false;
+        let isMuted = false;
         bgMusic.volume = 0.25;
+
         playBtn.addEventListener('click', ()=>{
             if(!isPlaying) {
-                bgMusic.play().then(()=>{ isPlaying = true; playBtn.innerHTML = '<i class="fas fa-pause text-white text-sm"></i>'; })
-                .catch(()=> alert('Klik lagi untuk memutar musik'));
-            } else { bgMusic.pause(); isPlaying = false; playBtn.innerHTML = '<i class="fas fa-play text-white text-sm"></i>'; }
+                bgMusic.play().then(()=>{
+                    isPlaying = true;
+                    playBtn.innerHTML = '<i class="fas fa-pause text-white text-sm"></i>';
+                }).catch(e => {
+                    alert('Klik lagi untuk memutar musik (interaksi diperlukan)');
+                });
+            } else {
+                bgMusic.pause();
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play text-white text-sm"></i>';
+            }
         });
         muteBtn.addEventListener('click', ()=>{
-            isMuted = !isMuted; bgMusic.muted = isMuted;
+            isMuted = !isMuted;
+            bgMusic.muted = isMuted;
             muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-white/80"></i>' : '<i class="fas fa-volume-up text-white/80"></i>';
         });
 
-        // ---------- PLAYER ONLINE 1-20 ----------
+        // ---------- PLAYER ONLINE 1-20 (RANDOM) ----------
         const playerSpan = document.getElementById('playerCount');
-        function updatePlayers(){ playerSpan.textContent = Math.floor(Math.random() * 20) + 1; }
-        updatePlayers(); setInterval(updatePlayers, 3000);
+        function updateFakePlayers() {
+            const fake = Math.floor(Math.random() * 20) + 1; // 1 sampai 20
+            playerSpan.textContent = fake;
+        }
+        updateFakePlayers();
+        setInterval(updateFakePlayers, 3000);
 
-        // ---------- CAROUSEL (GANTI GAMBAR SENDIRI) ----------
+        // ---------- CAROUSEL (GANTI GAMBAR DI SINI) ----------
+        // Ganti URL di bawah dengan gambar dari imgbb atau lainnya
         const images = [
-            'https://i.ibb.co.com/placeholder1.jpg',
+            'https://i.ibb.co.com/placeholder1.jpg',   // Ganti dengan link gambarmu
             'https://i.ibb.co.com/placeholder2.jpg',
             'https://i.ibb.co.com/placeholder3.jpg',
             'https://i.ibb.co.com/placeholder4.jpg'
         ];
+        // Jika gambar placeholder tidak muncul, ganti dengan link gambar asli dari imgbb.
+        // Contoh: 'https://i.ibb.co/xxxxxx/screenshot1.png'
+
         const container = document.getElementById('carouselContainer');
         const dotsDiv = document.getElementById('carouselDots');
         let currentIndex = 0;
+
         function renderCarousel() {
-            container.innerHTML = images.map(src => `<div class="min-w-full flex-shrink-0"><img src="${src}" alt="showcase" class="w-full h-64 md:h-80 object-cover"></div>`).join('');
+            container.innerHTML = images.map(src => `
+                <div class="min-w-full flex-shrink-0">
+                    <img src="${src}" alt="showcase" class="w-full h-64 md:h-80 object-cover">
+                </div>
+            `).join('');
             updateDots();
         }
         function updateDots() {
-            dotsDiv.innerHTML = images.map((_, i) => `<span class="w-2.5 h-2.5 rounded-full ${i === currentIndex ? 'bg-white' : 'bg-white/40'} transition"></span>`).join('');
+            dotsDiv.innerHTML = images.map((_, i) => 
+                `<span class="w-2.5 h-2.5 rounded-full ${i === currentIndex ? 'bg-white' : 'bg-white/40'} transition"></span>`
+            ).join('');
         }
         function goToSlide(index) {
-            if(index < 0) index = 0; if(index >= images.length) index = images.length-1;
-            currentIndex = index; container.style.transform = `translateX(-${currentIndex * 100}%)`; updateDots();
+            if(index < 0) index = 0;
+            if(index >= images.length) index = images.length-1;
+            currentIndex = index;
+            container.style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateDots();
         }
         document.getElementById('carouselPrev').addEventListener('click', ()=> goToSlide(currentIndex-1));
         document.getElementById('carouselNext').addEventListener('click', ()=> goToSlide(currentIndex+1));
+        // Swipe support
         let touchStartX = 0;
         container.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
-        container.addEventListener('touchend', e => { const diff = e.changedTouches[0].screenX - touchStartX; if(Math.abs(diff)>50) diff>0 ? goToSlide(currentIndex-1) : goToSlide(currentIndex+1); });
+        container.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].screenX - touchStartX;
+            if(Math.abs(diff) > 50) diff > 0 ? goToSlide(currentIndex-1) : goToSlide(currentIndex+1);
+        });
         renderCarousel();
 
-        // ---------- COPY ----------
+        // ---------- COPY FUNCTION ----------
         function copyText(text) {
-            navigator.clipboard.writeText(text).then(()=> showToast(translations[currentLang].toast_copied))
-            .catch(()=> showToast(translations[currentLang].toast_failed));
+            navigator.clipboard.writeText(text).then(()=>{
+                showToast('✅ Host disalin!');
+            }).catch(()=> showToast('❌ Gagal menyalin'));
         }
         function showToast(msg) {
             const toast = document.createElement('div');
             toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-indigo-700 text-white px-6 py-2 rounded-full shadow-lg z-50 text-sm';
-            toast.textContent = msg; document.body.appendChild(toast); setTimeout(()=> toast.remove(), 2000);
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(()=> toast.remove(), 2000);
         }
-        document.querySelectorAll('.copy-host-btn').forEach(btn => btn.addEventListener('click', (e)=>{ e.stopPropagation(); copyText(btn.dataset.copy); }));
+
+        document.querySelectorAll('.copy-host-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const host = btn.getAttribute('data-copy');
+                copyText(host);
+            });
+        });
         document.getElementById('heroCopyHost').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/Eldoriapss'));
         document.getElementById('mainCopyHostBtn').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/Eldoriapss'));
-        document.getElementById('copyWindowsHost').addEventListener('click', ()=> copyText(`168.144.33.116 www.growtopia1.com\n168.144.33.116 www.growtopia2.com`));
+        document.getElementById('copyWindowsHost').addEventListener('click', ()=>{
+            copyText(`168.144.33.116 www.growtopia1.com\n168.144.33.116 www.growtopia2.com`);
+        });
 
-        // ---------- ROLE DATA ----------
+        // ---------- ROLE ACCORDION ----------
         const rolesData = [
             { name: 'Owner', price: 'Rp 200.000', commands: '/asb /banworld /copyset /destructo /freeze /ggxp /growall /gsm /infoex /ipcheck /logs /nick /onlined /osb /removedrop /reset /rpl /spawnevent /spl /summon /uncurse /uncurseall /unmute /unsafeedit /weather /ysb' },
             { name: 'Staff', price: 'Rp 130.000', commands: '/banip /banp /banrid /checkid /checkplaymods /curse /dsummon /extranuke /fixworld /freezeall /glevel /invis /mute /noclip /nuke /playerreport /saveworld /spk /unban /unbanip /warpto' },
@@ -438,35 +403,51 @@
             { name: 'Administrator', price: 'Rp 20.000', commands: '/1hit /banall /checkping /color /eff /eff2 /fakeban /fakewarn /flag /nobody /nohands /pban /pullall /reports /scan /unequip /warn /warp' },
             { name: 'Moderator', price: 'Rp 10.000', commands: '/hide /m /magic /modrules /msb /note /notes /p /radio2 /skin /togglemods' }
         ];
+
         const roleContainer = document.getElementById('roleContainer');
         function renderRoles() {
             roleContainer.innerHTML = rolesData.map(role => `
-                <div class="card-glass rounded-xl p-5 role-card">
-                    <div class="flex justify-between items-center"><span class="font-bold text-lg">${role.name}</span><span class="text-indigo-300 text-sm bg-indigo-900/40 px-3 py-1 rounded-full">${role.price}</span></div>
-                    <div class="command-panel mt-3 text-sm text-gray-300">
-                        <div class="bg-black/30 p-3 rounded-lg mt-2 border border-white/10"><code class="text-indigo-200 text-xs leading-relaxed">${role.commands}</code></div>
+                <div class="card-glass rounded-xl p-5 role-card" data-role="${role.name}">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-lg">${role.name}</span>
+                        <span class="text-indigo-300 text-sm bg-indigo-900/40 px-3 py-1 rounded-full">${role.price}</span>
+                    </div>
+                    <div class="command-panel mt-3 text-sm text-gray-300" id="panel-${role.name}">
+                        <div class="bg-black/30 p-3 rounded-lg mt-2 border border-white/10">
+                            <code class="text-indigo-200 text-xs leading-relaxed">${role.commands}</code>
+                        </div>
                         <div class="flex gap-2 mt-3">
-                            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="bg-green-700/70 hover:bg-green-600 px-4 py-1.5 rounded text-xs"><i class="fab fa-whatsapp mr-1"></i>${translations[currentLang].contact}</a>
-                            <span class="bg-amber-700/70 px-4 py-1.5 rounded text-xs">${translations[currentLang].buy}</span>
+                            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="bg-green-700/70 hover:bg-green-600 px-4 py-1.5 rounded text-xs"><i class="fab fa-whatsapp mr-1"></i>Contact</a>
+                            <span class="bg-amber-700/70 px-4 py-1.5 rounded text-xs">Beli</span>
                         </div>
                     </div>
-                    <div class="text-xs text-gray-400 mt-2 flex items-center"><i class="fas fa-chevron-down mr-1 text-indigo-300"></i> ${translations[currentLang].click_command}</div>
+                    <div class="text-xs text-gray-400 mt-2 flex items-center"><i class="fas fa-chevron-down mr-1 text-indigo-300"></i> Klik untuk command</div>
                 </div>
             `).join('');
+
             document.querySelectorAll('.role-card').forEach(card => {
                 card.addEventListener('click', function(e) {
                     if(e.target.closest('a') || e.target.closest('span')) return;
-                    this.querySelector('.command-panel').classList.toggle('open');
+                    const panel = this.querySelector('.command-panel');
+                    panel.classList.toggle('open');
                 });
             });
         }
         renderRoles();
 
-        // ---------- INTERSECTION OBSERVER ----------
-        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('is-visible'); }); }, { threshold: 0.15 });
-        document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+        // ---------- INTERSECTION OBSERVER (fade) ----------
+        const fadeElements = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.15 });
+        fadeElements.forEach(el => observer.observe(el));
 
-        // Footer year
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', ()=> mobileMenu.classList.add('-translate-y-full'));
+        });
+
+        // Update footer year
         document.querySelector('footer p').innerHTML = `© ${new Date().getFullYear()} Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.`;
     })();
 </script>
