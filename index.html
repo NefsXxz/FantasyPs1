@@ -342,7 +342,7 @@
             if (window.playerInterval) clearInterval(window.playerInterval);
             
             if (!SHOW_PLAYER_COUNT) {
-                playerSpan.textContent = 'Hidden';
+                playerSpan.textContent = '0';
             } else {
                 function updateFakePlayers() {
                     const fake = Math.floor(Math.random() * 20) + 1;
