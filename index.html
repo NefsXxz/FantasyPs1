@@ -2,1592 +2,473 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldoria Virtual Host | Linktree</title>
-    <style>
-        /* Semua CSS yang sama seperti sebelumnya */
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #94a3b8;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        body {
-            background-color: #f1f5f9;
-            color: var(--dark);
-            line-height: 1.6;
-            padding: 20px;
-            background-image: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .profile {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-        }
-        
-        .profile-img:hover {
-            transform: scale(1.05);
-        }
-        
-        .profile h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: var(--dark);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        
-        .profile p {
-            color: var(--gray);
-            font-size: 16px;
-        }
-        
-        .profile-bio {
-            color: var(--gray);
-            font-size: 14px;
-            margin-bottom: 3px;
-            line-height: 1.4;
-        }
-        
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .link-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 15px 20px;
-            text-decoration: none;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .link-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-        
-        .link-card:hover::before {
-            left: 100%;
-        }
-        
-        .link-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: var(--primary);
-        }
-        
-        .link-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background-color: #e0e7ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 18px;
-            transition: all 0.3s;
-        }
-        
-        .link-card:hover .link-icon {
-            transform: scale(1.1);
-        }
-        
-        .link-text {
-            flex: 1;
-        }
-        
-        .link-text h3 {
-            font-size: 16px;
-            margin-bottom: 3px;
-        }
-        
-        .link-text p {
-            font-size: 13px;
-            color: var(--gray);
-        }
-        
-        .badge {
-            background-color: var(--primary);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .link-card:hover .badge {
-            transform: scale(1.05);
-        }
-        
-        .badge-download {
-            background-color: #10b981;
-        }
-        
-        .badge-direct {
-            background-color: #f59e0b;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 25px 0 15px;
-            padding-left: 10px;
-            color: var(--dark);
-            position: relative;
-        }
-        
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 20px;
-            background-color: var(--primary);
-            border-radius: 2px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 18px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        
-        .social-link:hover {
-            background-color: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: var(--gray);
-            font-size: 14px;
-        }
-        
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        
-        .modal-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 450px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            animation: modalFadeIn 0.3s;
-            position: relative;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .modal-header h2 {
-            color: var(--primary);
-            font-size: 20px;
-        }
-        
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--gray);
-            transition: color 0.3s;
-        }
-        
-        .close-modal:hover {
-            color: var(--dark);
-        }
-        
-        .host-info {
-            background-color: #f8fafc;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #e2e8f0;
-            position: relative;
-            transition: all 0.3s;
-        }
-        
-        .host-info:hover {
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-        
-        .host-block {
-            background-color: #f8fafc;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #e2e8f0;
-            font-family: monospace;
-            font-size: 14px;
-            white-space: pre-wrap;
-            word-break: break-all;
-            transition: all 0.3s;
-        }
-        
-        .host-block:hover {
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-        
-        .host-info p {
-            font-family: monospace;
-            font-size: 14px;
-            word-break: break-all;
-            margin-bottom: 10px;
-        }
-        
-        .copy-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .copy-btn:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .copied {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 11px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        /* Music Player Styles */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 99;
-            background: white;
-            border-radius: 50px;
-            padding: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-        }
-        
-        .music-player:hover {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-        }
-        
-        .music-control {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            outline: none;
-            transition: all 0.3s;
-        }
-        
-        .music-control:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
-        }
-        
-        .music-info {
-            font-size: 12px;
-            max-width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            transition: max-width 0.3s;
-        }
-        
-        .music-player:hover .music-info {
-            max-width: 200px;
-            padding-right: 10px;
-        }
-        
-        /* Guide Styles */
-        .guide-container {
-            margin-top: 15px;
-        }
-        
-        .guide-step {
-            margin-bottom: 15px;
-            padding-left: 15px;
-            border-left: 3px solid var(--primary);
-            position: relative;
-            transition: all 0.3s;
-        }
-        
-        .guide-step:hover {
-            border-left-color: var(--primary-dark);
-        }
-        
-        .guide-step h4 {
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-        
-        .guide-step p {
-            font-size: 14px;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-        
-        .guide-image {
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .download-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: #10b981;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        
-        .download-btn:hover {
-            background-color: #059669;
-        }
-        
-        /* Language Toggle */
-        .language-toggle {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            z-index: 99;
-            background: white;
-            border-radius: 50px;
-            padding: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .language-toggle:hover {
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-        }
-        
-        .language-flag {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-        
-        .language-text {
-            font-size: 14px;
-            font-weight: 600;
-            max-width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            transition: max-width 0.3s;
-        }
-        
-        .language-toggle:hover .language-text {
-            max-width: 100px;
-            padding-right: 5px;
-        }
-        
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        /* Video Tutorial Styles */
-        .video-tutorial {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .video-tutorial h3 {
-            margin-bottom: 10px;
-            color: var(--primary);
-            font-size: 16px;
-        }
-        
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .video-note {
-            font-size: 12px;
-            color: var(--gray);
-            margin-top: 5px;
-            font-style: italic;
-        }
-        
-        .text-guide-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 20px 0 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary);
-            color: var(--dark);
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Eldoria • Growtopia Private Server</title>
+    <!-- Tailwind + Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background-color: #0b0f15; }
+        html { scroll-behavior: smooth; }
+        .fade-in-section { opacity: 0; transform: translateY(15px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        .glass-nav { background: rgba(10, 15, 25, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .card-glass { background: rgba(20, 30, 45, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); }
+        .hero-logo { filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.3)); }
+        .loader { position: fixed; inset: 0; background: #0b0f15; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s; }
+        .loader.fade-out { opacity: 0; pointer-events: none; }
+        .music-widget { transition: all 0.2s; }
+        .role-card { cursor: pointer; transition: all 0.2s; }
+        .command-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .command-panel.open { max-height: 500px; }
+        .role-card:hover { background: rgba(40, 55, 80, 0.7); }
+        #mobileMenu a { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; }
+        /* Language toggle */
+        .lang-toggle { transition: all 0.2s; }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="profile">
-            <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" class="profile-img">
-            <h1 id="profile-title">Eldoria Private Server</h1>
-            <p id="profile-subtitle">Growtopia Private Server</p>
-            <!-- Bio baru ditambahkan di sini -->
-            <p class="profile-bio" id="profile-bio1">high peak Online 22 in game!</p>
-            <p class="profile-bio" id="profile-bio2">Nama Server ketika buat akun / login kembali: [ EldoriaPs ]</p>
-        </div>
-        
-        <div class="links">
-            <h2 class="section-title" id="section-host">🚀 Eldoria Host</h2>
-            
-            <div class="link-card" onclick="showGuideModal('powertunnel')">
-                <div class="link-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="powertunnel-title">PowerTunnel Host</h3>
-                    <p id="powertunnel-desc">Click For Host and Guide!</p>
-                </div>
-                <span class="badge" id="powertunnel-badge">LINK</span>
-            </div>
-            
-            <div class="link-card" onclick="showGuideModal('hostsgo')">
-                <div class="link-icon">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="hostsgo-title">Host GO</h3>
-                    <p id="hostsgo-desc">Click For Host and Guide!</p>
-                </div>
-                <span class="badge" id="hostsgo-badge">LINK</span>
-            </div>
-            
-            <div class="link-card" onclick="showGuideModal('virtualhost')">
-                <div class="link-icon">
-                    <i class="fas fa-server"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="virtualhost-title">Virtual Host</h3>
-                    <p id="virtualhost-desc">Click For Host and Guide!</p>
-                </div>
-                <span class="badge" id="virtualhost-badge">LINK</span>
-            </div>
-            
-            <!-- iOS Host Card -->
-            <div class="link-card" onclick="showGuideModal('ios')">
-                <div class="link-icon">
-                    <i class="fab fa-apple"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="ios-title">iOS Host</h3>
-                    <p id="ios-desc">Click For Host and Guide!</p>
-                </div>
-                <span class="badge" id="ios-badge">LINK</span>
-            </div>
-            
-            <div class="link-card" onclick="showGuideModal('windows')">
-                <div class="link-icon">
-                    <i class="fab fa-microsoft"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="windows-title">Windows Host</h3>
-                    <p id="windows-desc">Click For Host and Guide!</p>
-                </div>
-                <span class="badge" id="windows-badge">LINK</span>
-            </div>
-        </div>
-        
-        <!-- Section Download Eldoria Apk -->
-        <div class="links">
-            <h2 class="section-title" id="section-download">📱 Download Eldoria Apk</h2>
-            
-            <a href="https://pixeldrain.com/u/oPTKGVau" class="link-card" target="_blank">
-                <div class="link-icon" style="background-color: #f59e0b; color: white;">
-                    <i class="fas fa-gamepad"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="apk-title">Eldoria APK</h3>
-                    <p id="apk-desc">Aplikasi Growtopia langsung main tanpa host!</p>
-                </div>
-                <span class="badge badge-direct" id="apk-badge">DIRECT</span>
-            </a>
-        </div>
-        
-        <!-- Section Aplikasi Untuk Bermain -->
-        <div class="links">
-            <h2 class="section-title" id="section-apps">🎮 Aplikasi Untuk Bermain</h2>
-            
-            <a href="https://sfile.mobi/7SNc2kJhLyj" class="link-card" target="_blank">
-                <div class="link-icon" style="background-color: #10b981; color: white;">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="app-pt-title">Powertunnel</h3>
-                    <p id="app-pt-desc">Download Aplikasi Powertunnel</p>
-                </div>
-                <span class="badge badge-download" id="app-pt-badge">DOWNLOAD</span>
-            </a>
-            
-            <a href="https://sfile.mobi/4xXabY4QEEP" class="link-card" target="_blank">
-                <div class="link-icon" style="background-color: #10b981; color: white;">
-                    <i class="fas fa-server"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="app-vh-title">Virtual Host</h3>
-                    <p id="app-vh-desc">Download Aplikasi Virtual Host</p>
-                </div>
-                <span class="badge badge-download" id="app-vh-badge">DOWNLOAD</span>
-            </a>
-        </div>
-        
-        <div class="links">
-            <h2 class="section-title" id="section-join">📱 Join Grup Kami</h2>
-            
-            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" class="link-card">
-                <div class="link-icon" style="background-color: #25D366; color: white;">
-                    <i class="fab fa-whatsapp"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="wa-title">WhatsApp Group</h3>
-                    <p id="wa-desc">Grup diskusi & support WhatsApp</p>
-                </div>
-            </a>
-            
-            <!-- Instagram Card - Ditambahkan di sini -->
-            <a href="https://www.instagram.com/eldoria_private_server?igsh=MXV5dWlrbTg2dmtqOA==" class="link-card" target="_blank">
-                <div class="link-icon" style="background-color: #E1306C; color: white;">
-                    <i class="fab fa-instagram"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="instagram-title">Instagram</h3>
-                    <p id="instagram-desc">Follow Instagram Eldoria Ps!</p>
-                </div>
-            </a>
-            
-            <a href="https://discord.gg/NbqthCwaqT" class="link-card">
-                <div class="link-icon" style="background-color: #5865F2; color: white;">
-                    <i class="fab fa-discord"></i>
-                </div>
-                <div class="link-text">
-                    <h3 id="discord-title">Discord Server</h3>
-                    <p id="discord-desc">Komunitas Discord Eldoria Ps!</p>
-                </div>
-            </a>
-        </div>
-        
-        <div class="social-links">
-            <a href="https://www.instagram.com/eldoria_private_server?igsh=MXV5dWlrbTg2dmtqOA==" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-        </div>
-        
-        <footer>
-            <p id="footer-text">© 2024 Eldoria Ps. All rights reserved.</p>
-        </footer>
-    </div>
-    
-    <!-- Modal Host Link -->
-    <div class="modal" id="hostModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalHostTitle">Host Link</h2>
-                <button class="close-modal" onclick="closeHostModal()">&times;</button>
-            </div>
-            
-            <div class="host-info">
-                <p id="hostLinkText">https://example.com/host</p>
-                <button class="copy-btn" id="copy-host-btn" onclick="copyHostLink()">Salin</button>
-                <span class="copied" id="copiedNotification">Tersalin!</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal Windows Host -->
-    <div class="modal" id="windowsHostModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="windows-modal-title">Windows Host Links</h2>
-                <button class="close-modal" onclick="closeWindowsModal()">&times;</button>
-            </div>
-            
-            <div class="host-block" id="windowsHostBlock">
-146.190.89.21 www.growtopia1.com
-146.190.89.21 www.growtopia2.com
-            </div>
-            
-            <button class="copy-btn" id="copy-windows-btn" onclick="copyWindowsHostBlock()">Salin Semua</button>
-        </div>
-    </div>
-    
-    <!-- Modal Guide -->
-    <div class="modal" id="guideModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="guideModalTitle">Panduan Penggunaan</h2>
-                <button class="close-modal" onclick="closeGuideModal()">&times;</button>
-            </div>
-            
-            <!-- Video Tutorial Section -->
-            <div id="videoTutorialSection" style="display: none;">
-                <div class="video-tutorial">
-                    <h3 id="videoTitle">Video Tutorial</h3>
-                    <div class="video-container" id="videoContainer">
-                        <!-- Video akan dimuat di sini secara dinamis -->
-                    </div>
-                    <p class="video-note" id="videoNote">Tonton video di atas untuk panduan visual, atau lihat panduan teks di bawah jika koneksi internet lambat</p>
-                </div>
-            </div>
-            
-            <div class="host-info" id="guideHostLinkSection">
-                <p id="guideHostLinkText"></p>
-                <button class="copy-btn" id="copy-guide-btn" onclick="copyGuideHostLink()">Salin Host URL</button>
-                <span class="copied" id="guideCopiedNotification">Tersalin!</span>
-            </div>
-            
-            <!-- Text Guide Section -->
-            <div id="textGuideSection">
-                <h3 class="text-guide-title" id="textGuideTitle">Panduan Teks</h3>
-                <div class="guide-container" id="guideContent">
-                    <!-- Panduan akan dimuat di sini secara dinamis -->
-                </div>
-            </div>
-            
-            <div id="appDownloadSection" style="display: none;">
-                <a href="#" class="download-btn" id="appDownloadLink" target="_blank">
-                    <i class="fas fa-download"></i> <span id="download-app-text">Download Aplikasi</span>
-                </a>
-            </div>
-        </div>
-    </div>
+<body class="text-gray-200 antialiased">
 
-    <!-- Music Player -->
-    <div class="music-player">
-        <button class="music-control" id="musicToggle">
-            <i class="fas fa-play" id="musicIcon"></i>
-        </button>
-        <div class="music-info" id="music-info">
-            Background Music
-        </div>
-        <audio id="bgMusic" loop>
-            <!-- Replace with your actual audio file -->
-            <source src="https://cdn.discordapp.com/attachments/1364895640345247811/1429261422814035988/SnapTik.Net_7544896398378995000.mp3.m4a?ex=68f9736d&is=68f821ed&hm=e848543c6e0bbe28c7b6540cac48fb252a1cb341acc37d051b47ae5bb0293571&" type="audio/mpeg">
-        </audio>
+<!-- LOADING SCREEN -->
+<div id="loadingScreen" class="loader">
+    <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-28 h-28 rounded-full object-cover border-2 border-indigo-400/50 shadow-2xl mb-4">
+    <div class="text-xl font-medium text-indigo-200 tracking-wider">Loading...</div>
+    <div class="w-32 h-1 mt-4 bg-indigo-900/50 rounded-full overflow-hidden">
+        <div class="h-full w-2/3 bg-indigo-400 rounded-full animate-pulse"></div>
     </div>
-    
+</div>
+
+<!-- BACKGROUND IMAGE -->
+<div class="fixed inset-0 z-[-1]">
+    <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-70">
+    <div class="absolute inset-0 bg-black/50 backdrop-brightness-75"></div>
+</div>
+
+<!-- MUSIC PLAYER + LANGUAGE TOGGLE -->
+<div class="fixed bottom-6 right-6 z-40 flex gap-3">
     <!-- Language Toggle -->
-    <div class="language-toggle" id="languageToggle">
-        <div class="language-flag" id="languageFlag">🇮🇩</div>
-        <div class="language-text" id="languageText">ID</div>
+    <div id="langToggle" class="lang-toggle card-glass rounded-full px-4 py-2 flex items-center gap-2 shadow-xl cursor-pointer">
+        <span id="langFlag" class="text-xl">🇮🇩</span>
+        <span id="langText" class="text-xs font-medium text-white/80 hidden sm:inline">ID</span>
     </div>
-    
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <span id="notificationText">Berhasil disalin!</span>
+    <!-- Music Player -->
+    <div class="music-widget card-glass rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
+        <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-indigo-600 hover:bg-indigo-500 flex items-center justify-center transition shadow-md">
+            <i class="fas fa-play text-white text-sm"></i>
+        </button>
+        <button id="musicMuteBtn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition">
+            <i class="fas fa-volume-up text-white/80 text-sm"></i>
+        </button>
+        <span class="text-xs font-medium text-white/70 hidden sm:inline">Eldoria OST</span>
     </div>
-    
-    <script>
-        // Language configuration
+</div>
+<audio id="bgMusic" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- NAVBAR -->
+<nav class="glass-nav fixed top-0 left-0 w-full z-30 py-2 px-4 md:px-8 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+        <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border border-indigo-400/40">
+        <span class="font-bold text-lg text-white drop-shadow">ELDORIA</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <a href="#home" data-i18n="nav_home" class="hover:text-indigo-300 transition">Home</a>
+        <a href="#download" data-i18n="nav_download" class="hover:text-indigo-300 transition">Download</a>
+        <a href="#tutorial" data-i18n="nav_tutorial" class="hover:text-indigo-300 transition">Tutorial</a>
+        <a href="#role" data-i18n="nav_role" class="hover:text-indigo-300 transition">Role</a>
+        <a href="#community" data-i18n="nav_community" class="hover:text-indigo-300 transition">Community</a>
+    </div>
+    <div class="md:hidden">
+        <button id="mobileMenuBtn" class="text-white text-xl"><i class="fas fa-bars"></i></button>
+    </div>
+</nav>
+<!-- Mobile menu -->
+<div id="mobileMenu" class="fixed top-16 left-0 w-full glass-nav py-4 px-6 flex flex-col gap-3 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
+    <a href="#home" data-i18n="nav_home" class="py-1">Home</a>
+    <a href="#download" data-i18n="nav_download" class="py-1">Download</a>
+    <a href="#tutorial" data-i18n="nav_tutorial" class="py-1">Tutorial</a>
+    <a href="#role" data-i18n="nav_role" class="py-1">Role</a>
+    <a href="#community" data-i18n="nav_community" class="py-1">Community</a>
+</div>
+
+<!-- MAIN -->
+<main class="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-16">
+
+    <!-- HERO -->
+    <section id="home" class="fade-in-section text-center mb-16">
+        <div class="flex justify-center mb-4">
+            <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="hero-logo w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-indigo-500/60 shadow-[0_0_40px_rgba(99,102,241,0.4)]">
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg" data-i18n="hero_title">ELDORIA PRIVATE SERVER</h1>
+        <p class="text-indigo-200 text-lg md:text-xl mt-2" data-i18n="hero_subtitle">Growtopia Private Server • High Peak 22+ Online</p>
+        <p class="text-gray-300 text-sm mt-1" data-i18n="hero_server">Server: [ EldoriaPs ]</p>
+        <div class="flex flex-wrap justify-center gap-4 mt-8">
+            <a href="#download" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-download mr-2"></i><span data-i18n="btn_download">Download</span></a>
+            <a href="#tutorial" class="bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 text-white font-semibold px-8 py-3 rounded-full transition"><i class="fas fa-book-open mr-2"></i><span data-i18n="btn_tutorial">Tutorial</span></a>
+            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition"><i class="fas fa-copy mr-2"></i><span data-i18n="btn_copy_host">COPY HOST</span></button>
+        </div>
+    </section>
+
+    <!-- SERVER INFO -->
+    <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+        <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center"><i class="fas fa-circle text-green-400 text-xl"></i></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400" data-i18n="status_label">Status</p><p class="text-2xl font-bold text-green-300" data-i18n="status_online">ONLINE</p></div>
+        </div>
+        <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center"><i class="fas fa-users text-indigo-300 text-xl"></i></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400" data-i18n="players_label">Player Online</p><p class="text-2xl font-bold" id="playerCount">12</p></div>
+        </div>
+        <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center"><i class="fas fa-calendar text-amber-300 text-xl"></i></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400" data-i18n="version_label">Version</p><p class="text-xl font-semibold">v4.20</p></div>
+        </div>
+    </section>
+
+    <!-- SHOWCASE CAROUSEL -->
+    <section class="fade-in-section mb-20">
+        <h2 class="text-3xl font-bold text-white mb-6 flex items-center"><i class="fas fa-images text-indigo-400 mr-3"></i><span data-i18n="showcase_title">Showcase</span></h2>
+        <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-white/10">
+            <div id="carouselContainer" class="flex transition-transform duration-500 ease-out"></div>
+            <button id="carouselPrev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-left"></i></button>
+            <button id="carouselNext" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-right"></i></button>
+            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2" id="carouselDots"></div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2 text-center" data-i18n="showcase_note">📸 Ganti gambar di array images (pakai imgbb)</p>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section id="download" class="fade-in-section mb-20 scroll-mt-20">
+        <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-indigo-400 mr-3"></i><span data-i18n="download_title">Download & Host</span></h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Android -->
+            <div class="card-glass rounded-2xl p-6">
+                <div class="text-3xl mb-3 text-green-400"><i class="fab fa-android"></i></div>
+                <h3 class="text-xl font-bold">Android</h3>
+                <div class="mt-4 space-y-3">
+                    <a href="https://pixeldrain.com/u/oPTKGVau" target="_blank" class="block w-full bg-indigo-600/80 hover:bg-indigo-500 text-center py-2 rounded-lg text-sm font-medium transition"><i class="fas fa-gamepad mr-2"></i><span data-i18n="dl_apk">Download Eldoria APK</span></a>
+                    <a href="https://sfile.mobi/7SNc2kJhLyj" target="_blank" class="block w-full bg-white/10 hover:bg-white/20 text-center py-2 rounded-lg text-sm transition"><i class="fas fa-bolt mr-2"></i><span data-i18n="dl_pt">PowerTunnel (Host App)</span></a>
+                    <div class="bg-black/30 rounded-lg p-3 mt-3 border border-white/10">
+                        <p class="text-xs text-gray-300 mb-1" data-i18n="host_url_label">Host URL:</p>
+                        <code class="text-indigo-200 text-sm break-all">https://gtpshost.com/raw/Eldoriapss</code>
+                        <button data-copy="https://gtpshost.com/raw/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy_host_small">Copy Host</span></button>
+                    </div>
+                </div>
+            </div>
+            <!-- iOS -->
+            <div class="card-glass rounded-2xl p-6">
+                <div class="text-3xl mb-3 text-gray-300"><i class="fab fa-apple"></i></div>
+                <h3 class="text-xl font-bold">iOS</h3>
+                <div class="mt-4 space-y-3">
+                    <div class="bg-black/30 rounded-lg p-3">
+                        <p class="text-sm" data-i18n="ios_guide">Gunakan Surge 5 / iOS profile:</p>
+                        <code class="text-indigo-200 text-sm break-all">https://gtpshost.com/ios/Eldoriapss</code>
+                        <button data-copy="https://gtpshost.com/ios/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy_ios">Copy iOS Host</span></button>
+                    </div>
+                    <p class="text-xs text-gray-400" data-i18n="ios_note">Buka link di Safari, install profile.</p>
+                </div>
+            </div>
+            <!-- Windows -->
+            <div class="card-glass rounded-2xl p-6">
+                <div class="text-3xl mb-3 text-blue-400"><i class="fab fa-windows"></i></div>
+                <h3 class="text-xl font-bold">Windows</h3>
+                <div class="mt-4">
+                    <div class="bg-black/40 rounded-lg p-3 font-mono text-xs">
+                        168.144.33.116 www.growtopia1.com<br>
+                        168.144.33.116 www.growtopia2.com
+                    </div>
+                    <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/70 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy_windows">Copy Windows Host</span></button>
+                    <p class="text-xs text-gray-400 mt-2" data-i18n="windows_note">Edit C:\Windows\System32\drivers\etc\hosts (admin)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOST SYSTEM -->
+    <section class="fade-in-section mb-20">
+        <div class="card-glass rounded-2xl p-6 border-l-4 border-indigo-500">
+            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-indigo-300"></i><span data-i18n="host_system_title">Host System (PowerTunnel / HostGo)</span></h3>
+            <div class="mt-4 bg-black/40 rounded-xl p-5 border border-white/10">
+                <p class="text-sm text-gray-300 mb-2" data-i18n="host_system_desc">Host ini digunakan untuk menghubungkan ke server. Copy lalu paste ke PowerTunnel atau HostGo. Jangan dibuka di browser.</p>
+                <div class="flex items-stretch gap-2">
+                    <code class="flex-1 bg-gray-900/80 p-3 rounded-lg text-indigo-200 text-sm break-all border border-indigo-500/30">https://gtpshost.com/raw/Eldoriapss</code>
+                    <button id="mainCopyHostBtn" class="bg-indigo-600 hover:bg-indigo-500 px-5 rounded-lg transition"><i class="far fa-copy mr-1"></i><span data-i18n="btn_copy">COPY</span></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TUTORIAL + VIDEO -->
+    <section id="tutorial" class="fade-in-section mb-20 scroll-mt-20">
+        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-indigo-400 mr-3"></i><span data-i18n="tutorial_title">Tutorial Singkat</span></h2>
+        
+        <!-- Video Tutorial -->
+        <div class="card-glass rounded-2xl p-5 mb-8">
+            <h3 class="text-xl font-semibold mb-3"><i class="fab fa-youtube text-red-400 mr-2"></i><span data-i18n="video_tutorial">Video Tutorial PowerTunnel</span></h3>
+            <div class="relative w-full rounded-xl overflow-hidden" style="padding-bottom: 56.25%;">
+                <video controls class="absolute top-0 left-0 w-full h-full object-cover" poster="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg">
+                    <source src="https://qu.ax/TAKnO.mp4" type="video/mp4">
+                    <span data-i18n="video_not_supported">Browser kamu tidak mendukung video.</span>
+                </video>
+            </div>
+            <p class="text-xs text-gray-400 mt-2" data-i18n="video_note">Tonton video di atas untuk panduan visual.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="card-glass rounded-2xl p-5">
+                <div class="text-2xl mb-2">📱 Android</div>
+                <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
+                    <li data-i18n="tut_android_1">Download APK & PowerTunnel</li>
+                    <li data-i18n="tut_android_2">Install PowerTunnel</li>
+                    <li data-i18n="tut_android_3">Copy host (tombol di atas)</li>
+                    <li data-i18n="tut_android_4">Paste ke PowerTunnel > Host Settings</li>
+                    <li data-i18n="tut_android_5">Jalankan, buka Growtopia</li>
+                </ol>
+            </div>
+            <div class="card-glass rounded-2xl p-5">
+                <div class="text-2xl mb-2">💻 Windows</div>
+                <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
+                    <li data-i18n="tut_win_1">Buka notepad sebagai admin</li>
+                    <li data-i18n="tut_win_2">Edit file: C:\Windows\System32\drivers\etc\hosts</li>
+                    <li data-i18n="tut_win_3">Tambahkan dua baris IP (copy di atas)</li>
+                    <li data-i18n="tut_win_4">Simpan, jalankan Growtopia</li>
+                </ol>
+            </div>
+            <div class="card-glass rounded-2xl p-5">
+                <div class="text-2xl mb-2">🍎 iOS</div>
+                <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
+                    <li data-i18n="tut_ios_1">Copy iOS host link</li>
+                    <li data-i18n="tut_ios_2">Buka di Safari, install profile</li>
+                    <li data-i18n="tut_ios_3">Buka Growtopia</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROLE & COMMAND -->
+    <section id="role" class="fade-in-section mb-20 scroll-mt-20">
+        <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i><span data-i18n="role_title">Role & Command</span></h2>
+        <p class="text-gray-300 mb-6" data-i18n="role_desc">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
+        <div id="roleContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community" class="fade-in-section mb-12 scroll-mt-20">
+        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-indigo-400 mr-3"></i><span data-i18n="community_title">Community</span></h2>
+        <div class="flex flex-wrap gap-5 justify-center">
+            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
+                <i class="fab fa-whatsapp text-3xl text-green-400"></i> <span class="font-semibold">WhatsApp Group</span>
+            </a>
+            <a href="https://discord.gg/NbqthCwaqT" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
+                <i class="fab fa-discord text-3xl text-indigo-300"></i> <span class="font-semibold">Discord Server</span>
+            </a>
+            <a href="https://www.instagram.com/eldoria_private_server" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
+                <i class="fab fa-instagram text-3xl text-pink-400"></i> <span class="font-semibold">@eldoria_private_server</span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="text-center text-gray-400 text-sm border-t border-white/10 pt-8 mt-8">
+        <p>© 2025 Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.</p>
+    </footer>
+</main>
+
+<script>
+    (function(){
+        "use strict";
+
+        // ---------- TRANSLATIONS ----------
         const translations = {
             id: {
-                // Profile
-                'profile-title': 'Eldoria Private Server',
-                'profile-subtitle': 'Growtopia Private Server',
-                'profile-bio1': 'high peak Online 22 in game!',
-                'profile-bio2': 'Nama Server ketika buat akun / login kembali: [ EldoriaPs ]',
-                
-                // Sections
-                'section-host': '🚀 Eldoria Host',
-                'section-download': '📱 Download Eldoria Apk',
-                'section-apps': '🎮 Aplikasi Untuk Bermain',
-                'section-join': '📱 Join Grup Kami',
-                
-                // Host Cards
-                'powertunnel-title': 'PowerTunnel Host',
-                'powertunnel-desc': 'Klik Untuk Host dan Panduan!',
-                'powertunnel-badge': 'LINK',
-                
-                'hostsgo-title': 'Host GO',
-                'hostsgo-desc': 'Klik Untuk Host dan Panduan!',
-                'hostsgo-badge': 'LINK',
-                
-                'virtualhost-title': 'Virtual Host',
-                'virtualhost-desc': 'Klik Untuk Host dan Panduan!',
-                'virtualhost-badge': 'LINK',
-                
-                'ios-title': 'iOS Host',
-                'ios-desc': 'Klik Untuk Host dan Panduan!',
-                'ios-badge': 'LINK',
-                
-                'windows-title': 'Windows Host',
-                'windows-desc': 'Klik Untuk Host dan Panduan!',
-                'windows-badge': 'LINK',
-                
-                // Download Section
-                'apk-title': 'Eldoria APK',
-                'apk-desc': 'Aplikasi Growtopia langsung main tanpa host!',
-                'apk-badge': 'DIRECT',
-                
-                // Apps Section
-                'app-pt-title': 'Powertunnel',
-                'app-pt-desc': 'Download Aplikasi Powertunnel',
-                'app-pt-badge': 'DOWNLOAD',
-                
-                'app-vh-title': 'Virtual Host',
-                'app-vh-desc': 'Download Aplikasi Virtual Host',
-                'app-vh-badge': 'DOWNLOAD',
-                
-                // Join Section
-                'wa-title': 'WhatsApp Group',
-                'wa-desc': 'Grup diskusi & support WhatsApp',
-                
-                // Instagram - Ditambahkan di sini
-                'instagram-title': 'Instagram',
-                'instagram-desc': 'Follow Instagram Eldoria Ps!',
-                
-                'discord-title': 'Discord Server',
-                'discord-desc': 'Komunitas Discord Eldoria Ps!',
-                
-                // Footer
-                'footer-text': '© 2024 Eldoria Ps. All rights reserved.',
-                
-                // Modal Texts
-                'modalHostTitle': 'Host Link',
-                'copy-host-btn': 'Salin',
-                'copiedNotification': 'Tersalin!',
-                
-                'windows-modal-title': 'Windows Host Links',
-                'copy-windows-btn': 'Salin Semua',
-                
-                'guideModalTitle': 'Panduan Penggunaan',
-                'copy-guide-btn': 'Salin Host URL',
-                'guideCopiedNotification': 'Tersalin!',
-                'download-app-text': 'Download Aplikasi',
-                
-                // Music Player
-                'music-info': 'Background Music',
-                
-                // Video Tutorial
-                'videoTitle': 'Video Tutorial',
-                'videoNote': 'Tonton video di atas untuk panduan visual, atau lihat panduan teks di bawah jika koneksi internet lambat',
-                'textGuideTitle': 'Panduan Teks',
-                
-                // Notifications
-                'notification-copied': 'Berhasil disalin!',
-                'notification-copy-failed': 'Gagal menyalin, coba lagi',
-                'notification-audio-failed': 'Silakan klik lagi untuk memutar musik',
-                'notification-language-changed': 'Bahasa diubah ke Indonesia'
+                nav_home: 'Home', nav_download: 'Download', nav_tutorial: 'Tutorial', nav_role: 'Role', nav_community: 'Community',
+                hero_title: 'ELDORIA PRIVATE SERVER', hero_subtitle: 'Growtopia Private Server • High Peak 22+ Online', hero_server: 'Server: [ EldoriaPs ]',
+                btn_download: 'Download', btn_tutorial: 'Tutorial', btn_copy_host: 'COPY HOST',
+                status_label: 'Status', status_online: 'ONLINE', players_label: 'Player Online', version_label: 'Version',
+                showcase_title: 'Showcase', showcase_note: '📸 Ganti gambar di array images (pakai imgbb)',
+                download_title: 'Download & Host',
+                dl_apk: 'Download Eldoria APK', dl_pt: 'PowerTunnel (Host App)', host_url_label: 'Host URL:', btn_copy_host_small: 'Copy Host',
+                ios_guide: 'Gunakan Surge 5 / iOS profile:', btn_copy_ios: 'Copy iOS Host', ios_note: 'Buka link di Safari, install profile.',
+                btn_copy_windows: 'Copy Windows Host', windows_note: 'Edit C:\\Windows\\System32\\drivers\\etc\\hosts (admin)',
+                host_system_title: 'Host System (PowerTunnel / HostGo)', host_system_desc: 'Host ini digunakan untuk menghubungkan ke server. Copy lalu paste ke PowerTunnel atau HostGo. Jangan dibuka di browser.',
+                btn_copy: 'COPY',
+                tutorial_title: 'Tutorial Singkat', video_tutorial: 'Video Tutorial PowerTunnel', video_not_supported: 'Browser kamu tidak mendukung video.', video_note: 'Tonton video di atas untuk panduan visual.',
+                tut_android_1: 'Download APK & PowerTunnel', tut_android_2: 'Install PowerTunnel', tut_android_3: 'Copy host (tombol di atas)', tut_android_4: 'Paste ke PowerTunnel > Host Settings', tut_android_5: 'Jalankan, buka Growtopia',
+                tut_win_1: 'Buka notepad sebagai admin', tut_win_2: 'Edit file: C:\\Windows\\System32\\drivers\\etc\\hosts', tut_win_3: 'Tambahkan dua baris IP (copy di atas)', tut_win_4: 'Simpan, jalankan Growtopia',
+                tut_ios_1: 'Copy iOS host link', tut_ios_2: 'Buka di Safari, install profile', tut_ios_3: 'Buka Growtopia',
+                role_title: 'Role & Command', role_desc: 'Klik role untuk melihat command. Hubungi admin untuk pembelian.',
+                community_title: 'Community',
+                toast_copied: '✅ Host disalin!', toast_failed: '❌ Gagal menyalin',
+                contact: 'Contact', buy: 'Beli', click_command: 'Klik untuk command'
             },
             en: {
-                // Profile
-                'profile-title': 'Eldoria Private Server',
-                'profile-subtitle': 'Growtopia Private Server',
-                'profile-bio1': 'high peak Online 22 in game!',
-                'profile-bio2': 'Server Name when creating account / login again: [ EldoriaPs ]',
-                
-                // Sections
-                'section-host': '🚀 Eldoria Host',
-                'section-download': '📱 Download Eldoria Apk',
-                'section-apps': '🎮 Apps to Play',
-                'section-join': '📱 Join Our Groups',
-                
-                // Host Cards
-                'powertunnel-title': 'PowerTunnel Host',
-                'powertunnel-desc': 'Click For Host and Guide!',
-                'powertunnel-badge': 'LINK',
-                
-                'hostsgo-title': 'Host GO',
-                'hostsgo-desc': 'Click For Host and Guide!',
-                'hostsgo-badge': 'LINK',
-                
-                'virtualhost-title': 'Virtual Host',
-                'virtualhost-desc': 'Click For Host and Guide!',
-                'virtualhost-badge': 'LINK',
-                
-                'ios-title': 'iOS Host',
-                'ios-desc': 'Click For Host and Guide!',
-                'ios-badge': 'LINK',
-                
-                'windows-title': 'Windows Host',
-                'windows-desc': 'Click For Host and Guide!',
-                'windows-badge': 'LINK',
-                
-                // Download Section
-                'apk-title': 'Eldoria APK',
-                'apk-desc': 'Growtopia app to play directly without host!',
-                'apk-badge': 'DIRECT',
-                
-                // Apps Section
-                'app-pt-title': 'Powertunnel',
-                'app-pt-desc': 'Download Powertunnel App',
-                'app-pt-badge': 'DOWNLOAD',
-                
-                'app-vh-title': 'Virtual Host',
-                'app-vh-desc': 'Download Virtual Host App',
-                'app-vh-badge': 'DOWNLOAD',
-                
-                // Join Section
-                'wa-title': 'WhatsApp Group',
-                'wa-desc': 'Discussion & support WhatsApp group',
-                
-                // Instagram - Ditambahkan di sini
-                'instagram-title': 'Instagram',
-                'instagram-desc': 'Follow Eldoria Ps Instagram!',
-                
-                'discord-title': 'Discord Server',
-                'discord-desc': 'Eldoria Ps Discord Community!',
-                
-                // Footer
-                'footer-text': '© 2024 Eldoria Ps. All rights reserved.',
-                
-                // Modal Texts
-                'modalHostTitle': 'Host Link',
-                'copy-host-btn': 'Copy',
-                'copiedNotification': 'Copied!',
-                
-                'windows-modal-title': 'Windows Host Links',
-                'copy-windows-btn': 'Copy All',
-                
-                'guideModalTitle': 'Usage Guide',
-                'copy-guide-btn': 'Copy Host URL',
-                'guideCopiedNotification': 'Copied!',
-                'download-app-text': 'Download App',
-                
-                // Music Player
-                'music-info': 'Background Music',
-                
-                // Video Tutorial
-                'videoTitle': 'Video Tutorial',
-                'videoNote': 'Watch the video above for visual guide, or see text guide below if internet connection is slow',
-                'textGuideTitle': 'Text Guide',
-                
-                // Notifications
-                'notification-copied': 'Successfully copied!',
-                'notification-copy-failed': 'Failed to copy, try again',
-                'notification-audio-failed': 'Please click again to play music',
-                'notification-language-changed': 'Language changed to English'
+                nav_home: 'Home', nav_download: 'Download', nav_tutorial: 'Tutorial', nav_role: 'Roles', nav_community: 'Community',
+                hero_title: 'ELDORIA PRIVATE SERVER', hero_subtitle: 'Growtopia Private Server • High Peak 22+ Online', hero_server: 'Server: [ EldoriaPs ]',
+                btn_download: 'Download', btn_tutorial: 'Tutorial', btn_copy_host: 'COPY HOST',
+                status_label: 'Status', status_online: 'ONLINE', players_label: 'Players Online', version_label: 'Version',
+                showcase_title: 'Showcase', showcase_note: '📸 Replace images in array (use imgbb)',
+                download_title: 'Download & Host',
+                dl_apk: 'Download Eldoria APK', dl_pt: 'PowerTunnel (Host App)', host_url_label: 'Host URL:', btn_copy_host_small: 'Copy Host',
+                ios_guide: 'Use Surge 5 / iOS profile:', btn_copy_ios: 'Copy iOS Host', ios_note: 'Open link in Safari, install profile.',
+                btn_copy_windows: 'Copy Windows Host', windows_note: 'Edit C:\\Windows\\System32\\drivers\\etc\\hosts (admin)',
+                host_system_title: 'Host System (PowerTunnel / HostGo)', host_system_desc: 'This host is used to connect to the server. Copy and paste into PowerTunnel or HostGo. Do not open in browser.',
+                btn_copy: 'COPY',
+                tutorial_title: 'Quick Tutorial', video_tutorial: 'PowerTunnel Video Tutorial', video_not_supported: 'Your browser does not support video.', video_note: 'Watch the video above for visual guide.',
+                tut_android_1: 'Download APK & PowerTunnel', tut_android_2: 'Install PowerTunnel', tut_android_3: 'Copy host (button above)', tut_android_4: 'Paste into PowerTunnel > Host Settings', tut_android_5: 'Run, open Growtopia',
+                tut_win_1: 'Open notepad as admin', tut_win_2: 'Edit: C:\\Windows\\System32\\drivers\\etc\\hosts', tut_win_3: 'Add the two IP lines (copy above)', tut_win_4: 'Save, run Growtopia',
+                tut_ios_1: 'Copy iOS host link', tut_ios_2: 'Open in Safari, install profile', tut_ios_3: 'Open Growtopia',
+                role_title: 'Roles & Commands', role_desc: 'Click role to see commands. Contact admin to purchase.',
+                community_title: 'Community',
+                toast_copied: '✅ Host copied!', toast_failed: '❌ Failed to copy',
+                contact: 'Contact', buy: 'Buy', click_command: 'Click for commands'
             }
         };
 
-        // Panduan penggunaan dalam dua bahasa dengan link yang diperbarui
-        const guides = {
-            powertunnel: {
-                title: {
-                    id: "Panduan PowerTunnel",
-                    en: "PowerTunnel Guide"
-                },
-                hostLink: "https://gtpshost.com/raw/EldoriaPss",
-                appDownloadLink: "https://sfile.mobi/7SNc2kJhLyj",
-                videoUrl: "https://qu.ax/TAKnO.mp4",
-                steps: {
-                    id: [
-                        {
-                            title: "Langkah 1: Download Aplikasi",
-                            content: "Download aplikasi PowerTunnel dari link di atas"
-                        },
-                        {
-                            title: "Langkah 2: Salin Host URL",
-                            content: "Klik tombol 'Salin Host URL' di atas untuk menyalin host URL"
-                        },
-                        {
-                            title: "Langkah 3: Pengaturan Host",
-                            content: "Buka PowerTunnel, ketuk menu (☰), lalu pilih 'Host Settings'"
-                        },
-                        {
-                            title: "Langkah 4: Tempel URL",
-                            content: "Tempel URL yang disalin, lalu atur host update period menjadi 'on start'"
-                        },
-                        {
-                            title: "Langkah 5: Nikmati Server",
-                            content: "Buka Growtopia dan nikmati server pribadimu!"
-                        }
-                    ],
-                    en: [
-                        {
-                            title: "Step 1: Download App",
-                            content: "Download PowerTunnel app from the link above"
-                        },
-                        {
-                            title: "Step 2: Copy Host URL",
-                            content: "Click the 'Copy Host URL' button above to copy the host URL"
-                        },
-                        {
-                            title: "Step 3: Host Settings",
-                            content: "Open PowerTunnel, tap the menu (☰), then select 'Host Settings'"
-                        },
-                        {
-                            title: "Step 4: Paste URL",
-                            content: "Paste the copied URL, then set the host update period to 'on start'"
-                        },
-                        {
-                            title: "Step 5: Enjoy the Server",
-                            content: "Open Growtopia and enjoy your private server!"
-                        }
-                    ]
-                }
-            },
-            hostsgo: {
-                title: {
-                    id: "Panduan Hosts Go",
-                    en: "Hosts Go Guide"
-                },
-                hostLink: "https://gtpshost.com/raw/EldoriaPss",
-                steps: {
-                    id: [
-                        {
-                            title: "Langkah 1: Download Aplikasi",
-                            content: "Unduh dan pasang Hosts Go di perangkat Anda"
-                        },
-                        {
-                            title: "Langkah 2: Buka Hosts Editor",
-                            content: "Buka aplikasi Host GO dan pilih 'Hosts Editor'"
-                        },
-                        {
-                            title: "Langkah 3: Download Hosts File",
-                            content: "Tap ⋮ (titik tiga) di pojok kanan atas, lalu pilih 'Download Hosts File'"
-                        },
-                        {
-                            title: "Langkah 4: Tempel URL",
-                            content: "Klik tombol 'Salin Host URL' di atas lalu tempelkan ke Hosts Go"
-                        },
-                        {
-                            title: "Langkah 5: Terapkan Host",
-                            content: "Pilih 'Download and Apply'"
-                        },
-                        {
-                            title: "Langkah 6: Mulai",
-                            content: "Kembali dan ketuk 'START'"
-                        },
-                        {
-                            title: "Langkah 7: Nikmati",
-                            content: "Buka Growtopia dan nikmati!"
-                        }
-                    ],
-                    en: [
-                        {
-                            title: "Step 1: Download App",
-                            content: "Download and install Hosts Go on your device"
-                        },
-                        {
-                            title: "Step 2: Open Hosts Editor",
-                            content: "Open the Host GO app and select 'Hosts Editor'"
-                        },
-                        {
-                            title: "Step 3: Download Hosts File",
-                            content: "Tap ⋮ (three dots) in the top right corner, then select 'Download Hosts File'"
-                        },
-                        {
-                            title: "Step 4: Paste URL",
-                            content: "Click the 'Copy Host URL' button above then paste it to Hosts Go"
-                        },
-                        {
-                            title: "Step 5: Apply Host",
-                            content: "Select 'Download and Apply'"
-                        },
-                        {
-                            title: "Step 6: Start",
-                            content: "Go back and tap 'START'"
-                        },
-                        {
-                            title: "Step 7: Enjoy",
-                            content: "Open Growtopia and enjoy!"
-                        }
-                    ]
-                }
-            },
-            virtualhost: {
-                title: {
-                    id: "Panduan Virtual Host",
-                    en: "Virtual Host Guide"
-                },
-                hostLink: "https://www.mediafire.com/file/wwuo0q96l51doxy/EldoriaPss+-+GTPSHOST+(1).txt/file",
-                appDownloadLink: "https://sfile.mobi/4xXabY4QEEP",
-                videoUrl: "https://files.catbox.moe/bdanii.mp4",
-                steps: {
-                    id: [
-                        {
-                            title: "Langkah 1: Download File Host",
-                            content: "Download file host di link yang sudah disediakan (gunakan tombol salin di atas)"
-                        },
-                        {
-                            title: "Langkah 2: Buka Aplikasi",
-                            content: "Buka aplikasi Virtual Host"
-                        },
-                        {
-                            title: "Langkah 3: Pilih File",
-                            content: "Pencet tombol 're-select file' dan cari file txt yang sudah didownload"
-                        },
-                        {
-                            title: "Langkah 4: Aktifkan Host",
-                            content: "Pencet tombol di atas 're-select' untuk mengaktifkan host"
-                        },
-                        {
-                            title: "Langkah 5: Mainkan Game",
-                            content: "Masuk ke Growtopia untuk bermain!"
-                        }
-                    ],
-                    en: [
-                        {
-                            title: "Step 1: Download Host File",
-                            content: "Download the host file from the provided link (use the copy button above)"
-                        },
-                        {
-                            title: "Step 2: Open App",
-                            content: "Open the Virtual Host app"
-                        },
-                        {
-                            title: "Step 3: Select File",
-                            content: "Press the 're-select file' button and find the downloaded txt file"
-                        },
-                        {
-                            title: "Step 4: Activate Host",
-                            content: "Press the button above 're-select' to activate the host"
-                        },
-                        {
-                            title: "Step 5: Play Game",
-                            content: "Enter Growtopia to play!"
-                        }
-                    ]
-                }
-            },
-            ios: {
-                title: {
-                    id: "Panduan iOS Host",
-                    en: "iOS Host Guide"
-                },
-                hostLink: "https://gtpshost.com/ios/EldoriaPss",
-                steps: {
-                    id: [
-                        {
-                            title: "Langkah 1: Download Aplikasi Surge 5",
-                            content: "Download aplikasi 'Surge 5' dari App Store"
-                        },
-                        {
-                            title: "Langkah 2: Buka Aplikasi",
-                            content: "Buka aplikasi Surge 5 dan tekan 'OK'"
-                        },
-                        {
-                            title: "Langkah 3: Pilih Default.conf",
-                            content: "Klik pada 'Default.conf'"
-                        },
-                        {
-                            title: "Langkah 4: Import Profile",
-                            content: "Klik 'IMPORT' > 'Download Profile from URL'"
-                        },
-                        {
-                            title: "Langkah 5: Tempel URL Host",
-                            content: "Tempel URL yang telah disalin ketika menekan tombol iOS host di atas, lalu klik 'OK' dan 'Done'"
-                        },
-                        {
-                            title: "Langkah 6: Setup VPN",
-                            content: "Tekan 'SETUP', setujui kebijakan, lalu klik 'OK' dan 'Allow' untuk konfigurasi VPN"
-                        },
-                        {
-                            title: "Langkah 7: Selesai!",
-                            content: "Sekarang buka Growtopia dan nikmati server Eldoria!"
-                        }
-                    ],
-                    en: [
-                        {
-                            title: "Step 1: Download Surge 5 App",
-                            content: "Download 'Surge 5' app from App Store"
-                        },
-                        {
-                            title: "Step 2: Open App",
-                            content: "Open Surge 5 app and press 'OK'"
-                        },
-                        {
-                            title: "Step 3: Select Default.conf",
-                            content: "Click on 'Default.conf'"
-                        },
-                        {
-                            title: "Step 4: Import Profile",
-                            content: "Click 'IMPORT' > 'Download Profile from URL'"
-                        },
-                        {
-                            title: "Step 5: Paste Host URL",
-                            content: "Paste the URL you copied when pressing the iOS host button above, then click 'OK' and 'Done'"
-                        },
-                        {
-                            title: "Step 6: Setup VPN",
-                            content: "Press 'SETUP', agree to the policy, then click 'OK' and 'Allow' for VPN configuration"
-                        },
-                        {
-                            title: "Step 7: Done!",
-                            content: "Now open Growtopia and enjoy Eldoria server!"
-                        }
-                    ]
-                }
-            },
-            windows: {
-                title: {
-                    id: "Panduan Windows Host",
-                    en: "Windows Host Guide"
-                },
-                hostLink: "",
-                steps: {
-                    id: [
-                        {
-                            title: "Langkah 1: Buka File Hosts",
-                            content: "Tekan ⊞ Win + R untuk membuka jendela Run, lalu ketik C:\\Windows\\System32\\drivers\\etc dan tekan Enter"
-                        },
-                        {
-                            title: "Langkah 2: Edit File Hosts",
-                            content: "Cari dan klik kanan file 'hosts', lalu buka dengan Notepad (jalankan sebagai Administrator jika perlu)"
-                        },
-                        {
-                            title: "Langkah 3: Tambahkan Host",
-                            content: "Tambahkan IP & DOMAIN berikut ke bagian bawah file hosts:",
-                            code: `146.190.89.21 www.growtopia1.com
-146.190.89.21 www.growtopia2.com`
-                        },
-                        {
-                            title: "Langkah 4: Simpan Perubahan",
-                            content: "Simpan file lalu buka Growtopia untuk terhubung!"
-                        }
-                    ],
-                    en: [
-                        {
-                            title: "Step 1: Open Hosts File",
-                            content: "Press ⊞ Win + R to open Run window, then type C:\\Windows\\System32\\drivers\\etc and press Enter"
-                        },
-                        {
-                            title: "Step 2: Edit Hosts File",
-                            content: "Find and right-click the 'hosts' file, then open with Notepad (run as Administrator if needed)"
-                        },
-                        {
-                            title: "Step 3: Add Host",
-                            content: "Add the following IP & DOMAIN to the bottom of the hosts file:",
-                            code: `146.190.89.21 www.growtopia1.com
-146.190.89.21 www.growtopia2.com`
-                        },
-                        {
-                            title: "Step 4: Save Changes",
-                            content: "Save the file then open Growtopia to connect!"
-                        }
-                    ]
-                }
-            }
-        };
-
-        // Current language state
-        let currentLanguage = 'id';
-
-        // Function to change language
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            
-            // Update all text elements
-            Object.keys(translations[lang]).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = translations[lang][key];
+        let currentLang = 'id';
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
                 }
             });
-            
-            // Update language toggle
-            const languageFlag = document.getElementById('languageFlag');
-            const languageText = document.getElementById('languageText');
-            
-            if (lang === 'id') {
-                languageFlag.textContent = '🇮🇩';
-                languageText.textContent = 'ID';
-            } else {
-                languageFlag.textContent = '🇺🇸';
-                languageText.textContent = 'EN';
-            }
-            
-            // Show notification
-            showNotification(translations[lang]['notification-language-changed']);
-            
-            // If a guide modal is open, refresh it
-            if (document.getElementById('guideModal').style.display === 'flex') {
-                const currentGuide = document.getElementById('guideModalTitle').getAttribute('data-current-guide');
-                if (currentGuide) {
-                    showGuideModal(currentGuide);
-                }
-            }
+            // Update flag
+            document.getElementById('langFlag').textContent = lang === 'id' ? '🇮🇩' : '🇺🇸';
+            document.getElementById('langText').textContent = lang === 'id' ? 'ID' : 'EN';
+            // Re-render roles
+            renderRoles();
+            localStorage.setItem('eldoria_lang', lang);
         }
 
-        // Language toggle event
-        document.getElementById('languageToggle').addEventListener('click', function() {
-            const newLang = currentLanguage === 'id' ? 'en' : 'id';
-            changeLanguage(newLang);
+        document.getElementById('langToggle').addEventListener('click', () => {
+            setLanguage(currentLang === 'id' ? 'en' : 'id');
         });
 
-        // Modal functions
-        function showHostModal(title, link) {
-            document.getElementById('modalHostTitle').textContent = title;
-            document.getElementById('hostLinkText').textContent = link;
-            document.getElementById('hostModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function showWindowsModal() {
-            document.getElementById('windowsHostModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function showGuideModal(guideType) {
-            const guide = guides[guideType];
-            if (!guide) return;
-            
-            // Store current guide type for language refresh
-            document.getElementById('guideModalTitle').setAttribute('data-current-guide', guideType);
-            
-            document.getElementById('guideModalTitle').textContent = guide.title[currentLanguage];
-            
-            // Atur host link jika ada
-            const hostLinkSection = document.getElementById('guideHostLinkSection');
-            const hostLinkText = document.getElementById('guideHostLinkText');
-            
-            if (guide.hostLink) {
-                hostLinkSection.style.display = 'block';
-                hostLinkText.textContent = guide.hostLink;
-            } else {
-                hostLinkSection.style.display = 'none';
-            }
-            
-            // Atur video tutorial jika ada - HANYA untuk bahasa Indonesia
-            const videoSection = document.getElementById('videoTutorialSection');
-            const videoContainer = document.getElementById('videoContainer');
-            
-            if (guide.videoUrl && currentLanguage === 'id') {
-                videoSection.style.display = 'block';
-                videoContainer.innerHTML = `<iframe src="${guide.videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            } else {
-                videoSection.style.display = 'none';
-            }
-            
-            // Atur link download aplikasi jika ada
-            const appDownloadSection = document.getElementById('appDownloadSection');
-            const appDownloadLink = document.getElementById('appDownloadLink');
-            
-            if (guide.appDownloadLink) {
-                appDownloadSection.style.display = 'block';
-                appDownloadLink.href = guide.appDownloadLink;
-                
-                // Set text berdasarkan aplikasi
-                if (guideType === 'powertunnel') {
-                    appDownloadLink.innerHTML = `<i class="fas fa-download"></i> <span id="download-app-text">${translations[currentLanguage]['download-app-text']}</span>`;
-                } else if (guideType === 'virtualhost') {
-                    appDownloadLink.innerHTML = `<i class="fas fa-download"></i> <span id="download-app-text">${translations[currentLanguage]['download-app-text']}</span>`;
-                } else {
-                    appDownloadLink.innerHTML = `<i class="fas fa-download"></i> <span id="download-app-text">${translations[currentLanguage]['download-app-text']}</span>`;
-                }
-            } else {
-                appDownloadSection.style.display = 'none';
-            }
-            
-            // Isi konten panduan
-            const guideContent = document.getElementById('guideContent');
-            guideContent.innerHTML = '';
-            
-            // Tampilkan steps untuk semua aplikasi
-            if (guide.steps && guide.steps[currentLanguage].length > 0) {
-                guide.steps[currentLanguage].forEach((step, index) => {
-                    const stepElement = document.createElement('div');
-                    stepElement.className = 'guide-step';
-                    
-                    let stepHTML = `<h4>${step.title}</h4>`;
-                    stepHTML += `<p>${step.content}</p>`;
-                    
-                    if (step.code) {
-                        stepHTML += `<pre class="host-block">${step.code}</pre>`;
-                    }
-                    
-                    stepElement.innerHTML = stepHTML;
-                    guideContent.appendChild(stepElement);
-                });
-            }
-            
-            document.getElementById('guideModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeHostModal() {
-            document.getElementById('hostModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        function closeWindowsModal() {
-            document.getElementById('windowsHostModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        function closeGuideModal() {
-            document.getElementById('guideModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Close when clicking outside modal
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('hostModal')) {
-                closeHostModal();
-            }
-            if (event.target == document.getElementById('windowsHostModal')) {
-                closeWindowsModal();
-            }
-            if (event.target == document.getElementById('guideModal')) {
-                closeGuideModal();
-            }
-        }
-        
-        // Copy host link function - FIXED
-        function copyHostLink() {
-            const textToCopy = document.getElementById('hostLinkText').textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showNotification(translations[currentLanguage]['notification-copied']);
-                showCopiedAnimation('copiedNotification');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                showNotification(translations[currentLanguage]['notification-copy-failed']);
-            });
-        }
-        
-        // Copy guide host link - FIXED
-        function copyGuideHostLink() {
-            const textToCopy = document.getElementById('guideHostLinkText').textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showNotification(translations[currentLanguage]['notification-copied']);
-                showCopiedAnimation('guideCopiedNotification');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                showNotification(translations[currentLanguage]['notification-copy-failed']);
-            });
-        }
-        
-        // Copy Windows host block - FIXED
-        function copyWindowsHostBlock() {
-            const textToCopy = document.getElementById('windowsHostBlock').textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showNotification(translations[currentLanguage]['notification-copied']);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                showNotification(translations[currentLanguage]['notification-copy-failed']);
-            });
-        }
-        
-        // Show copied animation
-        function showCopiedAnimation(elementId) {
-            const copiedElement = document.getElementById(elementId);
-            copiedElement.style.opacity = '1';
-            setTimeout(() => {
-                copiedElement.style.opacity = '0';
-            }, 2000);
-        }
+        // Load saved language
+        const savedLang = localStorage.getItem('eldoria_lang') || 'id';
+        setLanguage(savedLang);
 
-        // Music Player Functionality
-        const musicToggle = document.getElementById('musicToggle');
-        const musicIcon = document.getElementById('musicIcon');
+        // ---------- LOADING ----------
+        const loader = document.getElementById('loadingScreen');
+        window.addEventListener('load', ()=>{
+            setTimeout(()=> loader.classList.add('fade-out'), 800);
+            setTimeout(()=> loader.style.display = 'none', 1500);
+        });
+
+        // ---------- MOBILE MENU ----------
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn?.addEventListener('click', ()=> mobileMenu.classList.toggle('-translate-y-full'));
+        document.querySelectorAll('#mobileMenu a').forEach(link => link.addEventListener('click', ()=> mobileMenu.classList.add('-translate-y-full')));
+
+        // ---------- MUSIC ----------
         const bgMusic = document.getElementById('bgMusic');
-        let isPlaying = false;
-
-        musicToggle.addEventListener('click', function() {
-            if (!isPlaying) {
-                bgMusic.play()
-                    .then(() => {
-                        isPlaying = true;
-                        musicIcon.classList.remove('fa-play');
-                        musicIcon.classList.add('fa-pause');
-                    })
-                    .catch(error => {
-                        console.error("Audio playback failed:", error);
-                        showNotification(translations[currentLanguage]['notification-audio-failed']);
-                    });
-            } else {
-                bgMusic.pause();
-                isPlaying = false;
-                musicIcon.classList.remove('fa-pause');
-                musicIcon.classList.add('fa-play');
-            }
+        const playBtn = document.getElementById('musicPlayBtn');
+        const muteBtn = document.getElementById('musicMuteBtn');
+        let isPlaying = false, isMuted = false;
+        bgMusic.volume = 0.25;
+        playBtn.addEventListener('click', ()=>{
+            if(!isPlaying) {
+                bgMusic.play().then(()=>{ isPlaying = true; playBtn.innerHTML = '<i class="fas fa-pause text-white text-sm"></i>'; })
+                .catch(()=> alert('Klik lagi untuk memutar musik'));
+            } else { bgMusic.pause(); isPlaying = false; playBtn.innerHTML = '<i class="fas fa-play text-white text-sm"></i>'; }
+        });
+        muteBtn.addEventListener('click', ()=>{
+            isMuted = !isMuted; bgMusic.muted = isMuted;
+            muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-white/80"></i>' : '<i class="fas fa-volume-up text-white/80"></i>';
         });
 
-        // Notification System
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            
-            notificationText.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+        // ---------- PLAYER ONLINE 1-20 ----------
+        const playerSpan = document.getElementById('playerCount');
+        function updatePlayers(){ playerSpan.textContent = Math.floor(Math.random() * 20) + 1; }
+        updatePlayers(); setInterval(updatePlayers, 3000);
+
+        // ---------- CAROUSEL (GANTI GAMBAR SENDIRI) ----------
+        const images = [
+            'https://i.ibb.co.com/placeholder1.jpg',
+            'https://i.ibb.co.com/placeholder2.jpg',
+            'https://i.ibb.co.com/placeholder3.jpg',
+            'https://i.ibb.co.com/placeholder4.jpg'
+        ];
+        const container = document.getElementById('carouselContainer');
+        const dotsDiv = document.getElementById('carouselDots');
+        let currentIndex = 0;
+        function renderCarousel() {
+            container.innerHTML = images.map(src => `<div class="min-w-full flex-shrink-0"><img src="${src}" alt="showcase" class="w-full h-64 md:h-80 object-cover"></div>`).join('');
+            updateDots();
         }
+        function updateDots() {
+            dotsDiv.innerHTML = images.map((_, i) => `<span class="w-2.5 h-2.5 rounded-full ${i === currentIndex ? 'bg-white' : 'bg-white/40'} transition"></span>`).join('');
+        }
+        function goToSlide(index) {
+            if(index < 0) index = 0; if(index >= images.length) index = images.length-1;
+            currentIndex = index; container.style.transform = `translateX(-${currentIndex * 100}%)`; updateDots();
+        }
+        document.getElementById('carouselPrev').addEventListener('click', ()=> goToSlide(currentIndex-1));
+        document.getElementById('carouselNext').addEventListener('click', ()=> goToSlide(currentIndex+1));
+        let touchStartX = 0;
+        container.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+        container.addEventListener('touchend', e => { const diff = e.changedTouches[0].screenX - touchStartX; if(Math.abs(diff)>50) diff>0 ? goToSlide(currentIndex-1) : goToSlide(currentIndex+1); });
+        renderCarousel();
 
-        // Initialize language on load
-        document.addEventListener('DOMContentLoaded', function() {
-            changeLanguage('id');
-            
-            // Add event listeners for copy buttons
-            document.getElementById('copy-host-btn').addEventListener('click', copyHostLink);
-            document.getElementById('copy-guide-btn').addEventListener('click', copyGuideHostLink);
-            document.getElementById('copy-windows-btn').addEventListener('click', copyWindowsHostBlock);
-        });
-    </script>
+        // ---------- COPY ----------
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(()=> showToast(translations[currentLang].toast_copied))
+            .catch(()=> showToast(translations[currentLang].toast_failed));
+        }
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-indigo-700 text-white px-6 py-2 rounded-full shadow-lg z-50 text-sm';
+            toast.textContent = msg; document.body.appendChild(toast); setTimeout(()=> toast.remove(), 2000);
+        }
+        document.querySelectorAll('.copy-host-btn').forEach(btn => btn.addEventListener('click', (e)=>{ e.stopPropagation(); copyText(btn.dataset.copy); }));
+        document.getElementById('heroCopyHost').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/Eldoriapss'));
+        document.getElementById('mainCopyHostBtn').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/Eldoriapss'));
+        document.getElementById('copyWindowsHost').addEventListener('click', ()=> copyText(`168.144.33.116 www.growtopia1.com\n168.144.33.116 www.growtopia2.com`));
+
+        // ---------- ROLE DATA ----------
+        const rolesData = [
+            { name: 'Owner', price: 'Rp 200.000', commands: '/asb /banworld /copyset /destructo /freeze /ggxp /growall /gsm /infoex /ipcheck /logs /nick /onlined /osb /removedrop /reset /rpl /spawnevent /spl /summon /uncurse /uncurseall /unmute /unsafeedit /weather /ysb' },
+            { name: 'Staff', price: 'Rp 130.000', commands: '/banip /banp /banrid /checkid /checkplaymods /curse /dsummon /extranuke /fixworld /freezeall /glevel /invis /mute /noclip /nuke /playerreport /saveworld /spk /unban /unbanip /warpto' },
+            { name: 'Unlimited', price: 'Rp 100.000', commands: '/find /findid /online' },
+            { name: 'Developer', price: 'Rp 80.000', commands: '/dsb' },
+            { name: 'Administrator', price: 'Rp 20.000', commands: '/1hit /banall /checkping /color /eff /eff2 /fakeban /fakewarn /flag /nobody /nohands /pban /pullall /reports /scan /unequip /warn /warp' },
+            { name: 'Moderator', price: 'Rp 10.000', commands: '/hide /m /magic /modrules /msb /note /notes /p /radio2 /skin /togglemods' }
+        ];
+        const roleContainer = document.getElementById('roleContainer');
+        function renderRoles() {
+            roleContainer.innerHTML = rolesData.map(role => `
+                <div class="card-glass rounded-xl p-5 role-card">
+                    <div class="flex justify-between items-center"><span class="font-bold text-lg">${role.name}</span><span class="text-indigo-300 text-sm bg-indigo-900/40 px-3 py-1 rounded-full">${role.price}</span></div>
+                    <div class="command-panel mt-3 text-sm text-gray-300">
+                        <div class="bg-black/30 p-3 rounded-lg mt-2 border border-white/10"><code class="text-indigo-200 text-xs leading-relaxed">${role.commands}</code></div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="bg-green-700/70 hover:bg-green-600 px-4 py-1.5 rounded text-xs"><i class="fab fa-whatsapp mr-1"></i>${translations[currentLang].contact}</a>
+                            <span class="bg-amber-700/70 px-4 py-1.5 rounded text-xs">${translations[currentLang].buy}</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-2 flex items-center"><i class="fas fa-chevron-down mr-1 text-indigo-300"></i> ${translations[currentLang].click_command}</div>
+                </div>
+            `).join('');
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if(e.target.closest('a') || e.target.closest('span')) return;
+                    this.querySelector('.command-panel').classList.toggle('open');
+                });
+            });
+        }
+        renderRoles();
+
+        // ---------- INTERSECTION OBSERVER ----------
+        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('is-visible'); }); }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+        // Footer year
+        document.querySelector('footer p').innerHTML = `© ${new Date().getFullYear()} Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.`;
+    })();
+</script>
 </body>
 </html>
-
-
-
-
-
-
