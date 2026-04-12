@@ -11,20 +11,15 @@
     <style>
         * { font-family: 'Inter', sans-serif; }
         body { background-color: #0b0f15; }
-        /* Smooth scroll & transitions */
         html { scroll-behavior: smooth; }
         .fade-in-section { opacity: 0; transform: translateY(15px); transition: opacity 0.7s ease, transform 0.7s ease; }
         .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
-        /* Carousel & glassmorphism */
         .glass-nav { background: rgba(10, 15, 25, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .card-glass { background: rgba(20, 30, 45, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); }
         .hero-logo { filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.3)); }
-        /* Loading screen */
         .loader { position: fixed; inset: 0; background: #0b0f15; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s; }
         .loader.fade-out { opacity: 0; pointer-events: none; }
-        /* Music player */
         .music-widget { transition: all 0.2s; }
-        /* Role accordion */
         .role-card { cursor: pointer; transition: all 0.2s; }
         .command-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
         .command-panel.open { max-height: 500px; }
@@ -43,13 +38,13 @@
     </div>
 </div>
 
-<!-- BACKGROUND IMAGE (fixed) -->
+<!-- BACKGROUND IMAGE -->
 <div class="fixed inset-0 z-[-1]">
     <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-70">
     <div class="absolute inset-0 bg-black/50 backdrop-brightness-75"></div>
 </div>
 
-<!-- MUSIC PLAYER (pojok kanan bawah) -->
+<!-- MUSIC PLAYER -->
 <div class="fixed bottom-6 right-6 z-40 flex gap-3">
     <div class="music-widget card-glass rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
         <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-indigo-600 hover:bg-indigo-500 flex items-center justify-center transition shadow-md">
@@ -62,11 +57,10 @@
     </div>
 </div>
 <audio id="bgMusic" loop preload="auto">
-    <!-- Ganti source dengan file musik kamu -->
     <source src="https://cdn.discordapp.com/attachments/1455029046638415998/1463191762318135454/fc2183da227dc1b688884ae065f96478.mp3?ex=69dc6144&is=69db0fc4&hm=e098a24a4dfe81be71c8b2009f9f6a5f9cda84b7a691cb02ca731de28163f477&" type="audio/mpeg">
 </audio>
 
-<!-- NAVBAR STICKY BLUR -->
+<!-- NAVBAR -->
 <nav class="glass-nav fixed top-0 left-0 w-full z-30 py-2 px-4 md:px-8 flex items-center justify-between">
     <div class="flex items-center gap-2">
         <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border border-indigo-400/40">
@@ -83,7 +77,6 @@
         <button id="mobileMenuBtn" class="text-white text-xl"><i class="fas fa-bars"></i></button>
     </div>
 </nav>
-<!-- Mobile menu dropdown -->
 <div id="mobileMenu" class="fixed top-16 left-0 w-full glass-nav py-4 px-6 flex flex-col gap-3 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
     <a href="#home" class="py-1">Home</a>
     <a href="#download" class="py-1">Download</a>
@@ -95,7 +88,7 @@
 <!-- MAIN CONTENT -->
 <main class="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-16">
 
-    <!-- HERO SECTION (HOME) -->
+    <!-- HERO -->
     <section id="home" class="fade-in-section text-center mb-16">
         <div class="flex justify-center mb-4">
             <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="hero-logo w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-indigo-500/60 shadow-[0_0_40px_rgba(99,102,241,0.4)]">
@@ -110,29 +103,42 @@
         </div>
     </section>
 
-    <!-- SERVER INFO CARD -->
+    <!-- SERVER INFO CARD (DENGAN BOOLEAN STATUS & PLAYER) -->
     <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+        <!-- Status Card -->
         <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center"><i class="fas fa-circle text-green-400 text-xl"></i></div>
-            <div><p class="text-xs uppercase tracking-wider text-gray-400">Status</p><p class="text-2xl font-bold text-green-300">ONLINE</p></div>
+            <div id="statusIcon" class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
+                <i id="statusIconInner" class="fas fa-circle text-green-400 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs uppercase tracking-wider text-gray-400">Status</p>
+                <p id="statusText" class="text-2xl font-bold text-green-300">ONLINE</p>
+            </div>
         </div>
+        <!-- Player Online Card -->
         <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center"><i class="fas fa-users text-indigo-300 text-xl"></i></div>
-            <div><p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p><p class="text-2xl font-bold" id="playerCount">12</p></div>
+            <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                <i class="fas fa-users text-indigo-300 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p>
+                <p class="text-2xl font-bold" id="playerCount">12</p>
+            </div>
         </div>
+        <!-- Version Card -->
         <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center"><i class="fas fa-calendar text-amber-300 text-xl"></i></div>
+            <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <i class="fas fa-calendar text-amber-300 text-xl"></i>
+            </div>
             <div><p class="text-xs uppercase tracking-wider text-gray-400">Version</p><p class="text-xl font-semibold">v4.20</p></div>
         </div>
     </section>
 
-    <!-- CAROUSEL SHOWCASE (GANTI GAMBAR SENDIRI DI SINI) -->
+    <!-- CAROUSEL (DENGAN GAMBAR MENYESUAIKAN) -->
     <section class="fade-in-section mb-20">
         <h2 class="text-3xl font-bold text-white mb-6 flex items-center"><i class="fas fa-images text-indigo-400 mr-3"></i>Showcase</h2>
         <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-white/10">
-            <div id="carouselContainer" class="flex transition-transform duration-500 ease-out">
-                <!-- Slide akan diisi oleh JS -->
-            </div>
+            <div id="carouselContainer" class="flex transition-transform duration-500 ease-out"></div>
             <button id="carouselPrev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-left"></i></button>
             <button id="carouselNext" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-right"></i></button>
             <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2" id="carouselDots"></div>
@@ -187,7 +193,7 @@
         </div>
     </section>
 
-    <!-- HOST SYSTEM (COPY ONLY) -->
+    <!-- HOST SYSTEM -->
     <section class="fade-in-section mb-20">
         <div class="card-glass rounded-2xl p-6 border-l-4 border-indigo-500">
             <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-indigo-300"></i>Host System (PowerTunnel / HostGo)</h3>
@@ -235,7 +241,7 @@
         </div>
     </section>
 
-    <!-- ROLE + COMMAND (ACCORDION) -->
+    <!-- ROLE + COMMAND -->
     <section id="role" class="fade-in-section mb-20 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i>Role & Command</h2>
         <p class="text-gray-300 mb-6">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
@@ -258,7 +264,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="text-center text-gray-400 text-sm border-t border-white/10 pt-8 mt-8">
         <p>© 2025 Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.</p>
     </footer>
@@ -312,25 +317,51 @@
             muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-white/80"></i>' : '<i class="fas fa-volume-up text-white/80"></i>';
         });
 
-        // ---------- PLAYER ONLINE 1-20 (RANDOM) ----------
-        const playerSpan = document.getElementById('playerCount');
-        function updateFakePlayers() {
-            const fake = Math.floor(Math.random() * 20) + 1; // 1 sampai 20
-            playerSpan.textContent = fake;
-        }
-        updateFakePlayers();
-        setInterval(updateFakePlayers, 3000);
+        // ---------- KONFIGURASI BOOLEAN STATUS & PLAYER ----------
+        const SERVER_ONLINE = false;       // true = ONLINE, false = OFFLINE
+        const SHOW_PLAYER_COUNT = false;   // true = tampilkan angka acak, false = sembunyikan (tampil "Hidden")
 
-        // ---------- CAROUSEL (GANTI GAMBAR DI SINI) ----------
-        // Ganti URL di bawah dengan gambar dari imgbb atau lainnya
+        function applyStatusConfig() {
+            const statusText = document.getElementById('statusText');
+            const statusIcon = document.getElementById('statusIcon');
+            const iconInner = document.getElementById('statusIconInner');
+            
+            if (SERVER_ONLINE) {
+                statusText.textContent = 'ONLINE';
+                statusText.className = 'text-2xl font-bold text-green-300';
+                statusIcon.className = 'w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center';
+                iconInner.className = 'fas fa-circle text-green-400 text-xl';
+            } else {
+                statusText.textContent = 'OFFLINE';
+                statusText.className = 'text-2xl font-bold text-red-400';
+                statusIcon.className = 'w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center';
+                iconInner.className = 'fas fa-circle text-red-400 text-xl';
+            }
+
+            const playerSpan = document.getElementById('playerCount');
+            if (window.playerInterval) clearInterval(window.playerInterval);
+            
+            if (!SHOW_PLAYER_COUNT) {
+                playerSpan.textContent = 'Hidden';
+            } else {
+                function updateFakePlayers() {
+                    const fake = Math.floor(Math.random() * 20) + 1;
+                    playerSpan.textContent = fake;
+                }
+                updateFakePlayers();
+                window.playerInterval = setInterval(updateFakePlayers, 3000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', applyStatusConfig);
+
+        // ---------- CAROUSEL (GAMBAR MENYESUAIKAN - object-contain) ----------
         const images = [
-            'https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg',   // Ganti dengan link gambarmu
+            'https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg',
             'https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg',
             'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg',
             'https://i.ibb.co.com/FZ851zt/IMG-20250809-WA0150.jpg'
         ];
-        // Jika gambar placeholder tidak muncul, ganti dengan link gambar asli dari imgbb.
-        // Contoh: 'https://i.ibb.co/xxxxxx/screenshot1.png'
 
         const container = document.getElementById('carouselContainer');
         const dotsDiv = document.getElementById('carouselDots');
@@ -338,8 +369,8 @@
 
         function renderCarousel() {
             container.innerHTML = images.map(src => `
-                <div class="min-w-full flex-shrink-0">
-                    <img src="${src}" alt="showcase" class="w-full h-64 md:h-80 object-cover">
+                <div class="min-w-full flex-shrink-0 bg-black/40">
+                    <img src="${src}" alt="showcase" class="w-full h-72 md:h-96 object-contain">
                 </div>
             `).join('');
             updateDots();
@@ -358,7 +389,6 @@
         }
         document.getElementById('carouselPrev').addEventListener('click', ()=> goToSlide(currentIndex-1));
         document.getElementById('carouselNext').addEventListener('click', ()=> goToSlide(currentIndex+1));
-        // Swipe support
         let touchStartX = 0;
         container.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
         container.addEventListener('touchend', e => {
@@ -442,12 +472,10 @@
         }, { threshold: 0.15 });
         fadeElements.forEach(el => observer.observe(el));
 
-        // Close mobile menu on link click
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', ()=> mobileMenu.classList.add('-translate-y-full'));
         });
 
-        // Update footer year
         document.querySelector('footer p').innerHTML = `© ${new Date().getFullYear()} Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.`;
     })();
 </script>
