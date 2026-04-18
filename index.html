@@ -10,102 +10,177 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { font-family: 'Inter', sans-serif; }
-        body { background-color: #0b0f15; }
+        body { background: #0f172a; } /* solid slate-900 */
         html { scroll-behavior: smooth; }
-        .fade-in-section { opacity: 0; transform: translateY(15px); transition: opacity 0.7s ease, transform 0.7s ease; }
-        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
-        .glass-nav { background: rgba(10, 15, 25, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .card-glass { background: rgba(20, 30, 45, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); }
-        .hero-logo { filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.3)); }
-        .loader { position: fixed; inset: 0; background: #0b0f15; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s; }
-        .loader.fade-out { opacity: 0; pointer-events: none; }
-        .music-widget { transition: all 0.2s; }
-        .role-card { cursor: pointer; transition: all 0.2s; }
-        .command-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-        .command-panel.open { max-height: 500px; }
-        .role-card:hover { background: rgba(40, 55, 80, 0.7); }
-        #mobileMenu a { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; }
+        
+        /* fade sederhana */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* navbar solid tanpa blur */
+        .nav-solid {
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid #334155;
+        }
+
+        /* kartu solid dengan border tipis */
+        .card-simple {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+        }
+
+        /* tombol sederhana */
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        .btn-secondary {
+            background: #334155;
+            color: white;
+            border: 1px solid #475569;
+        }
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        /* loader simpel */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s;
+        }
+        .loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* role command panel */
+        .command-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .command-panel.open {
+            max-height: 500px;
+        }
+        .role-card {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .role-card:hover {
+            background: #334155;
+        }
+
+        /* mobile menu */
+        #mobileMenu a {
+            border-bottom: 1px solid #334155;
+            padding: 10px 0;
+        }
+
+        /* music widget sederhana */
+        .music-widget {
+            background: #1e293b;
+            border: 1px solid #334155;
+        }
     </style>
 </head>
 <body class="text-gray-200 antialiased">
 
-<!-- LOADING SCREEN -->
+<!-- LOADING SCREEN (simpel) -->
 <div id="loadingScreen" class="loader">
-    <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-28 h-28 rounded-full object-cover border-2 border-indigo-400/50 shadow-2xl mb-4">
-    <div class="text-xl font-medium text-indigo-200 tracking-wider">Loading...</div>
-    <div class="w-32 h-1 mt-4 bg-indigo-900/50 rounded-full overflow-hidden">
-        <div class="h-full w-2/3 bg-indigo-400 rounded-full animate-pulse"></div>
+    <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-24 h-24 rounded-full border-2 border-blue-400/50 mb-4">
+    <div class="text-xl font-medium text-blue-200">Memuat...</div>
+    <div class="w-28 h-1.5 mt-4 bg-slate-700 rounded-full overflow-hidden">
+        <div class="h-full w-2/3 bg-blue-400 rounded-full animate-pulse"></div>
     </div>
 </div>
 
-<!-- BACKGROUND IMAGE -->
+<!-- BACKGROUND LEMBUT (tanpa blur berlebihan) -->
 <div class="fixed inset-0 z-[-1]">
-    <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-70">
-    <div class="absolute inset-0 bg-black/50 backdrop-brightness-75"></div>
+    <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-30">
+    <div class="absolute inset-0 bg-slate-900/80"></div>
 </div>
 
 <!-- MUSIC PLAYER -->
-<div class="fixed bottom-6 right-6 z-40 flex gap-3">
-    <div class="music-widget card-glass rounded-full px-4 py-2 flex items-center gap-3 shadow-xl">
-        <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-indigo-600 hover:bg-indigo-500 flex items-center justify-center transition shadow-md">
+<div class="fixed bottom-5 right-5 z-40 flex gap-2">
+    <div class="music-widget rounded-full px-4 py-2 flex items-center gap-3 shadow-md">
+        <button id="musicPlayBtn" class="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center transition">
             <i class="fas fa-play text-white text-sm"></i>
         </button>
-        <button id="musicMuteBtn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition">
-            <i class="fas fa-volume-up text-white/80 text-sm"></i>
+        <button id="musicMuteBtn" class="w-8 h-8 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition">
+            <i class="fas fa-volume-up text-white/90 text-sm"></i>
         </button>
-        <span class="text-xs font-medium text-white/70 hidden sm:inline">Eldoria OST</span>
+        <span class="text-xs font-medium text-gray-300 hidden sm:inline">Eldoria OST</span>
     </div>
 </div>
 <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.discordapp.com/attachments/1455029046638415998/1463191762318135454/fc2183da227dc1b688884ae065f96478.mp3?ex=69dc6144&is=69db0fc4&hm=e098a24a4dfe81be71c8b2009f9f6a5f9cda84b7a691cb02ca731de28163f477&" type="audio/mpeg">
 </audio>
 
-<!-- NAVBAR -->
-<nav class="glass-nav fixed top-0 left-0 w-full z-30 py-2 px-4 md:px-8 flex items-center justify-between">
+<!-- NAVBAR (solid, tanpa blur) -->
+<nav class="nav-solid fixed top-0 left-0 w-full z-30 py-2.5 px-4 md:px-8 flex items-center justify-between shadow-sm">
     <div class="flex items-center gap-2">
-        <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border border-indigo-400/40">
-        <span class="font-bold text-lg text-white drop-shadow">ELDORIA</span>
+        <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-9 h-9 rounded-full object-cover border border-blue-400/40">
+        <span class="font-bold text-lg text-white">ELDORIA</span>
     </div>
     <div class="hidden md:flex items-center gap-6 text-sm font-medium">
-        <a href="#home" class="hover:text-indigo-300 transition">Home</a>
-        <a href="#download" class="hover:text-indigo-300 transition">Download</a>
-        <a href="#tutorial" class="hover:text-indigo-300 transition">Tutorial</a>
-        <a href="#role" class="hover:text-indigo-300 transition">Role</a>
-        <a href="#community" class="hover:text-indigo-300 transition">Community</a>
+        <a href="#home" class="hover:text-blue-300 transition">Home</a>
+        <a href="#download" class="hover:text-blue-300 transition">Download</a>
+        <a href="#tutorial" class="hover:text-blue-300 transition">Tutorial</a>
+        <a href="#role" class="hover:text-blue-300 transition">Role</a>
+        <a href="#community" class="hover:text-blue-300 transition">Community</a>
     </div>
     <div class="md:hidden">
         <button id="mobileMenuBtn" class="text-white text-xl"><i class="fas fa-bars"></i></button>
     </div>
 </nav>
-<div id="mobileMenu" class="fixed top-16 left-0 w-full glass-nav py-4 px-6 flex flex-col gap-3 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
-    <a href="#home" class="py-1">Home</a>
-    <a href="#download" class="py-1">Download</a>
-    <a href="#tutorial" class="py-1">Tutorial</a>
-    <a href="#role" class="py-1">Role</a>
-    <a href="#community" class="py-1">Community</a>
+<div id="mobileMenu" class="fixed top-14 left-0 w-full nav-solid py-4 px-6 flex flex-col gap-1 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
+    <a href="#home">Home</a>
+    <a href="#download">Download</a>
+    <a href="#tutorial">Tutorial</a>
+    <a href="#role">Role</a>
+    <a href="#community">Community</a>
 </div>
 
 <!-- MAIN CONTENT -->
 <main class="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-16">
 
     <!-- HERO -->
-    <section id="home" class="fade-in-section text-center mb-16">
+    <section id="home" class="fade-in-section text-center mb-14">
         <div class="flex justify-center mb-4">
-            <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="hero-logo w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-indigo-500/60 shadow-[0_0_40px_rgba(99,102,241,0.4)]">
+            <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-500/70 shadow-lg">
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">ELDORIA PRIVATE SERVER</h1>
-        <p class="text-indigo-200 text-lg md:text-xl mt-2">Growtopia Private Server • High Peak 22+ Online</p>
-        <p class="text-gray-300 text-sm mt-1">Server: [ EldoriaPs ]</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white">ELDORIA PRIVATE SERVER</h1>
+        <p class="text-blue-200 text-lg md:text-xl mt-2">Growtopia Private Server • High Peak 22+ Online</p>
+        <p class="text-gray-400 text-sm mt-1">Server: [ EldoriaPs ]</p>
         <div class="flex flex-wrap justify-center gap-4 mt-8">
-            <a href="#download" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-download mr-2"></i>Download</a>
-            <a href="#tutorial" class="bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 text-white font-semibold px-8 py-3 rounded-full transition"><i class="fas fa-book-open mr-2"></i>Tutorial</a>
-            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition"><i class="fas fa-copy mr-2"></i>COPY HOST</button>
+            <a href="#download" class="btn-primary font-semibold px-7 py-3 rounded-full shadow-md transition transform hover:scale-105"><i class="fas fa-download mr-2"></i>Download</a>
+            <a href="#tutorial" class="btn-secondary font-semibold px-7 py-3 rounded-full transition"><i class="fas fa-book-open mr-2"></i>Tutorial</a>
+            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-7 py-3 rounded-full shadow-md transition"><i class="fas fa-copy mr-2"></i>COPY HOST</button>
         </div>
     </section>
 
-    <!-- SERVER INFO CARD -->
+    <!-- SERVER INFO CARD (solid) -->
     <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
-        <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
+        <div class="card-simple p-5 flex items-center gap-4">
             <div id="statusIcon" class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
                 <i id="statusIconInner" class="fas fa-circle text-green-400 text-xl"></i>
             </div>
@@ -114,16 +189,16 @@
                 <p id="statusText" class="text-2xl font-bold text-green-300">ONLINE</p>
             </div>
         </div>
-        <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                <i class="fas fa-users text-indigo-300 text-xl"></i>
+        <div class="card-simple p-5 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <i class="fas fa-users text-blue-300 text-xl"></i>
             </div>
             <div>
                 <p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p>
                 <p class="text-2xl font-bold" id="playerCount">12</p>
             </div>
         </div>
-        <div class="card-glass rounded-2xl p-5 flex items-center gap-4">
+        <div class="card-simple p-5 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
                 <i class="fas fa-calendar text-amber-300 text-xl"></i>
             </div>
@@ -131,74 +206,74 @@
         </div>
     </section>
 
-    <!-- CAROUSEL -->
+    <!-- CAROUSEL (lebih sederhana) -->
     <section class="fade-in-section mb-20">
-        <h2 class="text-3xl font-bold text-white mb-6 flex items-center"><i class="fas fa-images text-indigo-400 mr-3"></i>Showcase</h2>
-        <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-white/10">
+        <h2 class="text-3xl font-bold text-white mb-5 flex items-center"><i class="fas fa-images text-blue-400 mr-3"></i>Showcase</h2>
+        <div class="relative overflow-hidden rounded-xl shadow-lg border border-slate-700">
             <div id="carouselContainer" class="flex transition-transform duration-500 ease-out"></div>
-            <button id="carouselPrev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-left"></i></button>
-            <button id="carouselNext" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 rounded-full backdrop-blur"><i class="fas fa-chevron-right"></i></button>
+            <button id="carouselPrev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 text-white w-10 h-10 rounded-full"><i class="fas fa-chevron-left"></i></button>
+            <button id="carouselNext" class="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 text-white w-10 h-10 rounded-full"><i class="fas fa-chevron-right"></i></button>
             <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2" id="carouselDots"></div>
         </div>
-        <p class="text-xs text-gray-400 mt-2 text-center">📸 Kamu bisa ganti gambar di bagian array `images` (pakai link imgbb atau lainnya)</p>
+        <p class="text-xs text-gray-500 mt-2 text-center">📸 Gambar bisa diganti di bagian array images</p>
     </section>
 
     <!-- DOWNLOAD SECTION -->
     <section id="download" class="fade-in-section mb-20 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-indigo-400 mr-3"></i>Download & Host</h2>
+        <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-blue-400 mr-3"></i>Download & Host</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Android -->
-            <div class="card-glass rounded-2xl p-6">
+            <div class="card-simple p-6">
                 <div class="text-3xl mb-3 text-green-400"><i class="fab fa-android"></i></div>
                 <h3 class="text-xl font-bold">Android</h3>
                 <div class="mt-4 space-y-3">
-                    <a href="https://pixeldrain.com/u/oPTKGVau" target="_blank" class="block w-full bg-indigo-600/80 hover:bg-indigo-500 text-center py-2 rounded-lg text-sm font-medium transition"><i class="fas fa-gamepad mr-2"></i>Download Eldoria APK</a>
-                    <a href="https://sfile.mobi/7SNc2kJhLyj" target="_blank" class="block w-full bg-white/10 hover:bg-white/20 text-center py-2 rounded-lg text-sm transition"><i class="fas fa-bolt mr-2"></i>PowerTunnel (Host App)</a>
-                    <div class="bg-black/30 rounded-lg p-3 mt-3 border border-white/10">
+                    <a href="https://pixeldrain.com/u/oPTKGVau" target="_blank" class="block w-full bg-blue-600/80 hover:bg-blue-500 text-center py-2.5 rounded-lg text-sm font-medium transition"><i class="fas fa-gamepad mr-2"></i>Download Eldoria APK</a>
+                    <a href="https://sfile.mobi/7SNc2kJhLyj" target="_blank" class="block w-full bg-slate-700 hover:bg-slate-600 text-center py-2.5 rounded-lg text-sm transition"><i class="fas fa-bolt mr-2"></i>PowerTunnel (Host App)</a>
+                    <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-700">
                         <p class="text-xs text-gray-300 mb-1">Host URL:</p>
-                        <code class="text-indigo-200 text-sm break-all">https://gtpshost.com/raw/Eldoriapss</code>
-                        <button data-copy="https://gtpshost.com/raw/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Host</button>
+                        <code class="text-blue-200 text-sm break-all">https://gtpshost.com/raw/Eldoriapss</code>
+                        <button data-copy="https://gtpshost.com/raw/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Host</button>
                     </div>
                 </div>
             </div>
             <!-- iOS -->
-            <div class="card-glass rounded-2xl p-6">
+            <div class="card-simple p-6">
                 <div class="text-3xl mb-3 text-gray-300"><i class="fab fa-apple"></i></div>
                 <h3 class="text-xl font-bold">iOS</h3>
                 <div class="mt-4 space-y-3">
-                    <div class="bg-black/30 rounded-lg p-3">
-                        <p class="text-sm">Gunakan Surge 5 / iOS profile:</p>
-                        <code class="text-indigo-200 text-sm break-all">https://gtpshost.com/ios/Eldoriapss</code>
-                        <button data-copy="https://gtpshost.com/ios/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/70 hover:bg-emerald-600 py-1.5 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy iOS Host</button>
+                    <div class="bg-slate-800/60 rounded-lg p-3">
+                        <p class="text-sm">Surge 5 / iOS profile:</p>
+                        <code class="text-blue-200 text-sm break-all">https://gtpshost.com/ios/Eldoriapss</code>
+                        <button data-copy="https://gtpshost.com/ios/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy iOS Host</button>
                     </div>
-                    <p class="text-xs text-gray-400">Buka link di Safari, install profile.</p>
+                    <p class="text-xs text-gray-400">Buka di Safari, install profile.</p>
                 </div>
             </div>
             <!-- Windows -->
-            <div class="card-glass rounded-2xl p-6">
+            <div class="card-simple p-6">
                 <div class="text-3xl mb-3 text-blue-400"><i class="fab fa-windows"></i></div>
                 <h3 class="text-xl font-bold">Windows</h3>
                 <div class="mt-4">
-                    <div class="bg-black/40 rounded-lg p-3 font-mono text-xs">
+                    <div class="bg-slate-900/60 rounded-lg p-3 font-mono text-xs">
                         178.128.114.168 www.growtopia1.com<br>
                         178.128.114.168 www.growtopia2.com
                     </div>
-                    <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/70 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Windows Host</button>
+                    <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Windows Host</button>
                     <p class="text-xs text-gray-400 mt-2">Edit C:\Windows\System32\drivers\etc\hosts (admin)</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- HOST SYSTEM -->
+    <!-- HOST SYSTEM (ringkas) -->
     <section class="fade-in-section mb-20">
-        <div class="card-glass rounded-2xl p-6 border-l-4 border-indigo-500">
-            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-indigo-300"></i>Host System (PowerTunnel / HostGo)</h3>
-            <div class="mt-4 bg-black/40 rounded-xl p-5 border border-white/10">
-                <p class="text-sm text-gray-300 mb-2">Host ini digunakan untuk menghubungkan ke server. Copy lalu paste ke PowerTunnel atau HostGo. Jangan dibuka di browser.</p>
+        <div class="card-simple p-6 border-l-4 border-blue-500">
+            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-blue-300"></i>Host System (PowerTunnel / HostGo)</h3>
+            <div class="mt-4 bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+                <p class="text-sm text-gray-300 mb-2">Copy host di bawah, paste ke PowerTunnel/HostGo. Jangan dibuka di browser.</p>
                 <div class="flex items-stretch gap-2">
-                    <code class="flex-1 bg-gray-900/80 p-3 rounded-lg text-indigo-200 text-sm break-all border border-indigo-500/30">https://gtpshost.com/raw/Eldoriapss</code>
-                    <button id="mainCopyHostBtn" class="bg-indigo-600 hover:bg-indigo-500 px-5 rounded-lg transition"><i class="far fa-copy mr-1"></i>COPY</button>
+                    <code class="flex-1 bg-slate-900 p-3 rounded-lg text-blue-200 text-sm break-all border border-slate-700">https://gtpshost.com/raw/Eldoriapss</code>
+                    <button id="mainCopyHostBtn" class="bg-blue-600 hover:bg-blue-500 px-5 rounded-lg transition"><i class="far fa-copy mr-1"></i>COPY</button>
                 </div>
             </div>
         </div>
@@ -206,9 +281,9 @@
 
     <!-- TUTORIAL -->
     <section id="tutorial" class="fade-in-section mb-20 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-indigo-400 mr-3"></i>Tutorial Singkat</h2>
+        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-blue-400 mr-3"></i>Tutorial Singkat</h2>
         <div class="grid md:grid-cols-3 gap-6">
-            <div class="card-glass rounded-2xl p-5">
+            <div class="card-simple p-5">
                 <div class="text-2xl mb-2">📱 Android</div>
                 <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
                     <li>Download APK & PowerTunnel</li>
@@ -218,7 +293,7 @@
                     <li>Jalankan, buka Growtopia</li>
                 </ol>
             </div>
-            <div class="card-glass rounded-2xl p-5">
+            <div class="card-simple p-5">
                 <div class="text-2xl mb-2">💻 Windows</div>
                 <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
                     <li>Buka notepad sebagai admin</li>
@@ -227,7 +302,7 @@
                     <li>Simpan, jalankan Growtopia</li>
                 </ol>
             </div>
-            <div class="card-glass rounded-2xl p-5">
+            <div class="card-simple p-5">
                 <div class="text-2xl mb-2">🍎 iOS</div>
                 <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
                     <li>Copy iOS host link</li>
@@ -238,7 +313,7 @@
         </div>
     </section>
 
-    <!-- ROLE + COMMAND (UPDATED) -->
+    <!-- ROLE + COMMAND (dengan desain lebih bersih) -->
     <section id="role" class="fade-in-section mb-20 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i>Role & Command</h2>
         <p class="text-gray-300 mb-6">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
@@ -247,21 +322,21 @@
 
     <!-- COMMUNITY -->
     <section id="community" class="fade-in-section mb-12 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-indigo-400 mr-3"></i>Community</h2>
+        <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-blue-400 mr-3"></i>Community</h2>
         <div class="flex flex-wrap gap-5 justify-center">
-            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
+            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
                 <i class="fab fa-whatsapp text-3xl text-green-400"></i> <span class="font-semibold">WhatsApp Group</span>
             </a>
-            <a href="https://discord.gg/NbqthCwaqT" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
+            <a href="https://discord.gg/NbqthCwaqT" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
                 <i class="fab fa-discord text-3xl text-indigo-300"></i> <span class="font-semibold">Discord Server</span>
             </a>
-            <a href="https://www.instagram.com/eldoria_private_server" target="_blank" class="card-glass rounded-2xl px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
+            <a href="https://www.instagram.com/eldoria_private_server" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
                 <i class="fab fa-instagram text-3xl text-pink-400"></i> <span class="font-semibold">@eldoria_private_server</span>
             </a>
         </div>
     </section>
 
-    <footer class="text-center text-gray-400 text-sm border-t border-white/10 pt-8 mt-8">
+    <footer class="text-center text-gray-400 text-sm border-t border-slate-700 pt-8 mt-8">
         <p>© 2025 Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.</p>
     </footer>
 </main>
@@ -273,8 +348,8 @@
         // ---------- LOADING SCREEN ----------
         const loader = document.getElementById('loadingScreen');
         window.addEventListener('load', function(){
-            setTimeout(() => loader.classList.add('fade-out'), 800);
-            setTimeout(() => loader.style.display = 'none', 1500);
+            setTimeout(() => loader.classList.add('fade-out'), 600);
+            setTimeout(() => loader.style.display = 'none', 1200);
         });
 
         // ---------- MOBILE MENU ----------
@@ -314,9 +389,9 @@
             muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-white/80"></i>' : '<i class="fas fa-volume-up text-white/80"></i>';
         });
 
-        // ---------- KONFIGURASI STATUS & PLAYER ----------
-        const SERVER_ONLINE = true;       // true = ONLINE, false = OFFLINE
-        const SHOW_PLAYER_COUNT = true;   // true = tampilkan angka acak, false = sembunyikan
+        // ---------- STATUS & PLAYER ----------
+        const SERVER_ONLINE = true;
+        const SHOW_PLAYER_COUNT = true;
 
         function applyStatusConfig() {
             const statusText = document.getElementById('statusText');
@@ -349,7 +424,6 @@
                 window.playerInterval = setInterval(updateFakePlayers, 3000);
             }
         }
-
         document.addEventListener('DOMContentLoaded', applyStatusConfig);
 
         // ---------- CAROUSEL ----------
@@ -366,7 +440,7 @@
 
         function renderCarousel() {
             container.innerHTML = images.map(src => `
-                <div class="min-w-full flex-shrink-0 bg-black/40">
+                <div class="min-w-full flex-shrink-0 bg-slate-900/40">
                     <img src="${src}" alt="showcase" class="w-full h-72 md:h-96 object-contain">
                 </div>
             `).join('');
@@ -402,7 +476,7 @@
         }
         function showToast(msg) {
             const toast = document.createElement('div');
-            toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-indigo-700 text-white px-6 py-2 rounded-full shadow-lg z-50 text-sm';
+            toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-blue-700 text-white px-6 py-2 rounded-full shadow-lg z-50 text-sm';
             toast.textContent = msg;
             document.body.appendChild(toast);
             setTimeout(()=> toast.remove(), 2000);
@@ -421,58 +495,34 @@
             copyText(`168.144.33.116 www.growtopia1.com\n168.144.33.116 www.growtopia2.com`);
         });
 
-        // ---------- ROLE DATA (UPDATED) ----------
+        // ---------- ROLE DATA ----------
         const rolesData = [
-            { 
-                name: 'Owner', 
-                price: 'Rp 200.000', 
-                commands: '/reset <player_name> /copyworld /checklotre /setlotre /setdaily /numberprize /physics /math /science /setpricequest <item_id> <jumlah> /takeworld /osb <text> /unsafeedit <action> <radius> <item_id> /weather <id> /clearworld /spawnevent /ggxp <count> /gtoken <count> /gseal <count> /ggems <count> /reset_rolequest /verifycsn /removereqcsn /ipcheck <player_name> /removelogs <player_name>' 
-            },
-            { 
-                name: 'Co Owner', 
-                price: 'Rp 150.000', 
-                commands: '/find /ggems <count> /glevel <count> /setvend <count> /clearvend /setmag <count> /clearmag /setmagseed <count> /clearmagseed' 
-            },
-            { 
-                name: 'Unlimited', 
-                price: 'Rp 120.000', 
-                commands: '/find /ggems <count> /glevel <count> /setvend <count> /clearvend /setmag <count> /clearmag /setmagseed <count> /clearmagseed' 
-            },
-            { 
-                name: 'Developer', 
-                price: 'Rp 70.000', 
-                commands: '/saveworld /growall /banrid /checkplaymods /online /removedrop /rpl /spl /gsm <text> /blacklist <player> /spk <text> /asb <text> /infoex <player> /banip <ip> /getpos /pban <player_name>' 
-            },
-            { 
-                name: 'Administrator', 
-                price: 'Rp 50.000', 
-                commands: '/magic /nohands /nobody /unequip /warn <player_name> <text> /dropall /eff <id> /eff2 <id> /mute <player_name> <time> <reason> /curse <player_name> <time> <reason> /unmute <player_name> /uncurse <player_name> /hide /fixworld /searchuser <player_name> /summon <player_name> /freeze <player_name> /info <player_name> /p <id> /warp <player_name> /unnuke /nuke <time> <reason> /warpto <player_name> /destructo /color <skin> /checkid <item> /nick <nick> /freezeall /ghost /fakeban <player_name> /fakewarn <player_name> /fl <country> /banall /1hit /pullall /dsummon /logs /scan <world> <item_id> /reports /playerreport /flag <player_name> /checkping <player_name> /uncurseall' 
-            },
-            { 
-                name: 'Mod', 
-                price: 'Rp 10.000', 
-                commands: '/radio2 /togglemods /skin /invis /msb <text> /m <text> /getpos /note <player name> <text> /notes <player name>' 
-            }
+            { name: 'Owner', price: 'Rp 200.000', commands: '/reset <player_name> /copyworld /checklotre /setlotre /setdaily /numberprize /physics /math /science /setpricequest <item_id> <jumlah> /takeworld /osb <text> /unsafeedit <action> <radius> <item_id> /weather <id> /clearworld /spawnevent /ggxp <count> /gtoken <count> /gseal <count> /ggems <count> /reset_rolequest /verifycsn /removereqcsn /ipcheck <player_name> /removelogs <player_name>' },
+            { name: 'Co Owner', price: 'Rp 150.000', commands: '/find /ggems <count> /glevel <count> /setvend <count> /clearvend /setmag <count> /clearmag /setmagseed <count> /clearmagseed' },
+            { name: 'Unlimited', price: 'Rp 120.000', commands: '/find /ggems <count> /glevel <count> /setvend <count> /clearvend /setmag <count> /clearmag /setmagseed <count> /clearmagseed' },
+            { name: 'Developer', price: 'Rp 70.000', commands: '/saveworld /growall /banrid /checkplaymods /online /removedrop /rpl /spl /gsm <text> /blacklist <player> /spk <text> /asb <text> /infoex <player> /banip <ip> /getpos /pban <player_name>' },
+            { name: 'Administrator', price: 'Rp 50.000', commands: '/magic /nohands /nobody /unequip /warn <player_name> <text> /dropall /eff <id> /eff2 <id> /mute <player_name> <time> <reason> /curse <player_name> <time> <reason> /unmute <player_name> /uncurse <player_name> /hide /fixworld /searchuser <player_name> /summon <player_name> /freeze <player_name> /info <player_name> /p <id> /warp <player_name> /unnuke /nuke <time> <reason> /warpto <player_name> /destructo /color <skin> /checkid <item> /nick <nick> /freezeall /ghost /fakeban <player_name> /fakewarn <player_name> /fl <country> /banall /1hit /pullall /dsummon /logs /scan <world> <item_id> /reports /playerreport /flag <player_name> /checkping <player_name> /uncurseall' },
+            { name: 'Mod', price: 'Rp 10.000', commands: '/radio2 /togglemods /skin /invis /msb <text> /m <text> /getpos /note <player name> <text> /notes <player name>' }
         ];
 
         const roleContainer = document.getElementById('roleContainer');
         function renderRoles() {
             roleContainer.innerHTML = rolesData.map(role => `
-                <div class="card-glass rounded-xl p-5 role-card" data-role="${role.name}">
+                <div class="card-simple p-5 role-card" data-role="${role.name}">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-lg">${role.name}</span>
-                        <span class="text-indigo-300 text-sm bg-indigo-900/40 px-3 py-1 rounded-full">${role.price}</span>
+                        <span class="text-blue-300 text-sm bg-slate-700 px-3 py-1 rounded-full">${role.price}</span>
                     </div>
                     <div class="command-panel mt-3 text-sm text-gray-300" id="panel-${role.name.replace(/\s+/g, '')}">
-                        <div class="bg-black/30 p-3 rounded-lg mt-2 border border-white/10">
-                            <code class="text-indigo-200 text-xs leading-relaxed">${role.commands}</code>
+                        <div class="bg-slate-800/70 p-3 rounded-lg mt-2 border border-slate-700">
+                            <code class="text-blue-200 text-xs leading-relaxed">${role.commands}</code>
                         </div>
                         <div class="flex gap-2 mt-3">
-                            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="bg-green-700/70 hover:bg-green-600 px-4 py-1.5 rounded text-xs"><i class="fab fa-whatsapp mr-1"></i>Contact</a>
-                            <span class="bg-amber-700/70 px-4 py-1.5 rounded text-xs">Beli</span>
+                            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="bg-green-700/80 hover:bg-green-600 px-4 py-1.5 rounded text-xs"><i class="fab fa-whatsapp mr-1"></i>Contact</a>
+                            <span class="bg-amber-700/80 px-4 py-1.5 rounded text-xs">Beli</span>
                         </div>
                     </div>
-                    <div class="text-xs text-gray-400 mt-2 flex items-center"><i class="fas fa-chevron-down mr-1 text-indigo-300"></i> Klik untuk command</div>
+                    <div class="text-xs text-gray-400 mt-2 flex items-center"><i class="fas fa-chevron-down mr-1 text-blue-300"></i> Klik untuk command</div>
                 </div>
             `).join('');
 
@@ -486,7 +536,7 @@
         }
         renderRoles();
 
-        // ---------- INTERSECTION OBSERVER (fade) ----------
+        // ---------- INTERSECTION OBSERVER ----------
         const fadeElements = document.querySelectorAll('.fade-in-section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('is-visible'); });
