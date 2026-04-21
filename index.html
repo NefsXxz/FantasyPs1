@@ -10,10 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { font-family: 'Inter', sans-serif; }
-        body { background: #0f172a; } /* solid slate-900 */
+        body { background: #0f172a; }
         html { scroll-behavior: smooth; }
         
-        /* fade sederhana */
         .fade-in-section {
             opacity: 0;
             transform: translateY(10px);
@@ -24,38 +23,30 @@
             transform: translateY(0);
         }
 
-        /* navbar solid tanpa blur */
         .nav-solid {
             background: rgba(15, 23, 42, 0.9);
             border-bottom: 1px solid #334155;
         }
 
-        /* kartu solid dengan border tipis */
         .card-simple {
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 16px;
         }
 
-        /* tombol sederhana */
         .btn-primary {
             background: #3b82f6;
             color: white;
             transition: background 0.2s;
         }
-        .btn-primary:hover {
-            background: #2563eb;
-        }
+        .btn-primary:hover { background: #2563eb; }
         .btn-secondary {
             background: #334155;
             color: white;
             border: 1px solid #475569;
         }
-        .btn-secondary:hover {
-            background: #475569;
-        }
+        .btn-secondary:hover { background: #475569; }
 
-        /* loader simpel */
         .loader {
             position: fixed;
             inset: 0;
@@ -72,39 +63,59 @@
             pointer-events: none;
         }
 
-        /* role command panel */
         .command-panel {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
-        .command-panel.open {
-            max-height: 500px;
-        }
+        .command-panel.open { max-height: 500px; }
         .role-card {
             cursor: pointer;
             transition: background 0.15s;
         }
-        .role-card:hover {
-            background: #334155;
-        }
+        .role-card:hover { background: #334155; }
 
-        /* mobile menu */
         #mobileMenu a {
             border-bottom: 1px solid #334155;
             padding: 10px 0;
         }
 
-        /* music widget sederhana */
         .music-widget {
             background: #1e293b;
             border: 1px solid #334155;
+        }
+        /* step list styling */
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 2.2rem;
+            position: relative;
+        }
+        .step-list li::before {
+            content: counter(step-counter);
+            background: #3b82f6;
+            color: white;
+            font-weight: bold;
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body class="text-gray-200 antialiased">
 
-<!-- LOADING SCREEN (simpel) -->
+<!-- LOADING SCREEN -->
 <div id="loadingScreen" class="loader">
     <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-24 h-24 rounded-full border-2 border-blue-400/50 mb-4">
     <div class="text-xl font-medium text-blue-200">Memuat...</div>
@@ -113,7 +124,7 @@
     </div>
 </div>
 
-<!-- BACKGROUND LEMBUT (tanpa blur berlebihan) -->
+<!-- BACKGROUND -->
 <div class="fixed inset-0 z-[-1]">
     <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-30">
     <div class="absolute inset-0 bg-slate-900/80"></div>
@@ -135,7 +146,7 @@
     <source src="https://cdn.discordapp.com/attachments/1455029046638415998/1463191762318135454/fc2183da227dc1b688884ae065f96478.mp3?ex=69dc6144&is=69db0fc4&hm=e098a24a4dfe81be71c8b2009f9f6a5f9cda84b7a691cb02ca731de28163f477&" type="audio/mpeg">
 </audio>
 
-<!-- NAVBAR (solid, tanpa blur) -->
+<!-- NAVBAR -->
 <nav class="nav-solid fixed top-0 left-0 w-full z-30 py-2.5 px-4 md:px-8 flex items-center justify-between shadow-sm">
     <div class="flex items-center gap-2">
         <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-9 h-9 rounded-full object-cover border border-blue-400/40">
@@ -145,6 +156,7 @@
         <a href="#home" class="hover:text-blue-300 transition">Home</a>
         <a href="#download" class="hover:text-blue-300 transition">Download</a>
         <a href="#tutorial" class="hover:text-blue-300 transition">Tutorial</a>
+        <a href="#virtualhost" class="hover:text-blue-300 transition">Virtual Host</a>
         <a href="#role" class="hover:text-blue-300 transition">Role</a>
         <a href="#community" class="hover:text-blue-300 transition">Community</a>
     </div>
@@ -156,6 +168,7 @@
     <a href="#home">Home</a>
     <a href="#download">Download</a>
     <a href="#tutorial">Tutorial</a>
+    <a href="#virtualhost">Virtual Host</a>
     <a href="#role">Role</a>
     <a href="#community">Community</a>
 </div>
@@ -178,7 +191,7 @@
         </div>
     </section>
 
-    <!-- SERVER INFO CARD (solid) -->
+    <!-- SERVER INFO CARD -->
     <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
         <div class="card-simple p-5 flex items-center gap-4">
             <div id="statusIcon" class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
@@ -206,7 +219,7 @@
         </div>
     </section>
 
-    <!-- CAROUSEL (lebih sederhana) -->
+    <!-- CAROUSEL -->
     <section class="fade-in-section mb-20">
         <h2 class="text-3xl font-bold text-white mb-5 flex items-center"><i class="fas fa-images text-blue-400 mr-3"></i>Showcase</h2>
         <div class="relative overflow-hidden rounded-xl shadow-lg border border-slate-700">
@@ -279,7 +292,7 @@
         </div>
     </section>
 
-    <!-- TUTORIAL -->
+    <!-- TUTORIAL SINGKAT -->
     <section id="tutorial" class="fade-in-section mb-20 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-blue-400 mr-3"></i>Tutorial Singkat</h2>
         <div class="grid md:grid-cols-3 gap-6">
@@ -313,7 +326,80 @@
         </div>
     </section>
 
-    <!-- ROLE + COMMAND (dengan desain lebih bersih) -->
+    <!-- ========== VIRTUAL HOST SECTION (BARU) ========== -->
+    <section id="virtualhost" class="fade-in-section mb-20 scroll-mt-20">
+        <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-server text-blue-400 mr-3"></i>Virtual Host (Panduan Lengkap)
+        </h2>
+        <div class="card-simple p-6 md:p-8">
+            <div class="flex flex-wrap items-start gap-6">
+                <!-- Left: info & link -->
+                <div class="w-full md:w-5/12">
+                    <div class="space-y-5">
+                        <div>
+                            <span class="text-sm uppercase tracking-wider text-blue-300">File Host (MediaFire)</span>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <a href="https://www.mediafire.com/file/bxz0nt3uigywgne/EldoriaPs+-+GTPSHOST+(5).txt/file" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2">
+                                    <i class="fas fa-download"></i> Download Host .txt
+                                </a>
+                                <button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2">
+                                    <i class="far fa-copy"></i> Salin Link
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Link: https://www.mediafire.com/file/bxz0nt3uigywgne/EldoriaPs+-+GTPSHOST+(5).txt/file</p>
+                        </div>
+                        <div>
+                            <span class="text-sm uppercase tracking-wider text-blue-300">Aplikasi Virtual Host</span>
+                            <div class="mt-2">
+                                <a href="https://sfile.mobi/4xXabY4QEEP" target="_blank" class="bg-emerald-700/80 hover:bg-emerald-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
+                                    <i class="fas fa-mobile-alt"></i> Download Virtual Host App
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sm uppercase tracking-wider text-blue-300">Video Tutorial</span>
+                            <div class="mt-2">
+                                <a href="https://files.catbox.moe/bdanii.mp4" target="_blank" class="bg-indigo-700/70 hover:bg-indigo-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
+                                    <i class="fas fa-video"></i> Tonton Video Panduan
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right: langkah-langkah -->
+                <div class="w-full md:w-7/12">
+                    <h3 class="text-xl font-semibold mb-3 flex items-center gap-2"><i class="fas fa-list-ol text-blue-300"></i> Langkah-langkah Virtual Host</h3>
+                    <ul class="step-list text-sm text-gray-200 space-y-4">
+                        <li>
+                            <strong class="text-white">Download File Host</strong><br>
+                            <span class="text-gray-400">Unduh file .txt dari tombol “Download Host .txt” di samping. Simpan di penyimpanan ponsel.</span>
+                        </li>
+                        <li>
+                            <strong class="text-white">Buka Aplikasi Virtual Host</strong><br>
+                            <span class="text-gray-400">Install dan buka aplikasi Virtual Host yang sudah diunduh.</span>
+                        </li>
+                        <li>
+                            <strong class="text-white">Pilih File Host</strong><br>
+                            <span class="text-gray-400">Tekan tombol <code class="bg-slate-800 px-1 rounded">re-select file</code> lalu cari file <strong>EldoriaPs - GTPSHOST (5).txt</strong> yang telah diunduh.</span>
+                        </li>
+                        <li>
+                            <strong class="text-white">Aktifkan Host</strong><br>
+                            <span class="text-gray-400">Setelah file terpilih, tekan tombol di atasnya (biasanya bertuliskan “START” atau ikon power) untuk mengaktifkan virtual host.</span>
+                        </li>
+                        <li>
+                            <strong class="text-white">Mainkan Growtopia</strong><br>
+                            <span class="text-gray-400">Buka game Growtopia dan login seperti biasa. Selamat bermain di Eldoria!</span>
+                        </li>
+                    </ul>
+                    <div class="mt-5 p-3 bg-slate-800/70 border border-slate-700 rounded-lg text-xs text-blue-200">
+                        <i class="fas fa-info-circle mr-1"></i> Pastikan file host sudah dipilih dan Virtual Host dalam keadaan aktif sebelum membuka game.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROLE + COMMAND -->
     <section id="role" class="fade-in-section mb-20 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i>Role & Command</h2>
         <p class="text-gray-300 mb-6">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
@@ -345,7 +431,7 @@
     (function(){
         "use strict";
 
-        // ---------- LOADING SCREEN ----------
+        // ---------- LOADING ----------
         const loader = document.getElementById('loadingScreen');
         window.addEventListener('load', function(){
             setTimeout(() => loader.classList.add('fade-out'), 600);
@@ -361,7 +447,7 @@
             });
         }
 
-        // ---------- MUSIC PLAYER ----------
+        // ---------- MUSIC ----------
         const bgMusic = document.getElementById('bgMusic');
         const playBtn = document.getElementById('musicPlayBtn');
         const muteBtn = document.getElementById('musicMuteBtn');
@@ -392,7 +478,6 @@
         // ---------- STATUS & PLAYER ----------
         const SERVER_ONLINE = true;
         const SHOW_PLAYER_COUNT = true;
-
         function applyStatusConfig() {
             const statusText = document.getElementById('statusText');
             const statusIcon = document.getElementById('statusIcon');
@@ -433,7 +518,6 @@
             'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg',
             'https://i.ibb.co.com/FZ851zt/IMG-20250809-WA0150.jpg'
         ];
-
         const container = document.getElementById('carouselContainer');
         const dotsDiv = document.getElementById('carouselDots');
         let currentIndex = 0;
@@ -471,7 +555,7 @@
         // ---------- COPY FUNCTION ----------
         function copyText(text) {
             navigator.clipboard.writeText(text).then(()=>{
-                showToast('✅ Host disalin!');
+                showToast('✅ Host/link disalin!');
             }).catch(()=> showToast('❌ Gagal menyalin'));
         }
         function showToast(msg) {
@@ -494,6 +578,10 @@
         document.getElementById('copyWindowsHost').addEventListener('click', ()=>{
             copyText(`168.144.33.116 www.growtopia1.com\n168.144.33.116 www.growtopia2.com`);
         });
+
+        // virtual host link copy
+        const vhostLink = 'https://www.mediafire.com/file/bxz0nt3uigywgne/EldoriaPs+-+GTPSHOST+(5).txt/file';
+        document.getElementById('copyVhostLinkBtn').addEventListener('click', ()=> copyText(vhostLink));
 
         // ---------- ROLE DATA ----------
         const rolesData = [
