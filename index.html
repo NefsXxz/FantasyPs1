@@ -12,40 +12,46 @@
         * { font-family: 'Inter', sans-serif; }
         body { background: #0f172a; }
         html { scroll-behavior: smooth; }
-        
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
 
-        .nav-solid {
-            background: rgba(15, 23, 42, 0.9);
-            border-bottom: 1px solid #334155;
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
         }
-
         .card-simple {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 16px;
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card-simple:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(59,130,246,0.2);
         }
 
         .btn-primary {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
-            transition: background 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.4);
         }
-        .btn-primary:hover { background: #2563eb; }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            box-shadow: 0 6px 18px rgba(59,130,246,0.6);
+            transform: translateY(-2px);
+        }
         .btn-secondary {
-            background: #334155;
+            background: rgba(51, 65, 85, 0.8);
             color: white;
-            border: 1px solid #475569;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            transition: all 0.3s;
         }
-        .btn-secondary:hover { background: #475569; }
+        .btn-secondary:hover { 
+            background: rgba(71, 85, 105, 0.9);
+            transform: translateY(-2px);
+        }
 
         .loader {
             position: fixed;
@@ -56,43 +62,54 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.6s;
+            transition: opacity 0.8s;
         }
         .loader.fade-out {
             opacity: 0;
             pointer-events: none;
         }
 
-        .command-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+        .profit-gallery {
+            display: grid;
+            gap: 0.5rem;
         }
-        .command-panel.open { max-height: 500px; }
-        .role-card {
-            cursor: pointer;
-            transition: background 0.15s;
+        .profit-gallery.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
         }
-        .role-card:hover { background: #334155; }
+        .profit-gallery img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+        .profit-gallery.single img {
+            height: 260px;
+            object-fit: contain;
+        }
 
         #mobileMenu a {
             border-bottom: 1px solid #334155;
-            padding: 10px 0;
+            padding: 12px 0;
         }
 
         .music-widget {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: rgba(30,41,59,0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148,163,184,0.2);
+            border-radius: 40px;
+            padding: 6px 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
-        /* step list styling */
+
         .step-list {
             counter-reset: step-counter;
             list-style: none;
         }
         .step-list li {
             counter-increment: step-counter;
-            margin-bottom: 1rem;
-            padding-left: 2.2rem;
+            margin-bottom: 1.2rem;
+            padding-left: 2.5rem;
             position: relative;
         }
         .step-list li::before {
@@ -100,8 +117,8 @@
             background: #3b82f6;
             color: white;
             font-weight: bold;
-            width: 1.8rem;
-            height: 1.8rem;
+            width: 2rem;
+            height: 2rem;
             border-radius: 9999px;
             display: inline-flex;
             align-items: center;
@@ -110,33 +127,102 @@
             left: 0;
             top: 0;
             font-size: 0.9rem;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+        }
+
+        @keyframes slideDown {
+            from { transform: translate(-50%, -120%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .toast-enter {
+            animation: slideDown 0.3s ease forwards;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-logo {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Maintenance Mode Styles */
+        .maintenance-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.97);
+            backdrop-filter: blur(15px);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .maintenance-overlay.active {
+            display: flex;
         }
     </style>
 </head>
 <body class="text-gray-200 antialiased">
 
+<!-- MAINTENANCE OVERLAY -->
+<div id="maintenanceScreen" class="maintenance-overlay">
+    <i class="fas fa-tools text-yellow-400 text-6xl mb-6 animate-pulse"></i>
+    <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4">🚧 Server Sedang Maintenance</h1>
+    <p class="text-gray-300 text-lg max-w-lg mx-auto">Mohon maaf atas ketidaknyamanannya. Server Eldoria sedang dalam perbaikan atau pembaruan sistem. Silakan cek kembali nanti ya!</p>
+    <div class="mt-8 flex gap-3">
+        <div class="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+        <div class="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+        <div class="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+    </div>
+    <p class="text-xs text-gray-500 mt-6">~ Eldoria Staff Team ~</p>
+</div>
+
 <!-- LOADING SCREEN -->
 <div id="loadingScreen" class="loader">
-    <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-24 h-24 rounded-full border-2 border-blue-400/50 mb-4">
-    <div class="text-xl font-medium text-blue-200">Memuat...</div>
-    <div class="w-28 h-1.5 mt-4 bg-slate-700 rounded-full overflow-hidden">
-        <div class="h-full w-2/3 bg-blue-400 rounded-full animate-pulse"></div>
+    <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" 
+         class="w-28 h-28 rounded-full border-4 border-blue-400/50 mb-6 animate-pulse">
+    <div class="text-2xl font-semibold text-blue-200 mb-4">Eldoria</div>
+    <div class="w-44 h-2 bg-slate-700 rounded-full overflow-hidden">
+        <div id="loadProgress" class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-300" style="width: 0%"></div>
     </div>
+    <p class="text-xs text-slate-400 mt-3">Menyiapkan petualangan...</p>
 </div>
 
 <!-- BACKGROUND -->
 <div class="fixed inset-0 z-[-1]">
-    <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" class="w-full h-full object-cover object-center opacity-30">
-    <div class="absolute inset-0 bg-slate-900/80"></div>
+    <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background" 
+         class="w-full h-full object-cover object-center opacity-25 blur-[2px]">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-900/95"></div>
 </div>
 
 <!-- MUSIC PLAYER -->
-<div class="fixed bottom-5 right-5 z-40 flex gap-2">
-    <div class="music-widget rounded-full px-4 py-2 flex items-center gap-3 shadow-md">
-        <button id="musicPlayBtn" class="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center transition">
+<div class="fixed bottom-6 right-6 z-40 flex items-center">
+    <div class="music-widget flex items-center gap-3">
+        <div class="flex gap-1 items-end h-5">
+            <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:8px; animation-delay:0s"></span>
+            <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:14px; animation-delay:0.2s"></span>
+            <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:10px; animation-delay:0.4s"></span>
+            <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:16px; animation-delay:0.6s"></span>
+            <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:6px; animation-delay:0.8s"></span>
+        </div>
+        <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center transition shadow-md">
             <i class="fas fa-play text-white text-sm"></i>
         </button>
-        <button id="musicMuteBtn" class="w-8 h-8 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition">
+        <button id="musicMuteBtn" class="w-9 h-9 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition">
             <i class="fas fa-volume-up text-white/90 text-sm"></i>
         </button>
         <span class="text-xs font-medium text-gray-300 hidden sm:inline">Eldoria OST</span>
@@ -147,55 +233,58 @@
 </audio>
 
 <!-- NAVBAR -->
-<nav class="nav-solid fixed top-0 left-0 w-full z-30 py-2.5 px-4 md:px-8 flex items-center justify-between shadow-sm">
+<nav id="navbar" class="fixed top-0 left-0 w-full z-30 py-3 px-4 md:px-8 flex items-center justify-between transition-all duration-300 bg-transparent">
     <div class="flex items-center gap-2">
-        <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-9 h-9 rounded-full object-cover border border-blue-400/40">
-        <span class="font-bold text-lg text-white">ELDORIA</span>
+        <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border-2 border-blue-400/50">
+        <span class="font-bold text-xl text-white tracking-wide">ELDORIA</span>
     </div>
-    <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+    <div class="hidden md:flex items-center gap-7 text-sm font-medium">
         <a href="#home" class="hover:text-blue-300 transition">Home</a>
         <a href="#download" class="hover:text-blue-300 transition">Download</a>
         <a href="#tutorial" class="hover:text-blue-300 transition">Tutorial</a>
         <a href="#virtualhost" class="hover:text-blue-300 transition">Virtual Host</a>
-        <a href="#role" class="hover:text-blue-300 transition">Role</a>
+        <a href="#profit" class="hover:text-blue-300 transition">Profit</a>
         <a href="#community" class="hover:text-blue-300 transition">Community</a>
     </div>
     <div class="md:hidden">
-        <button id="mobileMenuBtn" class="text-white text-xl"><i class="fas fa-bars"></i></button>
+        <button id="mobileMenuBtn" class="text-white text-2xl"><i class="fas fa-bars"></i></button>
     </div>
 </nav>
-<div id="mobileMenu" class="fixed top-14 left-0 w-full nav-solid py-4 px-6 flex flex-col gap-1 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
+<div id="mobileMenu" class="fixed top-14 left-0 w-full glass py-4 px-6 flex flex-col gap-1 text-white z-20 transform -translate-y-full transition-transform duration-300 md:hidden">
     <a href="#home">Home</a>
     <a href="#download">Download</a>
     <a href="#tutorial">Tutorial</a>
     <a href="#virtualhost">Virtual Host</a>
-    <a href="#role">Role</a>
+    <a href="#profit">Profit</a>
     <a href="#community">Community</a>
 </div>
 
 <!-- MAIN CONTENT -->
-<main class="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-16">
+<main class="relative z-10 max-w-6xl mx-auto px-4 pt-28 pb-16">
 
     <!-- HERO -->
-    <section id="home" class="fade-in-section text-center mb-14">
-        <div class="flex justify-center mb-4">
-            <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-500/70 shadow-lg">
+    <section id="home" class="fade-in-section text-center mb-16">
+        <div class="flex justify-center mb-6">
+            <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" 
+                 alt="Eldoria Logo" class="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-blue-500/60 shadow-2xl float-logo">
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-white">ELDORIA PRIVATE SERVER</h1>
-        <p class="text-blue-200 text-lg md:text-xl mt-2">Growtopia Private Server • High Peak 22+ Online</p>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-3">
+            <span id="typewriter"></span><span class="animate-pulse text-blue-400">|</span>
+        </h1>
+        <p class="text-blue-200 text-lg md:text-xl">Growtopia Private Server • High Peak 22+ Online</p>
         <p class="text-gray-400 text-sm mt-1">Server: [ EldoriaPs ]</p>
         <div class="flex flex-wrap justify-center gap-4 mt-8">
-            <a href="#download" class="btn-primary font-semibold px-7 py-3 rounded-full shadow-md transition transform hover:scale-105"><i class="fas fa-download mr-2"></i>Download</a>
-            <a href="#tutorial" class="btn-secondary font-semibold px-7 py-3 rounded-full transition"><i class="fas fa-book-open mr-2"></i>Tutorial</a>
-            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-7 py-3 rounded-full shadow-md transition"><i class="fas fa-copy mr-2"></i>COPY HOST</button>
+            <a href="#download" class="btn-primary font-semibold px-8 py-3.5 rounded-full shadow-lg transition inline-flex items-center"><i class="fas fa-download mr-2"></i>Download</a>
+            <a href="#tutorial" class="btn-secondary font-semibold px-8 py-3.5 rounded-full transition inline-flex items-center"><i class="fas fa-book-open mr-2"></i>Tutorial</a>
+            <button id="heroCopyHost" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-md transition inline-flex items-center"><i class="fas fa-copy mr-2"></i>COPY HOST</button>
         </div>
     </section>
 
     <!-- SERVER INFO CARD -->
-    <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+    <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-5 mb-18">
         <div class="card-simple p-5 flex items-center gap-4">
-            <div id="statusIcon" class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
-                <i id="statusIconInner" class="fas fa-circle text-green-400 text-xl"></i>
+            <div id="statusIcon" class="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center">
+                <i id="statusIconInner" class="fas fa-circle text-green-400 text-2xl"></i>
             </div>
             <div>
                 <p class="text-xs uppercase tracking-wider text-gray-400">Status</p>
@@ -203,41 +292,29 @@
             </div>
         </div>
         <div class="card-simple p-5 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
-                <i class="fas fa-users text-blue-300 text-xl"></i>
+            <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <i class="fas fa-users text-blue-300 text-2xl"></i>
             </div>
             <div>
                 <p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p>
-                <p class="text-2xl font-bold" id="playerCount">12</p>
+                <p class="text-3xl font-bold" id="playerCount">12</p>
             </div>
         </div>
         <div class="card-simple p-5 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
-                <i class="fas fa-calendar text-amber-300 text-xl"></i>
+            <div class="w-14 h-14 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <i class="fas fa-calendar text-amber-300 text-2xl"></i>
             </div>
-            <div><p class="text-xs uppercase tracking-wider text-gray-400">Version</p><p class="text-xl font-semibold">v4.20</p></div>
+            <div><p class="text-xs uppercase tracking-wider text-gray-400">Version</p><p class="text-2xl font-semibold">v4.20</p></div>
         </div>
-    </section>
-
-    <!-- CAROUSEL -->
-    <section class="fade-in-section mb-20">
-        <h2 class="text-3xl font-bold text-white mb-5 flex items-center"><i class="fas fa-images text-blue-400 mr-3"></i>Showcase</h2>
-        <div class="relative overflow-hidden rounded-xl shadow-lg border border-slate-700">
-            <div id="carouselContainer" class="flex transition-transform duration-500 ease-out"></div>
-            <button id="carouselPrev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 text-white w-10 h-10 rounded-full"><i class="fas fa-chevron-left"></i></button>
-            <button id="carouselNext" class="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 text-white w-10 h-10 rounded-full"><i class="fas fa-chevron-right"></i></button>
-            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2" id="carouselDots"></div>
-        </div>
-        <p class="text-xs text-gray-500 mt-2 text-center">📸 Gambar bisa diganti di bagian array images</p>
     </section>
 
     <!-- DOWNLOAD SECTION -->
-    <section id="download" class="fade-in-section mb-20 scroll-mt-20">
+    <section id="download" class="fade-in-section mb-22 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-blue-400 mr-3"></i>Download & Host</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Android -->
             <div class="card-simple p-6">
-                <div class="text-3xl mb-3 text-green-400"><i class="fab fa-android"></i></div>
+                <div class="text-4xl mb-3 text-green-400"><i class="fab fa-android"></i></div>
                 <h3 class="text-xl font-bold">Android</h3>
                 <div class="mt-4 space-y-3">
                     <a href="https://pixeldrain.com/u/oPTKGVau" target="_blank" class="block w-full bg-blue-600/80 hover:bg-blue-500 text-center py-2.5 rounded-lg text-sm font-medium transition"><i class="fas fa-gamepad mr-2"></i>Download Eldoria APK</a>
@@ -245,13 +322,13 @@
                     <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-700">
                         <p class="text-xs text-gray-300 mb-1">Host URL:</p>
                         <code class="text-blue-200 text-sm break-all">https://gtpshost.com/raw/EldoriaPs</code>
-                        <button data-copy="https://gtpshost.com/raw/Eldoriapss" class="copy-host-btn mt-2 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Host</button>
+                        <button data-copy="https://gtpshost.com/raw/EldoriaPs" class="copy-host-btn mt-2 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Host</button>
                     </div>
                 </div>
             </div>
             <!-- iOS -->
             <div class="card-simple p-6">
-                <div class="text-3xl mb-3 text-gray-300"><i class="fab fa-apple"></i></div>
+                <div class="text-4xl mb-3 text-gray-300"><i class="fab fa-apple"></i></div>
                 <h3 class="text-xl font-bold">iOS</h3>
                 <div class="mt-4 space-y-3">
                     <div class="bg-slate-800/60 rounded-lg p-3">
@@ -264,12 +341,12 @@
             </div>
             <!-- Windows -->
             <div class="card-simple p-6">
-                <div class="text-3xl mb-3 text-blue-400"><i class="fab fa-windows"></i></div>
+                <div class="text-4xl mb-3 text-blue-400"><i class="fab fa-windows"></i></div>
                 <h3 class="text-xl font-bold">Windows</h3>
                 <div class="mt-4">
                     <div class="bg-slate-900/60 rounded-lg p-3 font-mono text-xs">
-                        165.232.163.178 www.growtopia1.com<br>
-                        165.232.163.178 www.growtopia2.com
+                        129.212.227.18 www.growtopia1.com<br>
+                        129.212.227.18 www.growtopia2.com
                     </div>
                     <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Windows Host</button>
                     <p class="text-xs text-gray-400 mt-2">Edit C:\Windows\System32\drivers\etc\hosts (admin)</p>
@@ -279,13 +356,13 @@
     </section>
 
     <!-- HOST SYSTEM (ringkas) -->
-    <section class="fade-in-section mb-20">
+    <section class="fade-in-section mb-22">
         <div class="card-simple p-6 border-l-4 border-blue-500">
             <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-blue-300"></i>Host System (PowerTunnel / HostGo)</h3>
             <div class="mt-4 bg-slate-800/50 rounded-xl p-4 border border-slate-700">
                 <p class="text-sm text-gray-300 mb-2">Copy host di bawah, paste ke PowerTunnel/HostGo. Jangan dibuka di browser.</p>
                 <div class="flex items-stretch gap-2">
-                    <code class="flex-1 bg-slate-900 p-3 rounded-lg text-blue-200 text-sm break-all border border-slate-700">https://gtpshost.com/raw/Eldoriapss</code>
+                    <code class="flex-1 bg-slate-900 p-3 rounded-lg text-blue-200 text-sm break-all border border-slate-700">https://gtpshost.com/raw/EldoriaPs</code>
                     <button id="mainCopyHostBtn" class="bg-blue-600 hover:bg-blue-500 px-5 rounded-lg transition"><i class="far fa-copy mr-1"></i>COPY</button>
                 </div>
             </div>
@@ -293,7 +370,7 @@
     </section>
 
     <!-- TUTORIAL SINGKAT -->
-    <section id="tutorial" class="fade-in-section mb-20 scroll-mt-20">
+    <section id="tutorial" class="fade-in-section mb-22 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-blue-400 mr-3"></i>Tutorial Singkat</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <div class="card-simple p-5">
@@ -326,88 +403,70 @@
         </div>
     </section>
 
-    <!-- ========== VIRTUAL HOST SECTION (BARU) ========== -->
-    <section id="virtualhost" class="fade-in-section mb-20 scroll-mt-20">
+    <!-- VIRTUAL HOST SECTION -->
+    <section id="virtualhost" class="fade-in-section mb-22 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
             <i class="fas fa-server text-blue-400 mr-3"></i>Virtual Host (Panduan Lengkap)
         </h2>
         <div class="card-simple p-6 md:p-8">
             <div class="flex flex-wrap items-start gap-6">
-                <!-- Left: info & link -->
-                <div class="w-full md:w-5/12">
-                    <div class="space-y-5">
-                        <div>
-                            <span class="text-sm uppercase tracking-wider text-blue-300">File Host (MediaFire)</span>
-                            <div class="mt-2 flex flex-wrap gap-2">
-                                <a href="https://www.mediafire.com/file/bxz0nt3uigywgne/EldoriaPs+-+GTPSHOST+(5).txt/file" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2">
-                                    <i class="fas fa-download"></i> Download Host .txt
-                                </a>
-                                <button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2">
-                                    <i class="far fa-copy"></i> Salin Link
-                                </button>
-                            </div>
-                            <p class="text-xs text-gray-400 mt-1">Link: https://www.mediafire.com/file/bxz0nt3uigywgne/EldoriaPs+-+GTPSHOST+(5).txt/file</p>
+                <div class="w-full md:w-5/12 space-y-5">
+                    <div>
+                        <span class="text-sm uppercase tracking-wider text-blue-300">File Host (MediaFire)</span>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <a href="https://www.mediafire.com/file/626daibmun4mgub/EldoriaPs+-+GTPSHOST+(6).txt/file" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2">
+                                <i class="fas fa-download"></i> Download Host .txt
+                            </a>
+                            <button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2">
+                                <i class="far fa-copy"></i> Salin Link
+                            </button>
                         </div>
-                        <div>
-                            <span class="text-sm uppercase tracking-wider text-blue-300">Aplikasi Virtual Host</span>
-                            <div class="mt-2">
-                                <a href="https://sfile.mobi/4xXabY4QEEP" target="_blank" class="bg-emerald-700/80 hover:bg-emerald-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
-                                    <i class="fas fa-mobile-alt"></i> Download Virtual Host App
-                                </a>
-                            </div>
+                    </div>
+                    <div>
+                        <span class="text-sm uppercase tracking-wider text-blue-300">Aplikasi Virtual Host</span>
+                        <div class="mt-2">
+                            <a href="https://sfile.mobi/4xXabY4QEEP" target="_blank" class="bg-emerald-700/80 hover:bg-emerald-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
+                                <i class="fas fa-mobile-alt"></i> Download Virtual Host App
+                            </a>
                         </div>
-                        <div>
-                            <span class="text-sm uppercase tracking-wider text-blue-300">Video Tutorial</span>
-                            <div class="mt-2">
-                                <a href="https://files.catbox.moe/bdanii.mp4" target="_blank" class="bg-indigo-700/70 hover:bg-indigo-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
-                                    <i class="fas fa-video"></i> Tonton Video Panduan
-                                </a>
-                            </div>
+                    </div>
+                    <div>
+                        <span class="text-sm uppercase tracking-wider text-blue-300">Video Tutorial</span>
+                        <div class="mt-2">
+                            <a href="https://files.catbox.moe/bdanii.mp4" target="_blank" class="bg-indigo-700/70 hover:bg-indigo-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
+                                <i class="fas fa-video"></i> Tonton Video Panduan
+                            </a>
                         </div>
                     </div>
                 </div>
-                <!-- Right: langkah-langkah -->
                 <div class="w-full md:w-7/12">
-                    <h3 class="text-xl font-semibold mb-3 flex items-center gap-2"><i class="fas fa-list-ol text-blue-300"></i> Langkah-langkah Virtual Host</h3>
+                    <h3 class="text-xl font-semibold mb-3 flex items-center gap-2"><i class="fas fa-list-ol text-blue-300"></i> Langkah-langkah</h3>
                     <ul class="step-list text-sm text-gray-200 space-y-4">
-                        <li>
-                            <strong class="text-white">Download File Host</strong><br>
-                            <span class="text-gray-400">Unduh file .txt dari tombol “Download Host .txt” di samping. Simpan di penyimpanan ponsel.</span>
-                        </li>
-                        <li>
-                            <strong class="text-white">Buka Aplikasi Virtual Host</strong><br>
-                            <span class="text-gray-400">Install dan buka aplikasi Virtual Host yang sudah diunduh.</span>
-                        </li>
-                        <li>
-                            <strong class="text-white">Pilih File Host</strong><br>
-                            <span class="text-gray-400">Tekan tombol <code class="bg-slate-800 px-1 rounded">re-select file</code> lalu cari file <strong>EldoriaPs - GTPSHOST (5).txt</strong> yang telah diunduh.</span>
-                        </li>
-                        <li>
-                            <strong class="text-white">Aktifkan Host</strong><br>
-                            <span class="text-gray-400">Setelah file terpilih, tekan tombol di atasnya (biasanya bertuliskan “START” atau ikon power) untuk mengaktifkan virtual host.</span>
-                        </li>
-                        <li>
-                            <strong class="text-white">Mainkan Growtopia</strong><br>
-                            <span class="text-gray-400">Buka game Growtopia dan login seperti biasa. Selamat bermain di Eldoria!</span>
-                        </li>
+                        <li><strong class="text-white">Download File Host</strong><br><span class="text-gray-400">Unduh file .txt dari tombol di samping. Simpan di penyimpanan ponsel.</span></li>
+                        <li><strong class="text-white">Buka Aplikasi Virtual Host</strong><br><span class="text-gray-400">Install dan buka aplikasi Virtual Host yang sudah diunduh.</span></li>
+                        <li><strong class="text-white">Pilih File Host</strong><br><span class="text-gray-400">Tekan tombol <code class="bg-slate-800 px-1 rounded">re-select file</code> lalu cari file <strong>EldoriaPs - GTPSHOST (5).txt</strong>.</span></li>
+                        <li><strong class="text-white">Aktifkan Host</strong><br><span class="text-gray-400">Tekan tombol START/ikon power untuk mengaktifkan virtual host.</span></li>
+                        <li><strong class="text-white">Mainkan Growtopia</strong><br><span class="text-gray-400">Buka game Growtopia dan login. Selamat bermain di Eldoria!</span></li>
                     </ul>
-                    <div class="mt-5 p-3 bg-slate-800/70 border border-slate-700 rounded-lg text-xs text-blue-200">
-                        <i class="fas fa-info-circle mr-1"></i> Pastikan file host sudah dipilih dan Virtual Host dalam keadaan aktif sebelum membuka game.
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ROLE + COMMAND -->
-    <section id="role" class="fade-in-section mb-20 scroll-mt-20">
-        <h2 class="text-3xl font-bold text-white mb-4"><i class="fas fa-crown text-amber-400 mr-3"></i>Role & Command</h2>
-        <p class="text-gray-300 mb-6">Klik role untuk melihat command. Hubungi admin untuk pembelian.</p>
-        <div id="roleContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <!-- ========== PROFIT METHODS (NEW) ========== -->
+    <section id="profit" class="fade-in-section mb-22 scroll-mt-20">
+        <h2 class="text-3xl font-bold text-white mb-4 flex items-center">
+            <i class="fas fa-coins text-yellow-400 mr-3"></i>Metode Profit di Eldoria
+        </h2>
+        <p class="text-gray-300 mb-8">Pelajari cara menghasilkan World Lock (WL) dan Diamond Lock (DL) dengan metode terbaik di server. Klik gambar untuk memperbesar.</p>
+        
+        <div id="profitContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Konten akan di-render oleh JavaScript -->
+        </div>
     </section>
 
     <!-- COMMUNITY -->
-    <section id="community" class="fade-in-section mb-12 scroll-mt-20">
+    <section id="community" class="fade-in-section mb-14 scroll-mt-20">
         <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-blue-400 mr-3"></i>Community</h2>
         <div class="flex flex-wrap gap-5 justify-center">
             <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
@@ -423,7 +482,7 @@
     </section>
 
     <footer class="text-center text-gray-400 text-sm border-t border-slate-700 pt-8 mt-8">
-        <p>© 2025 Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.</p>
+        <p>© <span id="currentYear"></span> Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.</p>
     </footer>
 </main>
 
@@ -431,21 +490,53 @@
     (function(){
         "use strict";
 
+        // ==================== KONFIGURASI ====================
+        const SHOW_HIDDEN_PROFITS = false; // Ganti true untuk menampilkan Fishing & Ghost Hunting
+        const MAINTENANCE_MODE = false;    // Ganti true untuk mengaktifkan layar maintenance
+        // ====================================================
+
         // ---------- LOADING ----------
         const loader = document.getElementById('loadingScreen');
-        window.addEventListener('load', function(){
-            setTimeout(() => loader.classList.add('fade-out'), 600);
-            setTimeout(() => loader.style.display = 'none', 1200);
-        });
+        const progressBar = document.getElementById('loadProgress');
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 25 + 5;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    loader.classList.add('fade-out');
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        // Cek maintenance setelah loading selesai
+                        if (MAINTENANCE_MODE) {
+                            document.getElementById('maintenanceScreen').classList.add('active');
+                        }
+                    }, 800);
+                }, 300);
+            }
+            progressBar.style.width = progress + '%';
+        }, 250);
 
         // ---------- MOBILE MENU ----------
         const menuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
-        if(menuBtn) {
-            menuBtn.addEventListener('click', ()=> {
-                mobileMenu.classList.toggle('-translate-y-full');
-            });
-        }
+        menuBtn?.addEventListener('click', ()=> mobileMenu.classList.toggle('-translate-y-full'));
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', ()=> mobileMenu.classList.add('-translate-y-full'));
+        });
+
+        // ---------- NAVBAR SCROLL ----------
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                navbar.classList.add('glass', 'shadow-md');
+                navbar.style.background = 'rgba(15,23,42,0.85)';
+            } else {
+                navbar.classList.remove('glass', 'shadow-md');
+                navbar.style.background = 'transparent';
+            }
+        });
 
         // ---------- MUSIC ----------
         const bgMusic = document.getElementById('bgMusic');
@@ -460,9 +551,7 @@
                 bgMusic.play().then(()=>{
                     isPlaying = true;
                     playBtn.innerHTML = '<i class="fas fa-pause text-white text-sm"></i>';
-                }).catch(e => {
-                    alert('Klik lagi untuk memutar musik (interaksi diperlukan)');
-                });
+                }).catch(e => alert('Klik lagi untuk memutar musik (interaksi diperlukan)'));
             } else {
                 bgMusic.pause();
                 isPlaying = false;
@@ -475,167 +564,236 @@
             muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-white/80"></i>' : '<i class="fas fa-volume-up text-white/80"></i>';
         });
 
+        // ---------- TYPEWRITER ----------
+        const text = "ELDORIA PRIVATE SERVER";
+        let i = 0;
+        const typewriter = document.getElementById('typewriter');
+        function type() {
+            if (i < text.length) {
+                typewriter.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, 70);
+            }
+        }
+        type();
+
         // ---------- STATUS & PLAYER ----------
         const SERVER_ONLINE = true;
-        const SHOW_PLAYER_COUNT = true;
-        function applyStatusConfig() {
-            const statusText = document.getElementById('statusText');
-            const statusIcon = document.getElementById('statusIcon');
-            const iconInner = document.getElementById('statusIconInner');
-            
-            if (SERVER_ONLINE) {
-                statusText.textContent = 'ONLINE';
-                statusText.className = 'text-2xl font-bold text-green-300';
-                statusIcon.className = 'w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center';
-                iconInner.className = 'fas fa-circle text-green-400 text-xl';
-            } else {
-                statusText.textContent = 'OFFLINE';
-                statusText.className = 'text-2xl font-bold text-red-400';
-                statusIcon.className = 'w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center';
-                iconInner.className = 'fas fa-circle text-red-400 text-xl';
+        const statusText = document.getElementById('statusText');
+        const statusIcon = document.getElementById('statusIcon');
+        const iconInner = document.getElementById('statusIconInner');
+        if (SERVER_ONLINE) {
+            statusText.textContent = 'ONLINE';
+            statusText.className = 'text-2xl font-bold text-green-300';
+            statusIcon.className = 'w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center';
+            iconInner.className = 'fas fa-circle text-green-400 text-2xl';
+        } else {
+            statusText.textContent = 'OFFLINE';
+            statusText.className = 'text-2xl font-bold text-red-400';
+            statusIcon.className = 'w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center';
+            iconInner.className = 'fas fa-circle text-red-400 text-2xl';
+        }
+
+        const playerSpan = document.getElementById('playerCount');
+        let currentPlayer = 12;
+        function animateValue(start, end, duration) {
+            const range = end - start;
+            const startTime = performance.now();
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const val = Math.floor(start + range * progress);
+                playerSpan.textContent = val;
+                if (progress < 1) requestAnimationFrame(update);
             }
-
-            const playerSpan = document.getElementById('playerCount');
-            if (window.playerInterval) clearInterval(window.playerInterval);
-            
-            if (!SHOW_PLAYER_COUNT) {
-                playerSpan.textContent = '0';
-            } else {
-                function updateFakePlayers() {
-                    const fake = Math.floor(Math.random() * 20) + 1;
-                    playerSpan.textContent = fake;
-                }
-                updateFakePlayers();
-                window.playerInterval = setInterval(updateFakePlayers, 3000);
-            }
+            requestAnimationFrame(update);
         }
-        document.addEventListener('DOMContentLoaded', applyStatusConfig);
-
-        // ---------- CAROUSEL ----------
-        const images = [
-            'https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg',
-            'https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg',
-            'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg',
-            'https://i.ibb.co.com/FZ851zt/IMG-20250809-WA0150.jpg'
-        ];
-        const container = document.getElementById('carouselContainer');
-        const dotsDiv = document.getElementById('carouselDots');
-        let currentIndex = 0;
-
-        function renderCarousel() {
-            container.innerHTML = images.map(src => `
-                <div class="min-w-full flex-shrink-0 bg-slate-900/40">
-                    <img src="${src}" alt="showcase" class="w-full h-72 md:h-96 object-contain">
-                </div>
-            `).join('');
-            updateDots();
+        function updateFakePlayers() {
+            const fake = Math.floor(Math.random() * 20) + 1;
+            animateValue(currentPlayer, fake, 1200);
+            currentPlayer = fake;
         }
-        function updateDots() {
-            dotsDiv.innerHTML = images.map((_, i) => 
-                `<span class="w-2.5 h-2.5 rounded-full ${i === currentIndex ? 'bg-white' : 'bg-white/40'} transition"></span>`
-            ).join('');
-        }
-        function goToSlide(index) {
-            if(index < 0) index = 0;
-            if(index >= images.length) index = images.length-1;
-            currentIndex = index;
-            container.style.transform = `translateX(-${currentIndex * 100}%)`;
-            updateDots();
-        }
-        document.getElementById('carouselPrev').addEventListener('click', ()=> goToSlide(currentIndex-1));
-        document.getElementById('carouselNext').addEventListener('click', ()=> goToSlide(currentIndex+1));
-        let touchStartX = 0;
-        container.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
-        container.addEventListener('touchend', e => {
-            const diff = e.changedTouches[0].screenX - touchStartX;
-            if(Math.abs(diff) > 50) diff > 0 ? goToSlide(currentIndex-1) : goToSlide(currentIndex+1);
-        });
-        renderCarousel();
+        updateFakePlayers();
+        window.playerInterval = setInterval(updateFakePlayers, 5000);
 
         // ---------- COPY FUNCTION ----------
         function copyText(text) {
-            navigator.clipboard.writeText(text).then(()=>{
-                showToast('✅ Host/link disalin!');
-            }).catch(()=> showToast('❌ Gagal menyalin'));
+            navigator.clipboard.writeText(text).then(()=> showToast('✅ Host/link disalin!'))
+            .catch(()=> showToast('❌ Gagal menyalin'));
         }
         function showToast(msg) {
             const toast = document.createElement('div');
-            toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-blue-700 text-white px-6 py-2 rounded-full shadow-lg z-50 text-sm';
+            toast.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 bg-blue-700 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm font-medium toast-enter';
             toast.textContent = msg;
             document.body.appendChild(toast);
-            setTimeout(()=> toast.remove(), 2000);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
         }
 
         document.querySelectorAll('.copy-host-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const host = btn.getAttribute('data-copy');
-                copyText(host);
+                copyText(btn.getAttribute('data-copy'));
             });
         });
-        document.getElementById('heroCopyHost').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/Eldoriapss'));
-        document.getElementById('mainCopyHostBtn').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/Eldoriapss'));
+        document.getElementById('heroCopyHost').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/EldoriaPs'));
+        document.getElementById('mainCopyHostBtn').addEventListener('click', ()=> copyText('https://gtpshost.com/raw/EldoriaPs'));
         document.getElementById('copyWindowsHost').addEventListener('click', ()=>{
-            copyText(`168.144.33.116 www.growtopia1.com\n168.144.33.116 www.growtopia2.com`);
+            copyText('129.212.227.18 www.growtopia1.com\n129.212.227.18 www.growtopia2.com');
         });
+        document.getElementById('copyVhostLinkBtn').addEventListener('click', ()=> copyText('https://www.mediafire.com/file/626daibmun4mgub/EldoriaPs+-+GTPSHOST+(6).txt/file'));
 
-        // virtual host link copy
-        const vhostLink = 'https://www.mediafire.com/file/bxz0nt3uigywgne/EldoriaPs+-+GTPSHOST+(5).txt/file';
-        document.getElementById('copyVhostLinkBtn').addEventListener('click', ()=> copyText(vhostLink));
-
-        // ---------- ROLE DATA ----------
-        const rolesData = [
-            { name: 'Owner', price: 'Rp 200.000', commands: '/reset <player_name> /copyworld /checklotre /setlotre /setdaily /numberprize /physics /math /science /setpricequest <item_id> <jumlah> /takeworld /osb <text> /unsafeedit <action> <radius> <item_id> /weather <id> /clearworld /spawnevent /ggxp <count> /gtoken <count> /gseal <count> /ggems <count> /reset_rolequest /verifycsn /removereqcsn /ipcheck <player_name> /removelogs <player_name>' },
-            { name: 'Co Owner', price: 'Rp 150.000', commands: '/find /ggems <count> /glevel <count> /setvend <count> /clearvend /setmag <count> /clearmag /setmagseed <count> /clearmagseed' },
-            { name: 'Unlimited', price: 'Rp 120.000', commands: '/find /ggems <count> /glevel <count> /setvend <count> /clearvend /setmag <count> /clearmag /setmagseed <count> /clearmagseed' },
-            { name: 'Developer', price: 'Rp 70.000', commands: '/saveworld /growall /banrid /checkplaymods /online /removedrop /rpl /spl /gsm <text> /blacklist <player> /spk <text> /asb <text> /infoex <player> /banip <ip> /getpos /pban <player_name>' },
-            { name: 'Administrator', price: 'Rp 50.000', commands: '/magic /nohands /nobody /unequip /warn <player_name> <text> /dropall /eff <id> /eff2 <id> /mute <player_name> <time> <reason> /curse <player_name> <time> <reason> /unmute <player_name> /uncurse <player_name> /hide /fixworld /searchuser <player_name> /summon <player_name> /freeze <player_name> /info <player_name> /p <id> /warp <player_name> /unnuke /nuke <time> <reason> /warpto <player_name> /destructo /color <skin> /checkid <item> /nick <nick> /freezeall /ghost /fakeban <player_name> /fakewarn <player_name> /fl <country> /banall /1hit /pullall /dsummon /logs /scan <world> <item_id> /reports /playerreport /flag <player_name> /checkping <player_name> /uncurseall' },
-            { name: 'Mod', price: 'Rp 10.000', commands: '/radio2 /togglemods /skin /invis /msb <text> /m <text> /getpos /note <player name> <text> /notes <player name>' }
+        // ---------- PROFIT DATA & RENDER ----------
+        const profitMethods = [
+            {
+                id: 'bfg',
+                name: 'BFG (Break For Gems)',
+                icon: '💎',
+                description: 'Metode paling populer untuk mendapatkan gems gratis. Kamu memecahkan block khusus di dunia BFG yang sudah disediakan oleh server, dan setiap block bisa menjatuhkan gems yang bisa dikumpulkan.',
+                steps: [
+                    'Masuk ke dunia BFG (ketik /bfg).',
+                    'Ambil peralatan breaking (pickaxe/drill) dari chest.',
+                    'Pecahkan block yang tersedia sampai habis.',
+                    'Kumpulkan gems yang jatuh otomatis ke inventory.',
+                    'Ulangi setiap hari untuk hasil maksimal.'
+                ],
+                images: ['https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg'],
+                color: 'blue'
+            },
+            {
+                id: 'mining',
+                name: 'Mining (Menambang)',
+                icon: '⛏️',
+                description: 'Menambang ore seperti iron, gold, dan diamond di dunia tambang khusus. Hasil tambang bisa dijual ke NPC atau pemain lain untuk mendapatkan World Lock.',
+                steps: [
+                    'Pergi ke dunia Mining (ketik /mine).',
+                    'Gunakan pickaxe untuk menambang ore.',
+                    'Ore otomatis masuk ke inventory.',
+                    'Jual ore ke NPC di spawn atau trade dengan pemain.',
+                    'Upgrade pickaxe untuk menambang lebih cepat.'
+                ],
+                images: [
+                    'https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg',
+                    'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg'
+                ],
+                color: 'amber'
+            },
+            {
+                id: 'dungeon',
+                name: 'Dungeon (Penjara Bawah Tanah)',
+                icon: '🏰',
+                description: 'Jelajahi dungeon penuh monster dan harta karun. Kalahkan boss untuk mendapatkan loot langka seperti Dark Ring, cursed sword, atau bahkan Diamond Lock.',
+                steps: [
+                    'Masuk ke dungeon (ketik /dungeon).',
+                    'Kalahkan monster di setiap level.',
+                    'Kumpulkan kunci untuk membuka pintu boss.',
+                    'Kalahkan boss utama untuk loot spesial.',
+                    'Bawa pulang harta dan ulangi setiap minggu.'
+                ],
+                images: [
+                    'https://i.ibb.co.com/FZ851zt/IMG-20250809-WA0150.jpg',
+                    'https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg',
+                    'https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg',
+                    'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg'
+                ],
+                color: 'purple'
+            },
+            {
+                id: 'fishing',
+                name: 'Fishing (Memancing)',
+                icon: '🎣',
+                description: 'Memancing di spot khusus memberikan ikan yang bisa dimasak atau dijual. Beberapa ikan langka bisa ditukar dengan item limited.',
+                steps: [
+                    'Pergi ke danau/fishing spot (ketik /fish).',
+                    'Gunakan Fishing Rod dari inventory.',
+                    'Tunggu ikan menyambar umpan.',
+                    'Jual ikan ke pedagang atau masak untuk buff.',
+                ],
+                images: ['https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg'],
+                color: 'teal',
+                hidden: true
+            },
+            {
+                id: 'ghost',
+                name: 'Ghost Hunting (Berburu Hantu)',
+                icon: '👻',
+                description: 'Berburu hantu di malam hari di dunia khusus. Hantu menjatuhkan ectoplasm yang bisa ditukar dengan item eksklusif atau WL.',
+                steps: [
+                    'Tunggu malam hari (atau ketik /night).',
+                    'Pergi ke haunted house (/ghost).',
+                    'Gunakan Ghost Detector untuk menemukan hantu.',
+                    'Tangkap hantu dengan Ghost Net.',
+                    'Kumpulkan ectoplasm dan tukar dengan rewards.'
+                ],
+                images: ['https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg'],
+                color: 'red',
+                hidden: true
+            }
         ];
 
-        const roleContainer = document.getElementById('roleContainer');
-        function renderRoles() {
-            roleContainer.innerHTML = rolesData.map(role => `
-                <div class="card-simple p-5 role-card" data-role="${role.name}">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-lg">${role.name}</span>
-                        <span class="text-blue-300 text-sm bg-slate-700 px-3 py-1 rounded-full">${role.price}</span>
-                    </div>
-                    <div class="command-panel mt-3 text-sm text-gray-300" id="panel-${role.name.replace(/\s+/g, '')}">
-                        <div class="bg-slate-800/70 p-3 rounded-lg mt-2 border border-slate-700">
-                            <code class="text-blue-200 text-xs leading-relaxed">${role.commands}</code>
-                        </div>
-                        <div class="flex gap-2 mt-3">
-                            <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="bg-green-700/80 hover:bg-green-600 px-4 py-1.5 rounded text-xs"><i class="fab fa-whatsapp mr-1"></i>Contact</a>
-                            <span class="bg-amber-700/80 px-4 py-1.5 rounded text-xs">Beli</span>
-                        </div>
-                    </div>
-                    <div class="text-xs text-gray-400 mt-2 flex items-center"><i class="fas fa-chevron-down mr-1 text-blue-300"></i> Klik untuk command</div>
-                </div>
-            `).join('');
+        const profitContainer = document.getElementById('profitContainer');
 
-            document.querySelectorAll('.role-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    if(e.target.closest('a') || e.target.closest('span')) return;
-                    const panel = this.querySelector('.command-panel');
-                    panel.classList.toggle('open');
-                });
-            });
+        function renderProfitMethods() {
+            const visibleMethods = profitMethods.filter(m => !m.hidden || SHOW_HIDDEN_PROFITS);
+            
+            profitContainer.innerHTML = visibleMethods.map(method => {
+                let galleryClass = '';
+                if (method.id === 'bfg' || method.id === 'fishing' || method.id === 'ghost') {
+                    galleryClass = 'profit-gallery single';
+                } else if (method.id === 'mining') {
+                    galleryClass = 'profit-gallery cols-2';
+                } else if (method.id === 'dungeon') {
+                    galleryClass = 'profit-gallery cols-2';
+                }
+
+                return `
+                <div class="card-simple p-6 flex flex-col">
+                    <div class="text-3xl mb-2">${method.icon}</div>
+                    <h3 class="text-xl font-bold mb-2 text-white">${method.name}</h3>
+                    <p class="text-gray-300 text-sm mb-4 flex-grow">${method.description}</p>
+                    <div class="${galleryClass} mb-4">
+                        ${method.images.map(img => `<img src="${img}" alt="${method.name}" loading="lazy">`).join('')}
+                    </div>
+                    <div class="mt-auto">
+                        <h4 class="text-sm font-semibold text-blue-300 mb-2">Cara Profit:</h4>
+                        <ol class="list-decimal list-inside text-xs text-gray-400 space-y-1">
+                            ${method.steps.map(step => `<li>${step}</li>`).join('')}
+                        </ol>
+                    </div>
+                </div>
+                `;
+            }).join('');
         }
-        renderRoles();
+
+        renderProfitMethods();
 
         // ---------- INTERSECTION OBSERVER ----------
         const fadeElements = document.querySelectorAll('.fade-in-section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('is-visible'); });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.1 });
         fadeElements.forEach(el => observer.observe(el));
 
-        document.querySelectorAll('#mobileMenu a').forEach(link => {
-            link.addEventListener('click', ()=> mobileMenu.classList.add('-translate-y-full'));
-        });
+        // Footer year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        document.querySelector('footer p').innerHTML = `© ${new Date().getFullYear()} Eldoria Private Server. All rights reserved. <br class="sm:hidden"> Crafted for Growtopia community.`;
+        const style = document.createElement('style');
+        style.textContent = `
+            .profit-gallery.single {
+                grid-template-columns: 1fr;
+            }
+            .profit-gallery img {
+                transition: transform 0.3s;
+                cursor: pointer;
+            }
+            .profit-gallery img:hover {
+                transform: scale(1.02);
+            }
+        `;
+        document.head.appendChild(style);
     })();
 </script>
 </body>
