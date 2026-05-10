@@ -9,7 +9,6 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: wss:; img-src 'self' https: data:; media-src 'self' https:; connect-src 'self' https:;">
     <meta name="referrer" content="no-referrer">
 
-    <!-- Tailwind + Fonts -->
     <script src="https://cdn.tailwindcss.com">
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,7 +24,6 @@
             scroll-behavior: smooth;
         }
 
-        /* === ANTI-INSPECT CSS === */
         html,
         body {
             -webkit-user-select: none !important;
@@ -115,6 +113,7 @@
         .profit-gallery {
             display: grid;
             gap: 0.5rem;
+            margin-bottom: 1rem;
         }
         .profit-gallery.cols-2 {
             grid-template-columns: repeat(2, 1fr);
@@ -125,10 +124,64 @@
             object-fit: cover;
             border-radius: 12px;
             border: 1px solid #334155;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .profit-gallery img:hover {
+            transform: scale(1.02);
         }
         .profit-gallery.single img {
             height: 260px;
             object-fit: contain;
+        }
+
+        /* LIGHTBOX STYLES */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(15px);
+            z-index: 10002;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .lightbox-overlay.active {
+            display: flex;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: #ef4444;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .lightbox-close:hover {
+            background: #dc2626;
         }
 
         #mobileMenu a {
@@ -174,14 +227,8 @@
         }
 
         @keyframes slideDown {
-            from {
-                transform: translate(-50%, -120%);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, 0);
-                opacity: 1;
-            }
+            from { transform: translate(-50%, -120%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
         }
         .toast-enter {
             animation: slideDown 0.3s ease forwards;
@@ -198,21 +245,14 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
         .float-logo {
             animation: float 3s ease-in-out infinite;
         }
 
-        /* Maintenance Mode Styles */
         .maintenance-overlay {
             position: fixed;
             inset: 0;
@@ -230,7 +270,6 @@
             display: flex;
         }
 
-        /* === ANTI-INSPECT OVERLAY === */
         .anti-inspect-overlay {
             position: fixed;
             inset: 0;
@@ -250,20 +289,16 @@
         }
     </style>
 
-    <!-- ==================== EARLY PROTECTION SCRIPT ==================== -->
+    <!-- EARLY PROTECTION SCRIPT -->
     <script>
         (function() {
             "use strict";
-
-            // Override console methods immediately
             const noop = function() {};
             const clearConsole = function() {
                 if (typeof console !== 'undefined' && console.clear) {
                     try { console.clear(); } catch (e) {}
                 }
             };
-
-            // Store original console methods
             const _console = {
                 log: console.log,
                 warn: console.warn,
@@ -275,16 +310,12 @@
                 dir: console.dir,
                 clear: console.clear
             };
-
-            // Override to clear + suppress
             Object.keys(_console).forEach(function(key) {
                 try {
                     Object.defineProperty(console, key, {
                         get: function() {
                             return function() {
                                 clearConsole();
-                                // Uncomment below to fully suppress:
-                                // return;
                                 return _console[key].apply(console, arguments);
                             };
                         },
@@ -293,19 +324,16 @@
                 } catch (e) {}
             });
 
-            // Start debugger trap very early
             let devtoolsDetected = false;
             let detectionCount = 0;
-            const DETECTION_THRESHOLD = 80; // ms - if debugger pauses longer than this
+            const DETECTION_THRESHOLD = 80;
             const MAX_DETECTIONS = 3;
 
             function debuggerTrap() {
                 const start = performance.now();
-                // eslint-disable-next-line no-debugger
                 debugger;
                 const end = performance.now();
                 const diff = end - start;
-
                 if (diff > DETECTION_THRESHOLD) {
                     detectionCount++;
                     if (detectionCount >= MAX_DETECTIONS && !devtoolsDetected) {
@@ -318,26 +346,16 @@
             }
 
             function triggerAntiInspectResponse() {
-                // Show overlay
                 const overlay = document.getElementById('antiInspectOverlay');
-                if (overlay) {
-                    overlay.classList.add('active');
-                }
-                // Clear console repeatedly
+                if (overlay) overlay.classList.add('active');
                 const clearInterval = setInterval(function() {
                     if (typeof console !== 'undefined' && console.clear) {
                         try { console.clear(); } catch (e) {}
                     }
                 }, 100);
-
-                // Store interval ID to clear if needed
                 window._antiInspectClearInterval = clearInterval;
             }
-
-            // Start trap immediately
             const trapInterval = setInterval(debuggerTrap, 400);
-
-            // Store reference
             window._debuggerTrapInterval = trapInterval;
             window._resetDevtoolsDetection = function() {
                 devtoolsDetected = false;
@@ -349,15 +367,12 @@
                     window._antiInspectClearInterval = null;
                 }
             };
-
-            // Expose for use in main protection
             window._isDevtoolsDetected = function() { return devtoolsDetected; };
         })();
     </script>
 </head>
 <body class="text-gray-200 antialiased">
 
-    <!-- ==================== ANTI-INSPECT OVERLAY ==================== -->
     <div id="antiInspectOverlay" class="anti-inspect-overlay">
         <i class="fas fa-shield-alt text-red-500 text-6xl mb-6 animate-pulse"></i>
         <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4">⚠️ Inspeksi Dilarang</h1>
@@ -373,12 +388,10 @@
         <p class="text-xs text-gray-500 mt-6">~ Eldoria Security ~</p>
     </div>
 
-    <!-- MAINTENANCE OVERLAY -->
     <div id="maintenanceScreen" class="maintenance-overlay">
         <i class="fas fa-tools text-yellow-400 text-6xl mb-6 animate-pulse"></i>
         <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4">🚧 Server Sedang Maintenance</h1>
-        <p class="text-gray-300 text-lg max-w-lg mx-auto">Mohon maaf atas ketidaknyamanannya. Server Eldoria sedang dalam perbaikan atau pembaruan sistem. Silakan cek kembali nanti
-            ya!</p>
+        <p class="text-gray-300 text-lg max-w-lg mx-auto">Mohon maaf atas ketidaknyamanannya. Server Eldoria sedang dalam perbaikan atau pembaruan sistem. Silakan cek kembali nanti ya!</p>
         <div class="mt-8 flex gap-3">
             <div class="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
             <div class="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
@@ -387,7 +400,6 @@
         <p class="text-xs text-gray-500 mt-6">~ Eldoria Staff Team ~</p>
     </div>
 
-    <!-- LOADING SCREEN -->
     <div id="loadingScreen" class="loader">
         <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo"
         class="w-28 h-28 rounded-full border-4 border-blue-400/50 mb-6 animate-pulse">
@@ -398,141 +410,40 @@
         <p class="text-xs text-slate-400 mt-3">Menyiapkan petualangan...</p>
     </div>
 
-    <!-- BACKGROUND -->
     <div class="fixed inset-0 z-[-1]">
         <img src="https://i.ibb.co.com/1GnNFz71/IMG-20260408-WA0047.jpg" alt="Background"
         class="w-full h-full object-cover object-center opacity-25 blur-[2px]">
         <div class="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-900/95"></div>
     </div>
 
-    <!-- ==================== MAIN PROTECTION SCRIPT (BODY START) ==================== -->
+    <!-- MAIN PROTECTION SCRIPT -->
     <script>
         (function() {
             "use strict";
-
-            // ========== DISABLE RIGHT CLICK ==========
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }, true);
-
-            // ========== DISABLE KEYBOARD SHORTCUTS ==========
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); e.stopPropagation(); return false; }, true);
             document.addEventListener('keydown', function(e) {
-                const key = e.key || e.keyCode;
-
-                // F12
-                if (e.keyCode === 123) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+Shift+I (DevTools)
-                if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 105)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+Shift+J (Console)
-                if (e.ctrlKey && e.shiftKey && (e.keyCode === 74 || e.keyCode === 106)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+Shift+C (Element Picker)
-                if (e.ctrlKey && e.shiftKey && (e.keyCode === 67 || e.keyCode === 99)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+U (View Source)
-                if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 117)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+S (Save Page)
-                if (e.ctrlKey && (e.keyCode === 83 || e.keyCode === 115)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+P (Print / Save as PDF)
-                if (e.ctrlKey && (e.keyCode === 80 || e.keyCode === 112)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+Shift+E (Network tab in some browsers)
-                if (e.ctrlKey && e.shiftKey && (e.keyCode === 69 || e.keyCode === 101)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Ctrl+Shift+K (Firefox Console)
-                if (e.ctrlKey && e.shiftKey && (e.keyCode === 75 || e.keyCode === 107)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Cmd+Opt+I (Mac Safari DevTools)
-                if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 105)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Cmd+Opt+U (Mac Safari View Source)
-                if (e.metaKey && e.altKey && (e.keyCode === 85 || e.keyCode === 117)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Cmd+Opt+J (Mac Chrome Console)
-                if (e.metaKey && e.altKey && (e.keyCode === 74 || e.keyCode === 106)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-
-                // Cmd+Opt+C (Mac Element Picker)
-                if (e.metaKey && e.altKey && (e.keyCode === 67 || e.keyCode === 99)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
+                const key = e.keyCode;
+                if (key === 123) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && e.shiftKey && (key === 73 || key === 105)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && e.shiftKey && (key === 74 || key === 106)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && e.shiftKey && (key === 67 || key === 99)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && (key === 85 || key === 117)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && (key === 83 || key === 115)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && (key === 80 || key === 112)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && e.shiftKey && (key === 69 || key === 101)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.ctrlKey && e.shiftKey && (key === 75 || key === 107)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.metaKey && e.altKey && (key === 73 || key === 105)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.metaKey && e.altKey && (key === 85 || key === 117)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.metaKey && e.altKey && (key === 74 || key === 106)) { e.preventDefault(); e.stopPropagation(); return false; }
+                if (e.metaKey && e.altKey && (key === 67 || key === 99)) { e.preventDefault(); e.stopPropagation(); return false; }
             }, true);
-
-            // ========== DISABLE TEXT SELECTION ==========
             document.addEventListener('selectstart', function(e) {
-                // Allow selection in input/textarea only
                 const tag = e.target.tagName;
-                if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
-                    e.preventDefault();
-                    return false;
-                }
+                if (tag !== 'INPUT' && tag !== 'TEXTAREA') { e.preventDefault(); return false; }
             }, true);
-
-            // ========== DISABLE DRAG ==========
-            document.addEventListener('dragstart', function(e) {
-                e.preventDefault();
-                return false;
-            }, true);
-
-            // ========== MOBILE: DISABLE LONG-PRESS ==========
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); return false; }, true);
             let touchStartTime = 0;
             let touchStartPos = { x: 0, y: 0 };
-
             document.addEventListener('touchstart', function(e) {
                 touchStartTime = Date.now();
                 if (e.touches && e.touches.length > 0) {
@@ -540,76 +451,44 @@
                     touchStartPos.y = e.touches[0].clientY;
                 }
             }, { passive: false });
-
             document.addEventListener('touchend', function(e) {
                 const duration = Date.now() - touchStartTime;
-                // If touch lasted more than 500ms without much movement, treat as long-press
                 if (duration > 500) {
-                    const dx = (e.changedTouches && e.changedTouches.length > 0) ? Math.abs(e.changedTouches[0]
-                        .clientX - touchStartPos.x) : 0;
-                    const dy = (e.changedTouches && e.changedTouches.length > 0) ? Math.abs(e.changedTouches[0]
-                        .clientY - touchStartPos.y) : 0;
-                    if (dx < 15 && dy < 15) {
-                        // Long press detected - prevent context menu
-                        e.preventDefault();
-                    }
+                    const dx = (e.changedTouches && e.changedTouches.length > 0) ? Math.abs(e.changedTouches[0].clientX - touchStartPos.x) : 0;
+                    const dy = (e.changedTouches && e.changedTouches.length > 0) ? Math.abs(e.changedTouches[0].clientY - touchStartPos.y) : 0;
+                    if (dx < 15 && dy < 15) e.preventDefault();
                 }
             }, { passive: false });
-
-            // Also block contextmenu on touch devices
-            document.addEventListener('touchmove', function(e) {
-                // Allow scrolling but reset timer
-                touchStartTime = 0;
-            }, { passive: true });
-
-            // ========== DETECT DEVTOOLS VIA RESIZE ==========
-            let lastWidth = window.innerWidth;
-            let lastHeight = window.innerHeight;
+            let lastWidth = window.innerWidth, lastHeight = window.innerHeight;
             window.addEventListener('resize', function() {
-                const widthDiff = Math.abs(window.innerWidth - lastWidth);
-                const heightDiff = Math.abs(window.innerHeight - lastHeight);
-                // Significant resize might indicate DevTools docking
-                if (widthDiff > 150 || heightDiff > 150) {
+                if (Math.abs(window.innerWidth - lastWidth) > 150 || Math.abs(window.innerHeight - lastHeight) > 150) {
                     if (window._isDevtoolsDetected && window._isDevtoolsDetected()) {
                         const overlay = document.getElementById('antiInspectOverlay');
-                        if (overlay && !overlay.classList.contains('active')) {
-                            overlay.classList.add('active');
-                        }
+                        if (overlay && !overlay.classList.contains('active')) overlay.classList.add('active');
                     }
                 }
                 lastWidth = window.innerWidth;
                 lastHeight = window.innerHeight;
             });
-
-            // ========== OVERRIDE document.write TO PREVENT OVERWRITES ==========
             const originalWrite = document.write;
             document.write = function() {
-                // Block document.write after page load
-                if (document.readyState !== 'loading') {
-                    return;
-                }
+                if (document.readyState !== 'loading') return;
                 return originalWrite.apply(document, arguments);
             };
-
-            // ========== ADDITIONAL: BLOCK COMMON BYPASS ATTEMPTS ==========
-            // Some users try to disable protection via the console
-            // Re-apply protection periodically
-            setInterval(function() {
-                // Re-block context menu via inline handler backup
-                document.oncontextmenu = function() { return false; };
-            }, 2000);
-
-            // Log bahwa proteksi aktif (ini akan ter-clear oleh console override)
-            if (typeof console !== 'undefined' && console.log) {
-                console.log('%c⚠️ PROTEKSI AKTIF %c| Inspeksi tidak diizinkan',
-                    'background:#ef4444;color:white;padding:4px 8px;border-radius:4px;font-weight:bold;',
-                    'color:#f87171;');
-            }
-
+            setInterval(function() { document.oncontextmenu = function() { return false; }; }, 2000);
         })();
     </script>
 
-    <!-- MUSIC PLAYER -->
+    <!-- LIGHTBOX OVERLAY (hidden by default) -->
+    <div id="lightboxOverlay" class="lightbox-overlay">
+        <div class="lightbox-content">
+            <button id="lightboxClose" class="lightbox-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="lightboxImage" src="" alt="Gambar Diperbesar">
+        </div>
+    </div>
+
     <div class="fixed bottom-6 right-6 z-40 flex items-center">
         <div class="music-widget flex items-center gap-3">
             <div class="flex gap-1 items-end h-5">
@@ -619,12 +498,8 @@
                 <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:16px; animation-delay:0.6s"></span>
                 <span class="w-1 bg-blue-400 rounded-full animate-bounce" style="height:6px; animation-delay:0.8s"></span>
             </div>
-            <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center transition shadow-md">
-                <i class="fas fa-play text-white text-sm"></i>
-            </button>
-            <button id="musicMuteBtn" class="w-9 h-9 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition">
-                <i class="fas fa-volume-up text-white/90 text-sm"></i>
-            </button>
+            <button id="musicPlayBtn" class="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center transition shadow-md"><i class="fas fa-play text-white text-sm"></i></button>
+            <button id="musicMuteBtn" class="w-9 h-9 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition"><i class="fas fa-volume-up text-white/90 text-sm"></i></button>
             <span class="text-xs font-medium text-gray-300 hidden sm:inline">Eldoria OST</span>
         </div>
     </div>
@@ -632,7 +507,6 @@
         <source src="https://cdn.discordapp.com/attachments/1455029046638415998/1500386262610214992/Raul_Apxpei_Michael_Hunter_-_GTA_IV_Official_Audio_-_R_a_u_l_A_p_x_p_e_i_.mp3?ex=69f83f18&is=69f6ed98&hm=90cc59e17c71ff356542862a9859f09c5a7fa6ccdde971f675e1c557b9dd31d0&" type="audio/mpeg">
     </audio>
 
-    <!-- NAVBAR -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-30 py-3 px-4 md:px-8 flex items-center justify-between transition-all duration-300 bg-transparent">
         <div class="flex items-center gap-2">
             <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border-2 border-blue-400/50">
@@ -659,18 +533,13 @@
         <a href="#community">Community</a>
     </div>
 
-    <!-- MAIN CONTENT -->
     <main class="relative z-10 max-w-6xl mx-auto px-4 pt-28 pb-16">
 
-        <!-- HERO -->
         <section id="home" class="fade-in-section text-center mb-16">
             <div class="flex justify-center mb-6">
-                <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg"
-                alt="Eldoria Logo" class="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-blue-500/60 shadow-2xl float-logo">
+                <img src="https://i.ibb.co.com/PGCKChZn/IMG-20250822-WA0081.jpg" alt="Eldoria Logo" class="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-blue-500/60 shadow-2xl float-logo">
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-3">
-                <span id="typewriter"></span><span class="animate-pulse text-blue-400">|</span>
-            </h1>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-3"><span id="typewriter"></span><span class="animate-pulse text-blue-400">|</span></h1>
             <p class="text-blue-200 text-lg md:text-xl">Growtopia Private Server • High Peak 22+ Online</p>
             <p class="text-gray-400 text-sm mt-1">Server: [ EldoriaPs ]</p>
             <div class="flex flex-wrap justify-center gap-4 mt-8">
@@ -680,42 +549,24 @@
             </div>
         </section>
 
-        <!-- SERVER INFO CARD -->
         <section class="fade-in-section grid grid-cols-1 md:grid-cols-3 gap-5 mb-18">
             <div class="card-simple p-5 flex items-center gap-4">
-                <div id="statusIcon" class="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <i id="statusIconInner" class="fas fa-circle text-green-400 text-2xl"></i>
-                </div>
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">Status</p>
-                    <p id="statusText" class="text-2xl font-bold text-green-300">ONLINE</p>
-                </div>
+                <div id="statusIcon" class="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center"><i id="statusIconInner" class="fas fa-circle text-green-400 text-2xl"></i></div>
+                <div><p class="text-xs uppercase tracking-wider text-gray-400">Status</p><p id="statusText" class="text-2xl font-bold text-green-300">ONLINE</p></div>
             </div>
             <div class="card-simple p-5 flex items-center gap-4">
-                <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center">
-                    <i class="fas fa-users text-blue-300 text-2xl"></i>
-                </div>
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p>
-                    <p class="text-3xl font-bold" id="playerCount">12</p>
-                </div>
+                <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center"><i class="fas fa-users text-blue-300 text-2xl"></i></div>
+                <div><p class="text-xs uppercase tracking-wider text-gray-400">Player Online</p><p class="text-3xl font-bold" id="playerCount">12</p></div>
             </div>
             <div class="card-simple p-5 flex items-center gap-4">
-                <div class="w-14 h-14 rounded-full bg-amber-500/20 flex items-center justify-center">
-                    <i class="fas fa-calendar text-amber-300 text-2xl"></i>
-                </div>
-                <div>
-                    <p class="text-xs uppercase tracking-wider text-gray-400">Version</p>
-                    <p class="text-2xl font-semibold">v4.20</p>
-                </div>
+                <div class="w-14 h-14 rounded-full bg-amber-500/20 flex items-center justify-center"><i class="fas fa-calendar text-amber-300 text-2xl"></i></div>
+                <div><p class="text-xs uppercase tracking-wider text-gray-400">Version</p><p class="text-2xl font-semibold">v4.20</p></div>
             </div>
         </section>
 
-        <!-- DOWNLOAD SECTION -->
         <section id="download" class="fade-in-section mb-22 scroll-mt-20">
             <h2 class="text-3xl font-bold text-white mb-8 flex items-center"><i class="fas fa-download text-blue-400 mr-3"></i>Download & Host</h2>
             <div class="grid md:grid-cols-3 gap-6">
-                <!-- Android -->
                 <div class="card-simple p-6">
                     <div class="text-4xl mb-3 text-green-400"><i class="fab fa-android"></i></div>
                     <h3 class="text-xl font-bold">Android</h3>
@@ -729,7 +580,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- iOS -->
                 <div class="card-simple p-6">
                     <div class="text-4xl mb-3 text-gray-300"><i class="fab fa-apple"></i></div>
                     <h3 class="text-xl font-bold">iOS</h3>
@@ -742,15 +592,11 @@
                         <p class="text-xs text-gray-400">Buka di Safari, install profile.</p>
                     </div>
                 </div>
-                <!-- Windows -->
                 <div class="card-simple p-6">
                     <div class="text-4xl mb-3 text-blue-400"><i class="fab fa-windows"></i></div>
                     <h3 class="text-xl font-bold">Windows</h3>
                     <div class="mt-4">
-                        <div class="bg-slate-900/60 rounded-lg p-3 font-mono text-xs">
-                            152.42.230.34 www.growtopia1.com<br>
-                            152.42.230.34 www.growtopia2.com
-                        </div>
+                        <div class="bg-slate-900/60 rounded-lg p-3 font-mono text-xs">152.42.230.34 www.growtopia1.com<br>152.42.230.34 www.growtopia2.com</div>
                         <button id="copyWindowsHost" class="mt-3 w-full bg-emerald-700/80 hover:bg-emerald-600 py-2 rounded text-sm"><i class="far fa-copy mr-1"></i>Copy Windows Host</button>
                         <p class="text-xs text-gray-400 mt-2">Edit C:\Windows\System32\drivers\etc\hosts (admin)</p>
                     </div>
@@ -758,7 +604,6 @@
             </div>
         </section>
 
-        <!-- HOST SYSTEM (ringkas) -->
         <section class="fade-in-section mb-22">
             <div class="card-simple p-6 border-l-4 border-blue-500">
                 <h3 class="text-xl font-bold flex items-center gap-2"><i class="fas fa-link text-blue-300"></i>Host System (PowerTunnel / HostGo)</h3>
@@ -772,75 +617,23 @@
             </div>
         </section>
 
-        <!-- TUTORIAL SINGKAT -->
         <section id="tutorial" class="fade-in-section mb-22 scroll-mt-20">
             <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-graduation-cap text-blue-400 mr-3"></i>Tutorial Singkat</h2>
             <div class="grid md:grid-cols-3 gap-6">
-                <div class="card-simple p-5">
-                    <div class="text-2xl mb-2">📱 Android</div>
-                    <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
-                        <li>Download APK & PowerTunnel</li>
-                        <li>Install PowerTunnel</li>
-                        <li>Copy host (tombol di atas)</li>
-                        <li>Paste ke PowerTunnel > Host Settings</li>
-                        <li>Jalankan, buka Growtopia</li>
-                    </ol>
-                </div>
-                <div class="card-simple p-5">
-                    <div class="text-2xl mb-2">💻 Windows</div>
-                    <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
-                        <li>Buka notepad sebagai admin</li>
-                        <li>Edit file: C:\Windows\System32\drivers\etc\hosts</li>
-                        <li>Tambahkan dua baris IP (copy di atas)</li>
-                        <li>Simpan, jalankan Growtopia</li>
-                    </ol>
-                </div>
-                <div class="card-simple p-5">
-                    <div class="text-2xl mb-2">🍎 iOS</div>
-                    <ol class="list-decimal list-inside text-sm space-y-2 text-gray-200">
-                        <li>Copy iOS host link</li>
-                        <li>Buka di Safari, install profile</li>
-                        <li>Buka Growtopia</li>
-                    </ol>
-                </div>
+                <div class="card-simple p-5"><div class="text-2xl mb-2">📱 Android</div><ol class="list-decimal list-inside text-sm space-y-2 text-gray-200"><li>Download APK & PowerTunnel</li><li>Install PowerTunnel</li><li>Copy host (tombol di atas)</li><li>Paste ke PowerTunnel > Host Settings</li><li>Jalankan, buka Growtopia</li></ol></div>
+                <div class="card-simple p-5"><div class="text-2xl mb-2">💻 Windows</div><ol class="list-decimal list-inside text-sm space-y-2 text-gray-200"><li>Buka notepad sebagai admin</li><li>Edit file: C:\Windows\System32\drivers\etc\hosts</li><li>Tambahkan dua baris IP (copy di atas)</li><li>Simpan, jalankan Growtopia</li></ol></div>
+                <div class="card-simple p-5"><div class="text-2xl mb-2">🍎 iOS</div><ol class="list-decimal list-inside text-sm space-y-2 text-gray-200"><li>Copy iOS host link</li><li>Buka di Safari, install profile</li><li>Buka Growtopia</li></ol></div>
             </div>
         </section>
 
-        <!-- VIRTUAL HOST SECTION -->
         <section id="virtualhost" class="fade-in-section mb-22 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
-                <i class="fas fa-server text-blue-400 mr-3"></i>Virtual Host (Panduan Lengkap)
-            </h2>
+            <h2 class="text-3xl font-bold text-white mb-6 flex items-center"><i class="fas fa-server text-blue-400 mr-3"></i>Virtual Host (Panduan Lengkap)</h2>
             <div class="card-simple p-6 md:p-8">
                 <div class="flex flex-wrap items-start gap-6">
                     <div class="w-full md:w-5/12 space-y-5">
-                        <div>
-                            <span class="text-sm uppercase tracking-wider text-blue-300">File Host (MediaFire)</span>
-                            <div class="mt-2 flex flex-wrap gap-2">
-                                <a href="https://www.mediafire.com/file/jpnoxe2shyni258/EldoriaPs+-+GTPSHOST+(7).txt/file" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2">
-                                    <i class="fas fa-download"></i> Download Host .txt
-                                </a>
-                                <button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2">
-                                    <i class="far fa-copy"></i> Salin Link
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-sm uppercase tracking-wider text-blue-300">Aplikasi Virtual Host</span>
-                            <div class="mt-2">
-                                <a href="https://sfile.mobi/4xXabY4QEEP" target="_blank" class="bg-emerald-700/80 hover:bg-emerald-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
-                                    <i class="fas fa-mobile-alt"></i> Download Virtual Host App
-                                </a>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-sm uppercase tracking-wider text-blue-300">Video Tutorial</span>
-                            <div class="mt-2">
-                                <a href="https://files.catbox.moe/bdanii.mp4" target="_blank" class="bg-indigo-700/70 hover:bg-indigo-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2">
-                                    <i class="fas fa-video"></i> Tonton Video Panduan
-                                </a>
-                            </div>
-                        </div>
+                        <div><span class="text-sm uppercase tracking-wider text-blue-300">File Host (MediaFire)</span><div class="mt-2 flex flex-wrap gap-2"><a href="https://www.mediafire.com/file/jpnoxe2shyni258/EldoriaPs+-+GTPSHOST+(7).txt/file" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2"><i class="fas fa-download"></i> Download Host .txt</a><button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2"><i class="far fa-copy"></i> Salin Link</button></div></div>
+                        <div><span class="text-sm uppercase tracking-wider text-blue-300">Aplikasi Virtual Host</span><div class="mt-2"><a href="https://sfile.mobi/4xXabY4QEEP" target="_blank" class="bg-emerald-700/80 hover:bg-emerald-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2"><i class="fas fa-mobile-alt"></i> Download Virtual Host App</a></div></div>
+                        <div><span class="text-sm uppercase tracking-wider text-blue-300">Video Tutorial</span><div class="mt-2"><a href="https://files.catbox.moe/bdanii.mp4" target="_blank" class="bg-indigo-700/70 hover:bg-indigo-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2"><i class="fas fa-video"></i> Tonton Video Panduan</a></div></div>
                     </div>
                     <div class="w-full md:w-7/12">
                         <h3 class="text-xl font-semibold mb-3 flex items-center gap-2"><i class="fas fa-list-ol text-blue-300"></i> Langkah-langkah</h3>
@@ -856,31 +649,19 @@
             </div>
         </section>
 
-        <!-- ========== PROFIT METHODS ========== -->
+        <!-- PROFIT METHODS (NEW CONTENT) -->
         <section id="profit" class="fade-in-section mb-22 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-white mb-4 flex items-center">
-                <i class="fas fa-coins text-yellow-400 mr-3"></i>Metode Profit di Eldoria
-            </h2>
-            <p class="text-gray-300 mb-8">Pelajari cara menghasilkan World Lock (WL) dan Diamond Lock (DL) dengan metode terbaik di server. Klik gambar untuk
-                memperbesar.</p>
-            <div id="profitContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Konten akan di-render oleh JavaScript -->
-            </div>
+            <h2 class="text-3xl font-bold text-white mb-4 flex items-center"><i class="fas fa-coins text-yellow-400 mr-3"></i>Metode Profit di Eldoria</h2>
+            <p class="text-gray-300 mb-8">Pelajari cara menghasilkan World Lock (WL) dan Diamond Lock (DL) dengan metode terbaik di server. <span class="text-yellow-300">*Klik gambar untuk memperbesar</span></p>
+            <div id="profitContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
 
-        <!-- COMMUNITY -->
         <section id="community" class="fade-in-section mb-14 scroll-mt-20">
             <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-users text-blue-400 mr-3"></i>Community</h2>
             <div class="flex flex-wrap gap-5 justify-center">
-                <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
-                    <i class="fab fa-whatsapp text-3xl text-green-400"></i> <span class="font-semibold">WhatsApp Group</span>
-                </a>
-                <a href="https://discord.gg/NbqthCwaqT" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
-                    <i class="fab fa-discord text-3xl text-indigo-300"></i> <span class="font-semibold">Discord Server</span>
-                </a>
-                <a href="https://www.instagram.com/eldoria_private_server" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition">
-                    <i class="fab fa-instagram text-3xl text-pink-400"></i> <span class="font-semibold">@eldoria_private_server</span>
-                </a>
+                <a href="https://chat.whatsapp.com/KcGCA7VKgPl2Q6Yd6mtTih?mode=ac_t" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition"><i class="fab fa-whatsapp text-3xl text-green-400"></i> <span class="font-semibold">WhatsApp Group</span></a>
+                <a href="https://discord.gg/NbqthCwaqT" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition"><i class="fab fa-discord text-3xl text-indigo-300"></i> <span class="font-semibold">Discord Server</span></a>
+                <a href="https://www.instagram.com/eldoria_private_server" target="_blank" class="card-simple px-8 py-5 flex items-center gap-4 hover:scale-105 transition"><i class="fab fa-instagram text-3xl text-pink-400"></i> <span class="font-semibold">@eldoria_private_server</span></a>
             </div>
         </section>
 
@@ -893,12 +674,9 @@
         (function() {
             "use strict";
 
-            // ==================== KONFIGURASI ====================
             const SHOW_HIDDEN_PROFITS = false;
             const MAINTENANCE_MODE = false;
-            // ====================================================
 
-            // ---------- LOADING ----------
             const loader = document.getElementById('loadingScreen');
             const progressBar = document.getElementById('loadProgress');
             let progress = 0;
@@ -911,25 +689,18 @@
                         loader.classList.add('fade-out');
                         setTimeout(() => {
                             loader.style.display = 'none';
-                            if (MAINTENANCE_MODE) {
-                                document.getElementById('maintenanceScreen').classList.add(
-                                    'active');
-                            }
+                            if (MAINTENANCE_MODE) document.getElementById('maintenanceScreen').classList.add('active');
                         }, 800);
                     }, 300);
                 }
                 progressBar.style.width = progress + '%';
             }, 250);
 
-            // ---------- MOBILE MENU ----------
             const menuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
             menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('-translate-y-full'));
-            document.querySelectorAll('#mobileMenu a').forEach(link => {
-                link.addEventListener('click', () => mobileMenu.classList.add('-translate-y-full'));
-            });
+            document.querySelectorAll('#mobileMenu a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('-translate-y-full')));
 
-            // ---------- NAVBAR SCROLL ----------
             const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 30) {
@@ -941,21 +712,15 @@
                 }
             });
 
-            // ---------- MUSIC ----------
             const bgMusic = document.getElementById('bgMusic');
             const playBtn = document.getElementById('musicPlayBtn');
             const muteBtn = document.getElementById('musicMuteBtn');
-            let isPlaying = false;
-            let isMuted = false;
+            let isPlaying = false, isMuted = false;
             bgMusic.volume = 0.25;
-
             playBtn.addEventListener('click', () => {
                 if (!isPlaying) {
-                    bgMusic.play().then(() => {
-                        isPlaying = true;
-                        playBtn.innerHTML =
-                            '<i class="fas fa-pause text-white text-sm"></i>';
-                    }).catch(e => alert('Klik lagi untuk memutar musik (interaksi diperlukan)'));
+                    bgMusic.play().then(() => { isPlaying = true; playBtn.innerHTML = '<i class="fas fa-pause text-white text-sm"></i>'; })
+                    .catch(e => alert('Klik lagi untuk memutar musik (interaksi diperlukan)'));
                 } else {
                     bgMusic.pause();
                     isPlaying = false;
@@ -965,60 +730,42 @@
             muteBtn.addEventListener('click', () => {
                 isMuted = !isMuted;
                 bgMusic.muted = isMuted;
-                muteBtn.innerHTML = isMuted ?
-                    '<i class="fas fa-volume-mute text-white/80"></i>' :
-                    '<i class="fas fa-volume-up text-white/80"></i>';
+                muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-white/80"></i>' : '<i class="fas fa-volume-up text-white/80"></i>';
             });
 
-            // ---------- TYPEWRITER ----------
             const text = "ELDORIA PRIVATE SERVER";
             let i = 0;
             const typewriter = document.getElementById('typewriter');
-            function type() {
-                if (i < text.length) {
-                    typewriter.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, 70);
-                }
-            }
+            function type() { if (i < text.length) { typewriter.textContent += text.charAt(i); i++; setTimeout(type, 70); } }
             type();
 
-            // ---------- STATUS & PLAYER ----------
             const SERVER_ONLINE = true;
             const statusText = document.getElementById('statusText');
             const statusIcon = document.getElementById('statusIcon');
             const iconInner = document.getElementById('statusIconInner');
             if (SERVER_ONLINE) {
-                statusText.textContent = 'ONLINE';
-                statusText.className = 'text-2xl font-bold text-green-300';
-                statusIcon.className =
-                    'w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center';
+                statusText.textContent = 'ONLINE'; statusText.className = 'text-2xl font-bold text-green-300';
+                statusIcon.className = 'w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center';
                 iconInner.className = 'fas fa-circle text-green-400 text-2xl';
             } else {
-                statusText.textContent = 'OFFLINE';
-                statusText.className = 'text-2xl font-bold text-red-400';
-                statusIcon.className =
-                    'w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center';
+                statusText.textContent = 'OFFLINE'; statusText.className = 'text-2xl font-bold text-red-400';
+                statusIcon.className = 'w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center';
                 iconInner.className = 'fas fa-circle text-red-400 text-2xl';
             }
 
             const playerSpan = document.getElementById('playerCount');
             let currentPlayer = 12;
-
             function animateValue(start, end, duration) {
                 const range = end - start;
                 const startTime = performance.now();
-
                 function update(now) {
                     const elapsed = now - startTime;
                     const progress = Math.min(elapsed / duration, 1);
-                    const val = Math.floor(start + range * progress);
-                    playerSpan.textContent = val;
+                    playerSpan.textContent = Math.floor(start + range * progress);
                     if (progress < 1) requestAnimationFrame(update);
                 }
                 requestAnimationFrame(update);
             }
-
             function updateFakePlayers() {
                 const fake = Math.floor(Math.random() * 20) + 1;
                 animateValue(currentPlayer, fake, 1200);
@@ -1027,184 +774,198 @@
             updateFakePlayers();
             window.playerInterval = setInterval(updateFakePlayers, 5000);
 
-            // ---------- COPY FUNCTION ----------
             function copyText(text) {
-                navigator.clipboard.writeText(text).then(() => showToast('✅ Host/link disalin!'))
-                    .catch(() => showToast('❌ Gagal menyalin'));
+                navigator.clipboard.writeText(text).then(() => showToast('✅ Host/link disalin!')).catch(() => showToast('❌ Gagal menyalin'));
             }
-
             function showToast(msg) {
                 const toast = document.createElement('div');
-                toast.className =
-                    'fixed top-6 left-1/2 transform -translate-x-1/2 bg-blue-700 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm font-medium toast-enter';
+                toast.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 bg-blue-700 text-white px-6 py-3 rounded-full shadow-2xl z-50 text-sm font-medium toast-enter';
                 toast.textContent = msg;
                 document.body.appendChild(toast);
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transition = 'opacity 0.3s';
-                    setTimeout(() => toast.remove(), 300);
-                }, 2000);
+                setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 2000);
             }
+            document.querySelectorAll('.copy-host-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); copyText(btn.getAttribute('data-copy')); }));
+            document.getElementById('heroCopyHost').addEventListener('click', () => copyText('https://gtpshost.com/raw/EldoriaPs'));
+            document.getElementById('mainCopyHostBtn').addEventListener('click', () => copyText('https://gtpshost.com/raw/EldoriaPs'));
+            document.getElementById('copyWindowsHost').addEventListener('click', () => copyText('152.42.230.34 www.growtopia1.com\n152.42.230.34 www.growtopia2.com'));
+            document.getElementById('copyVhostLinkBtn').addEventListener('click', () => copyText('https://www.mediafire.com/file/jpnoxe2shyni258/EldoriaPs+-+GTPSHOST+(7).txt/file'));
 
-            document.querySelectorAll('.copy-host-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    copyText(btn.getAttribute('data-copy'));
-                });
-            });
-            document.getElementById('heroCopyHost').addEventListener('click', () => copyText(
-                'https://gtpshost.com/raw/EldoriaPs'));
-            document.getElementById('mainCopyHostBtn').addEventListener('click', () => copyText(
-                'https://gtpshost.com/raw/EldoriaPs'));
-            document.getElementById('copyWindowsHost').addEventListener('click', () => {
-                copyText('152.42.230.34 www.growtopia1.com\n152.42.230.34 www.growtopia2.com');
-            });
-            document.getElementById('copyVhostLinkBtn').addEventListener('click', () => copyText(
-                'https://www.mediafire.com/file/jpnoxe2shyni258/EldoriaPs+-+GTPSHOST+(7).txt/file'));
+            // ========== LIGHTBOX LOGIC ==========
+            const lightboxOverlay = document.getElementById('lightboxOverlay');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
 
-            // ---------- PROFIT DATA & RENDER ----------
-            const profitMethods = [{
-                id: 'bfg',
-                name: 'BFG (Break For Gems)',
-                icon: '💎',
-                description: 'Metode paling populer untuk mendapatkan gems gratis. Kamu memecahkan block khusus di dunia BFG yang sudah disediakan oleh server, dan setiap block bisa menjatuhkan gems yang bisa dikumpulkan.',
-                steps: [
-                    'Masuk ke dunia BFG (ketik /bfg).',
-                    'Ambil peralatan breaking (pickaxe/drill) dari chest.',
-                    'Pecahkan block yang tersedia sampai habis.',
-                    'Kumpulkan gems yang jatuh otomatis ke inventory.',
-                    'Ulangi setiap hari untuk hasil maksimal.'
-                ],
-                images: ['https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg'],
-                color: 'blue'
-            }, {
-                id: 'mining',
-                name: 'Mining (Menambang)',
-                icon: '⛏️',
-                description: 'Menambang ore seperti iron, gold, dan diamond di dunia tambang khusus. Hasil tambang bisa dijual ke NPC atau pemain lain untuk mendapatkan World Lock.',
-                steps: [
-                    'Pergi ke dunia Mining (ketik /mine).',
-                    'Gunakan pickaxe untuk menambang ore.',
-                    'Ore otomatis masuk ke inventory.',
-                    'Jual ore ke NPC di spawn atau trade dengan pemain.',
-                    'Upgrade pickaxe untuk menambang lebih cepat.'
-                ],
-                images: [
-                    'https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg',
-                    'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg'
-                ],
-                color: 'amber'
-            }, {
-                id: 'dungeon',
-                name: 'Dungeon (Penjara Bawah Tanah)',
-                icon: '🏰',
-                description: 'Jelajahi dungeon penuh monster dan harta karun. Kalahkan boss untuk mendapatkan loot langka seperti Dark Ring, cursed sword, atau bahkan Diamond Lock.',
-                steps: [
-                    'Masuk ke dungeon (ketik /dungeon).',
-                    'Kalahkan monster di setiap level.',
-                    'Kumpulkan kunci untuk membuka pintu boss.',
-                    'Kalahkan boss utama untuk loot spesial.',
-                    'Bawa pulang harta dan ulangi setiap minggu.'
-                ],
-                images: [
-                    'https://i.ibb.co.com/FZ851zt/IMG-20250809-WA0150.jpg',
-                    'https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg',
-                    'https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg',
-                    'https://i.ibb.co.com/k2MJZmrK/IMG-20251126-WA0069.jpg'
-                ],
-                color: 'purple'
-            }, {
-                id: 'fishing',
-                name: 'Fishing (Memancing)',
-                icon: '🎣',
-                description: 'Memancing di spot khusus memberikan ikan yang bisa dimasak atau dijual. Beberapa ikan langka bisa ditukar dengan item limited.',
-                steps: [
-                    'Pergi ke danau/fishing spot (ketik /fish).',
-                    'Gunakan Fishing Rod dari inventory.',
-                    'Tunggu ikan menyambar umpan.',
-                    'Jual ikan ke pedagang atau masak untuk buff.',
-                ],
-                images: ['https://i.ibb.co.com/TB0XgyK2/IMG-20251124-WA0049.jpg'],
-                color: 'teal',
-                hidden: true
-            }, {
-                id: 'ghost',
-                name: 'Ghost Hunting (Berburu Hantu)',
-                icon: '👻',
-                description: 'Berburu hantu di malam hari di dunia khusus. Hantu menjatuhkan ectoplasm yang bisa ditukar dengan item eksklusif atau WL.',
-                steps: [
-                    'Tunggu malam hari (atau ketik /night).',
-                    'Pergi ke haunted house (/ghost).',
-                    'Gunakan Ghost Detector untuk menemukan hantu.',
-                    'Tangkap hantu dengan Ghost Net.',
-                    'Kumpulkan ectoplasm dan tukar dengan rewards.'
-                ],
-                images: ['https://i.ibb.co.com/rf1RkyvS/IMG-20251126-WA0099.jpg'],
-                color: 'red',
-                hidden: true
-            }];
+            function openLightbox(imgSrc) {
+                lightboxImage.src = imgSrc;
+                lightboxOverlay.classList.add('active');
+            }
+            function closeLightbox() {
+                lightboxOverlay.classList.remove('active');
+                lightboxImage.src = ''; // clear image
+            }
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxOverlay.addEventListener('click', function(e) {
+                if (e.target === lightboxOverlay) closeLightbox();
+            });
+            // Close with Esc key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+
+            // ========== PROFIT DATA UPDATED ==========
+            const profitMethods = [
+                {
+                    id: 'bfg',
+                    name: 'BFG (Break For Gems)',
+                    icon: '💎',
+                    description: 'BFG adalah metode farming di Growtopia dimana pemain menghancurkan (break) block untuk mendapatkan gems.',
+                    images: ['https://i.ibb.co.com/Wp7RVPht/Screenshot-2026-05-10-150240.png'],
+                    galleryClass: 'profit-gallery single',
+                    contentHTML: `
+                        <div class="mt-3 text-sm text-gray-200 space-y-2">
+                            <h4 class="font-semibold text-blue-300">Cara Kerja:</h4>
+                            <ol class="list-decimal list-inside text-xs text-gray-400 space-y-1">
+                                <li>Host menyediakan world berisi banyak block untuk dihancurkan.</li>
+                                <li>Pemain masuk ke world dan menghancurkan block tersebut.</li>
+                                <li>Dari block yang dihancurkan, pemain mendapatkan gems.</li>
+                                <li>Gems dapat digunakan untuk membeli item, pack, atau kebutuhan lainnya.</li>
+                            </ol>
+                            <h4 class="font-semibold text-blue-300 mt-2">Fungsi BFG:</h4>
+                            <ul class="list-disc list-inside text-xs text-gray-400">
+                                <li>Farming gems lebih cepat</li>
+                                <li>Membantu pemain mendapatkan banyak gems</li>
+                                <li>Digunakan untuk leveling dan kebutuhan item</li>
+                            </ul>
+                            <h4 class="font-semibold text-blue-300 mt-2">Jenis BFG:</h4>
+                            <ul class="list-disc list-inside text-xs text-gray-400">
+                                <li>Public BFG → dapat diakses semua pemain</li>
+                                <li>Private BFG → hanya untuk pemain tertentu</li>
+                                <li>Auto BFG → menggunakan sistem otomatis seperti Magplant</li>
+                            </ul>
+                            <p class="text-xs text-gray-500 mt-2">Singkatan: BFG = Break For Gems</p>
+                        </div>
+                    `
+                },
+                {
+                    id: 'mining',
+                    name: 'Mining (Menambang)',
+                    icon: '⛏️',
+                    description: 'Tata cara mining di Eldoria. Ikuti panduan lengkap untuk menambang crystal dan mendapatkan hadiah langka.',
+                    images: [
+                        'https://i.ibb.co.com/6cW7kYPz/Screenshot-2026-05-03-141129.png',
+                        'https://i.ibb.co.com/8gQpYFd9/Screenshot-2026-05-03-141204.png'
+                    ],
+                    galleryClass: 'profit-gallery cols-2',
+                    contentHTML: `
+                        <div class="mt-3 text-sm text-gray-200 space-y-2">
+                            <h4 class="font-semibold text-blue-300">Tips Mining:</h4>
+                            <p class="text-xs text-gray-400"><strong>Perencanaan:</strong> Buat rencana yang matang sebelum mulai mining, termasuk menghitung cara terbaik buat nambang.</p>
+                            <div class="border-t border-slate-700 my-2"></div>
+                            <ol class="list-decimal list-inside text-xs text-gray-400 space-y-2">
+                                <li><strong>Beli Miner's License di Store</strong><br>Cari NPC: Master Zhang (petunjuk mining), Wagner (forge & shop pickaxe), Albert (tempat exchange).</li>
+                                <li><strong>Sebelum memakai license</strong><br>Masuk dulu ke world "MINING".</li>
+                                <li><strong>Cari NPC di world Mining</strong><br>Setelah masuk, cari NPC dan baca instruksinya.</li>
+                                <li><strong>Upgrade Pickaxe</strong><br>Harus punya Pickaxe biasa, lalu upgrade jadi Mining Pickaxe.</li>
+                                <li><strong>Gunakan License & Pilih Portal</strong><br>Pakai Miner's License, pilih portal sesuai level pickaxe. Pickaxe rendah → portal awal, tinggi → portal lebih tinggi.</li>
+                                <li><strong>Mulai Mining</strong><br>Gunakan mining pickaxe untuk menambang crystal, mendapatkan Gold Mining Chest, dan mencari item rare/legendary.</li>
+                            </ol>
+                            <div class="border-t border-slate-700 my-2"></div>
+                            <h4 class="font-semibold text-blue-300">Catatan Tambahan:</h4>
+                            <ul class="list-disc list-inside text-xs text-gray-400">
+                                <li>Baca semua instruksi dengan teliti biar nggak bingung.</li>
+                                <li>Jangan lupa bawa lampu karena tambangnya gelap banget.</li>
+                                <li>Menggunakan Miner's License akan teleport kamu ke Mining World sesuai portal yang dipilih.</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    id: 'dungeon',
+                    name: 'Dungeon',
+                    icon: '🏰',
+                    description: 'Dungeon adalah mode atau area khusus yang berisi monster, tantangan, dan hadiah. Kalahkan boss untuk loot langka!',
+                    images: [
+                        'https://i.ibb.co.com/xtzCM2Df/Screenshot-2026-05-10-144109-1.png',
+                        'https://i.ibb.co.com/qG2vbyf/Screenshot-2026-05-10-144136.png',
+                        'https://i.ibb.co.com/V0L2VvN6/Screenshot-2026-05-10-144159.png',
+                        'https://i.ibb.co.com/wrzTN2J4/Screenshot-2026-05-10-144258.png'
+                    ],
+                    galleryClass: 'profit-gallery cols-2',
+                    contentHTML: `
+                        <div class="mt-3 text-sm text-gray-200 space-y-3">
+                            <p class="text-xs text-gray-400">Di dalam dungeon, pemain harus mengalahkan monster, menyelesaikan rintangan, dan bertahan hidup. Tujuan: hadiah, item tertentu, farming loot. Gunakan gear bagus, consumable, dan strategi tim.</p>
+                            <div class="border-t border-slate-700 my-2"></div>
+                            <h4 class="font-semibold text-blue-300">Boss Dungeon:</h4>
+                            <div class="space-y-3">
+                                <div class="bg-slate-800/50 p-3 rounded-lg">
+                                    <h5 class="font-bold text-white">1. Slime Monster</h5>
+                                    <p class="text-xs text-gray-300">Health: 300.000 HP</p>
+                                    <p class="text-xs text-gray-400">Requirement: Level 20+, Weapon Rare+, no party needed (opsional).</p>
+                                    <p class="text-xs text-gray-400">Prize: Normal → World Lock, Medium → Mythical Rayman, Rare → Slime King.</p>
+                                    <p class="text-xs text-red-400">Ultimate: Freeze all player (1-2 detik).</p>
+                                </div>
+                                <div class="bg-slate-800/50 p-3 rounded-lg">
+                                    <h5 class="font-bold text-white">2. Golem Killers</h5>
+                                    <p class="text-xs text-gray-300">Health: 500.000 HP</p>
+                                    <p class="text-xs text-gray-400">Requirement: Level 50+, Weapon Epic+, solo/party fleksibel.</p>
+                                    <p class="text-xs text-gray-400">Prize: Normal → Blue Gem Lock, Medium → Mythical Rayman, Rare → Golem Killers.</p>
+                                    <p class="text-xs text-red-400">Ultimate: Stun player secara acak.</p>
+                                </div>
+                                <div class="bg-slate-800/50 p-3 rounded-lg">
+                                    <h5 class="font-bold text-white">3. Minotaur</h5>
+                                    <p class="text-xs text-gray-300">Health: 700.000 HP</p>
+                                    <p class="text-xs text-gray-400">Requirement: Level 70+, Weapon Epic+, party opsional.</p>
+                                    <p class="text-xs text-gray-400">Prize: Normal → Blue Gem Lock, Rare → Minotaur.</p>
+                                    <p class="text-xs text-red-400">Ultimate: Darknest world.</p>
+                                </div>
+                                <div class="bg-slate-800/50 p-3 rounded-lg">
+                                    <h5 class="font-bold text-white">4. Moti Shin</h5>
+                                    <p class="text-xs text-gray-300">Health: 1.000.000 HP</p>
+                                    <p class="text-xs text-gray-400">Requirement: Level 100+, Weapon LEGENDARY+, wajib party (3 player).</p>
+                                    <p class="text-xs text-gray-400">Prize: Normal → Blue Gem Lock, Medium → Mythical Rayman, Rare → Moti Shin.</p>
+                                    <p class="text-xs text-red-400">Ultimate: Punish player to hell (1 menit).</p>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ];
 
             const profitContainer = document.getElementById('profitContainer');
-
             function renderProfitMethods() {
-                const visibleMethods = profitMethods.filter(m => !m.hidden || SHOW_HIDDEN_PROFITS);
-
-                profitContainer.innerHTML = visibleMethods.map(method => {
-                    let galleryClass = '';
-                    if (method.id === 'bfg' || method.id === 'fishing' || method.id === 'ghost') {
-                        galleryClass = 'profit-gallery single';
-                    } else if (method.id === 'mining') {
-                        galleryClass = 'profit-gallery cols-2';
-                    } else if (method.id === 'dungeon') {
-                        galleryClass = 'profit-gallery cols-2';
-                    }
-
+                profitContainer.innerHTML = profitMethods.map(method => {
                     return `
-                <div class="card-simple p-6 flex flex-col">
-                    <div class="text-3xl mb-2">${method.icon}</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">${method.name}</h3>
-                    <p class="text-gray-300 text-sm mb-4 flex-grow">${method.description}</p>
-                    <div class="${galleryClass} mb-4">
-                        ${method.images.map(img => `<img src="${img}" alt="${method.name}" loading="lazy">`).join('')}
+                    <div class="card-simple p-6 flex flex-col">
+                        <div class="${method.galleryClass}">
+                            ${method.images.map(img => `<img src="${img}" alt="${method.name}" loading="lazy">`).join('')}
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-white flex items-center gap-2">
+                            <span>${method.icon}</span> ${method.name}
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-2">${method.description}</p>
+                        ${method.contentHTML}
                     </div>
-                    <div class="mt-auto">
-                        <h4 class="text-sm font-semibold text-blue-300 mb-2">Cara Profit:</h4>
-                        <ol class="list-decimal list-inside text-xs text-gray-400 space-y-1">
-                            ${method.steps.map(step => `<li>${step}</li>`).join('')}
-                        </ol>
-                    </div>
-                </div>
-                `;
+                    `;
                 }).join('');
-            }
 
+                // Attach click event to all gallery images for lightbox
+                document.querySelectorAll('#profitContainer .profit-gallery img').forEach(img => {
+                    img.addEventListener('click', function() {
+                        openLightbox(this.src);
+                    });
+                });
+            }
             renderProfitMethods();
 
-            // ---------- INTERSECTION OBSERVER ----------
             const fadeElements = document.querySelectorAll('.fade-in-section');
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add(
-                        'is-visible'); });
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
             }, { threshold: 0.1 });
             fadeElements.forEach(el => observer.observe(el));
 
-            // Footer year
             document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-            const style = document.createElement('style');
-            style.textContent = `
-            .profit-gallery.single {
-                grid-template-columns: 1fr;
-            }
-            .profit-gallery img {
-                transition: transform 0.3s;
-                cursor: pointer;
-            }
-            .profit-gallery img:hover {
-                transform: scale(1.02);
-            }
-        `;
-            document.head.appendChild(style);
         })();
     </script>
 </body>
