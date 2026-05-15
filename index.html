@@ -9,8 +9,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: wss:; img-src 'self' https: data:; media-src 'self' https:; connect-src 'self' https:;">
     <meta name="referrer" content="no-referrer">
 
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -631,16 +630,16 @@
             <div class="card-simple p-6 md:p-8">
                 <div class="flex flex-wrap items-start gap-6">
                     <div class="w-full md:w-5/12 space-y-5">
-                        <div><span class="text-sm uppercase tracking-wider text-blue-300">File Host (MediaFire)</span><div class="mt-2 flex flex-wrap gap-2"><a href="https://www.mediafire.com/file/jpnoxe2shyni258/EldoriaPs+-+GTPSHOST+(7).txt/file" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2"><i class="fas fa-download"></i> Download Host .txt</a><button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2"><i class="far fa-copy"></i> Salin Link</button></div></div>
+                        <div><span class="text-sm uppercase tracking-wider text-blue-300">File Host (Download Otomatis)</span><div class="mt-2 flex flex-wrap gap-2"><a href="/api/download" class="bg-blue-700 hover:bg-blue-600 px-5 py-2.5 rounded-lg text-sm font-medium transition inline-flex items-center gap-2"><i class="fas fa-download"></i> Download Host .txt</a><button id="copyVhostLinkBtn" class="bg-slate-700 hover:bg-slate-600 px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2"><i class="far fa-copy"></i> Salin Link</button></div></div>
                         <div><span class="text-sm uppercase tracking-wider text-blue-300">Aplikasi Virtual Host</span><div class="mt-2"><a href="https://sfile.mobi/4xXabY4QEEP" target="_blank" class="bg-emerald-700/80 hover:bg-emerald-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2"><i class="fas fa-mobile-alt"></i> Download Virtual Host App</a></div></div>
                         <div><span class="text-sm uppercase tracking-wider text-blue-300">Video Tutorial</span><div class="mt-2"><a href="https://files.catbox.moe/bdanii.mp4" target="_blank" class="bg-indigo-700/70 hover:bg-indigo-600 px-5 py-2.5 rounded-lg text-sm inline-flex items-center gap-2"><i class="fas fa-video"></i> Tonton Video Panduan</a></div></div>
                     </div>
                     <div class="w-full md:w-7/12">
                         <h3 class="text-xl font-semibold mb-3 flex items-center gap-2"><i class="fas fa-list-ol text-blue-300"></i> Langkah-langkah</h3>
                         <ul class="step-list text-sm text-gray-200 space-y-4">
-                            <li><strong class="text-white">Download File Host</strong><br><span class="text-gray-400">Unduh file .txt dari tombol di samping. Simpan di penyimpanan ponsel.</span></li>
+                            <li><strong class="text-white">Download File Host</strong><br><span class="text-gray-400">Klik tombol "Download Host .txt" di samping. File akan otomatis terunduh.</span></li>
                             <li><strong class="text-white">Buka Aplikasi Virtual Host</strong><br><span class="text-gray-400">Install dan buka aplikasi Virtual Host yang sudah diunduh.</span></li>
-                            <li><strong class="text-white">Pilih File Host</strong><br><span class="text-gray-400">Tekan tombol <code class="bg-slate-800 px-1 rounded">re-select file</code> lalu cari file <strong>EldoriaPs - GTPSHOST (5).txt</strong>.</span></li>
+                            <li><strong class="text-white">Pilih File Host</strong><br><span class="text-gray-400">Tekan tombol <code class="bg-slate-800 px-1 rounded">re-select file</code> lalu cari file <strong>EldoriaPs-Hosts.txt</strong> yang baru diunduh.</span></li>
                             <li><strong class="text-white">Aktifkan Host</strong><br><span class="text-gray-400">Tekan tombol START/ikon power untuk mengaktifkan virtual host.</span></li>
                             <li><strong class="text-white">Mainkan Growtopia</strong><br><span class="text-gray-400">Buka game Growtopia dan login. Selamat bermain di Eldoria!</span></li>
                         </ul>
@@ -788,7 +787,11 @@
             document.getElementById('heroCopyHost').addEventListener('click', () => copyText('https://gtpshost.com/raw/EldoriaPs'));
             document.getElementById('mainCopyHostBtn').addEventListener('click', () => copyText('https://gtpshost.com/raw/EldoriaPs'));
             document.getElementById('copyWindowsHost').addEventListener('click', () => copyText('152.42.230.34 www.growtopia1.com\n152.42.230.34 www.growtopia2.com'));
-            document.getElementById('copyVhostLinkBtn').addEventListener('click', () => copyText('https://www.mediafire.com/file/jpnoxe2shyni258/EldoriaPs+-+GTPSHOST+(7).txt/file'));
+            // Perubahan: tombol salin link untuk virtual host menggunakan URL /api/download relatif terhadap domain saat ini
+            document.getElementById('copyVhostLinkBtn').addEventListener('click', () => {
+                const downloadUrl = window.location.origin + '/api/download';
+                copyText(downloadUrl);
+            });
 
             // ========== LIGHTBOX LOGIC ==========
             const lightboxOverlay = document.getElementById('lightboxOverlay');
@@ -801,20 +804,19 @@
             }
             function closeLightbox() {
                 lightboxOverlay.classList.remove('active');
-                lightboxImage.src = ''; // clear image
+                lightboxImage.src = '';
             }
             lightboxClose.addEventListener('click', closeLightbox);
             lightboxOverlay.addEventListener('click', function(e) {
                 if (e.target === lightboxOverlay) closeLightbox();
             });
-            // Close with Esc key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) {
                     closeLightbox();
                 }
             });
 
-            // ========== PROFIT DATA UPDATED ==========
+            // ========== PROFIT DATA (tidak berubah) ==========
             const profitMethods = [
                 {
                     id: 'bfg',
@@ -950,7 +952,6 @@
                     `;
                 }).join('');
 
-                // Attach click event to all gallery images for lightbox
                 document.querySelectorAll('#profitContainer .profit-gallery img').forEach(img => {
                     img.addEventListener('click', function() {
                         openLightbox(this.src);
