@@ -1,11 +1,13 @@
 // api/download.js
-export default async function handler(req, res) => {
-  // URL raw file host.txt dari GitHub (pastikan public)
+export default async function handler(req, res) {
+  // Ganti dengan URL raw GitHub milikmu
   const fileUrl = 'https://raw.githubusercontent.com/NefsXxz/FantasyPs1/refs/heads/main/host.txt';
 
   try {
     const response = await fetch(fileUrl);
-    if (!response.ok) throw new Error('Gagal mengambil host.txt');
+    if (!response.ok) {
+      throw new Error(`Gagal mengambil host.txt: ${response.status}`);
+    }
     const content = await response.text();
 
     // Header untuk memaksa download
@@ -16,4 +18,4 @@ export default async function handler(req, res) => {
     console.error(error);
     res.status(500).send('Gagal mengambil file host. Silakan coba lagi nanti.');
   }
-};
+}
